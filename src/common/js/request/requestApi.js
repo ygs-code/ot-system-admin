@@ -1,10 +1,10 @@
 /*
  * @Author: your name
  * @Date: 2020-12-14 10:03:45
- * @LastEditTime: 2022-05-20 11:28:45
+ * @LastEditTime: 2022-06-09 14:12:19
  * @LastEditors: Yao guan shou
  * @Description: In User Settings Edit
- * @FilePath: /error-sytem/admin/src/common/js/request/requestApi.js
+ * @FilePath: /Blogs/BlogsAdmin/src/common/js/request/requestApi.js
  */
 import Request, { gql, GraphqlClient } from "./request";
 import filterGraphqlData from "./filterGraphqlData";

@@ -12,13 +12,46 @@ import filterGraphqlData from "./filterGraphqlData";
 var userId = "559645cd1a38532d14349246";
 
 // 获取验证码
-export const getVerifyCode = () => {
-  return Request.get("/set/user/getVerifyCode");
+// export const getVerifyCode = () => {
+//   return Request.get("/set/user/getVerifyCode");
+// };
+
+// export const getVerifyCode = () => {
+//   // return Request.get("/set/user/getVerifyCode");
+//   return GraphqlClient.query({
+//     query: gql`
+//       ${schema}
+//     `,
+//     variables: parameter,
+//   });
+// };
+
+// 查询
+export const getVerifyCode = (id = "") => {
+  return GraphqlClient.query(
+    {
+      operationName: "getVerifyCode",
+      query: `
+      query{
+        getVerifyCode {
+            code
+            message
+            data {
+              svg
+            }
+          }
+      }
+    `,
+    },
+    {
+      filterData: true,
+    }
+  );
 };
 
 // 注册
 export const register = (parameter) => {
-  debugger
+  debugger;
   return Request.post("/set/user/register", parameter);
 };
 
@@ -36,6 +69,7 @@ export const query = (schema, parameter) => {
     variables: parameter,
   });
 };
+
 export const mutation = (schema, parameter) => {
   return GraphqlClient.mutate({
     mutation: `${schema}`,

@@ -352,8 +352,8 @@ export class Graphql {
       ...options,
     };
     const { error = () => {} } = this.options;
-    // return Request.get(this.url, parameter, this.options);
-    return Request.post(this.url, parameter, this.options);
+    return Request.get(this.url, parameter, this.options);
+    // return Request.post(this.url, parameter, this.options);
   }
   // 突变
   mutate(parameter, options) {

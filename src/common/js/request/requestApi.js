@@ -26,8 +26,8 @@ var userId = "559645cd1a38532d14349246";
 //   });
 // };
 
-// 查询
-export const getVerifyCode = (id = "") => {
+// 获取验证码
+export const getVerifyCode = () => {
   return GraphqlClient.query(
     {
       operationName: "getVerifyCode",
@@ -51,8 +51,20 @@ export const getVerifyCode = (id = "") => {
 
 // 注册
 export const register = (parameter) => {
-  debugger;
-  return Request.post("/set/user/register", parameter);
+  return GraphqlClient.mutate({
+    operationName: "createUser",
+    mutation: `
+        mutation($userInfo: UserInfoInput!) { 
+          createUser(userInfo: $userInfo) {
+              code
+              message
+            }
+        }
+    `,
+    variables: {
+      userInfo: parameter,
+    },
+  });
 };
 
 // 登录
@@ -77,23 +89,6 @@ export const mutation = (schema, parameter) => {
   });
 };
 
-//变异
-export const createUser = (parameter) => {
-  return GraphqlClient.mutate({
-    operationName: "createUser",
-    mutation: `
-      mutation($name: String!) {
-        createUser(name: $name) {
-          name
-          friends {
-            name
-          }
-        }
-      }
-      `,
-    variables: parameter,
-  });
-};
 
 export const getUser = () => {
   return GraphqlClient.query({

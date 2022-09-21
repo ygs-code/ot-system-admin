@@ -13,8 +13,8 @@ class Token {
     //配置不需要token的请求
     this.doNotToken = [
       ...doNotToken,
-      "/set/user/getVerifyCode",
-      "/set/user/login",
+      "getVerifyCode",
+      "createUser",
     ];
   }
 
@@ -35,18 +35,20 @@ class Token {
     });
     this.queue = [];
   }
-  get(url) {
+  get(config) {
     const token = localStorage.getItem("token");
-    if (!url) {
+    const { parameter: { operationName } = {} } = config || {};
+    if (!config && token) {
       return token;
     }
     return new Promise((resolve, reject) => {
       if (token) {
         return resolve(token);
       }
-      if (this.doNotToken.includes(url)) {
+      if (this.doNotToken.includes(operationName)) {
         return resolve("");
       }
+      resolve("");
       this.subscribeQueue({ resolve, reject });
     });
   }

@@ -319,7 +319,7 @@ Request.interceptors = {
       headers: {
         ...config.headers,
         // 登录拦截
-        token: await token.get(urlSuffix),
+        token: await token.get(config),
       },
     };
     // return Promise.reject({

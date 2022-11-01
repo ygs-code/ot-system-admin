@@ -31,9 +31,7 @@ export const query = (operationName, schema, parameter = {}, options = {}) => {
   return GraphqlClient.query(
     {
       operationName,
-      query: gql`
-        ${schema}
-      `,
+      query: schema,
       variables: parameter,
     },
     {
@@ -94,32 +92,16 @@ export const register = (parameter) => {
     `,
     parameter
   );
-
-  // return GraphqlClient.mutate(
-  //   {
-  //   operationName: "createUser",
-  //   mutation: `
-  //       mutation($userInfo: UserInfoInput!) {
-  //         createUser(userInfo: $userInfo) {
-  //             code
-  //             message
-  //           }
-  //       }
-  //   `,
-  //   variables: {
-  //     userInfo: parameter,
-  //   },
-  // });
 };
 
 // 登录
 export const login = (parameter) => {
-
+  console.log("parameter=====", parameter);
 
   // return mutation(
   //   "createUser",
   //   `
-  //       mutation($userInfo: UserInfoInput!) { 
+  //       mutation($userInfo: UserInfoInput!) {
   //         createUser(userInfo: $userInfo) {
   //             code
   //             message

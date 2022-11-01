@@ -26,34 +26,65 @@ var userId = "559645cd1a38532d14349246";
 //   });
 // };
 
-// 获取验证码
-export const getVerifyCode = () => {
+// 查询
+export const query = (operationName, schema, parameter = {}, options = {}) => {
   return GraphqlClient.query(
     {
-      operationName: "getVerifyCode",
-      query: `
-      query{
-        getVerifyCode {
-            code
-            message
-            data {
-              svg
-            }
-          }
-      }
-    `,
+      operationName,
+      query: gql`
+        ${schema}
+      `,
+      variables: parameter,
     },
     {
       filterData: true,
+      ...options,
     }
+  );
+};
+
+// 变异
+export const mutation = (
+  operationName,
+  schema,
+  parameter = {},
+  options = {}
+) => {
+  return GraphqlClient.mutate(
+    {
+      operationName,
+      mutation: `${schema}`,
+      variables: parameter,
+    },
+    {
+      filterData: true,
+      ...options,
+    }
+  );
+};
+
+// 获取验证码
+export const getVerifyCode = () => {
+  return query(
+    "getVerifyCode",
+    ` query{
+      getVerifyCode {
+          code
+          message
+          data {
+            svg
+          }
+        }
+    }
+  `
   );
 };
 
 // 注册
 export const register = (parameter) => {
-  return GraphqlClient.mutate({
-    operationName: "createUser",
-    mutation: `
+  return mutation(
+    "createUser",
+    `
         mutation($userInfo: UserInfoInput!) { 
           createUser(userInfo: $userInfo) {
               code
@@ -61,34 +92,45 @@ export const register = (parameter) => {
             }
         }
     `,
-    variables: {
-      userInfo: parameter,
-    },
-  });
+    parameter
+  );
+
+  // return GraphqlClient.mutate(
+  //   {
+  //   operationName: "createUser",
+  //   mutation: `
+  //       mutation($userInfo: UserInfoInput!) {
+  //         createUser(userInfo: $userInfo) {
+  //             code
+  //             message
+  //           }
+  //       }
+  //   `,
+  //   variables: {
+  //     userInfo: parameter,
+  //   },
+  // });
 };
 
 // 登录
 export const login = (parameter) => {
-  return Request.post("/set/user/login", parameter);
-};
 
-// 查询
-export const query = (schema, parameter) => {
-  return GraphqlClient.query({
-    query: gql`
-      ${schema}
-    `,
-    variables: parameter,
-  });
-};
 
-export const mutation = (schema, parameter) => {
-  return GraphqlClient.mutate({
-    mutation: `${schema}`,
-    variables: parameter,
-  });
-};
+  // return mutation(
+  //   "createUser",
+  //   `
+  //       mutation($userInfo: UserInfoInput!) { 
+  //         createUser(userInfo: $userInfo) {
+  //             code
+  //             message
+  //           }
+  //       }
+  //   `,
+  //   parameter
+  // );
 
+  //return Request.post("/set/user/login", parameter);
+};
 
 export const getUser = () => {
   return GraphqlClient.query({

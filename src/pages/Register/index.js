@@ -35,7 +35,7 @@ const Index = () => {
 
   return (
     <div className="center log-in">
-      <h3>《前端错误监控系统》 </h3>
+      <h3>《屈臣氏》 </h3>
       <Form
         {...layout}
         name="basic"

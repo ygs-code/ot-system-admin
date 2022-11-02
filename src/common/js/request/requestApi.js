@@ -99,19 +99,21 @@ export const register = (parameter) => {
 // 登录
 export const login = (parameter) => {
   console.log("parameter=====", parameter);
+  return query(
+    "login",
+    ` query($userInfo: UserInfoInput!){
+        login(userInfo: $userInfo) {
+            code
+            message
+            data {}
+       }
+   }
+    `,
 
-  // return mutation(
-  //   "createUser",
-  //   `
-  //       mutation($userInfo: UserInfoInput!) {
-  //         createUser(userInfo: $userInfo) {
-  //             code
-  //             message
-  //           }
-  //       }
-  //   `,
-  //   parameter
-  // );
+    {
+      userInfo: parameter,
+    }
+  );
 
   //return Request.post("/set/user/login", parameter);
 };

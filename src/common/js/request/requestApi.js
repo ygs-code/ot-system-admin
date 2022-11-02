@@ -90,7 +90,9 @@ export const register = (parameter) => {
             }
         }
     `,
-    parameter
+    {
+      userInfo: parameter,
+    }
   );
 };
 

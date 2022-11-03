@@ -99,20 +99,32 @@ export const register = (parameter) => {
 // 登录
 export const login = (parameter) => {
   console.log("parameter=====", parameter);
+  const { password, username, verificationCode } = parameter;
   return query(
     "login",
-    ` query($userInfo: UserInfoInput!){
-        login(userInfo: $userInfo) {
+    ` query{
+        login(
+          password:"${password}",
+          username:"${username}",
+          verificationCode:"${verificationCode}",
+          ){
             code
+            data {
+              token 
+              userInfo {
+                  name
+                  phone
+                  id
+              } 
+            }
             message
-            data {}
-       }
+          } 
    }
-    `,
+    `
 
-    {
-      userInfo: parameter,
-    }
+    // {
+    //   userInfo: parameter,
+    // }
   );
 
   //return Request.post("/set/user/login", parameter);

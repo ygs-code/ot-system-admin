@@ -178,6 +178,8 @@ export const getUserInfo = (id = "") => {
             data {
               name
               phone
+              token
+              id
             }
           }
       }

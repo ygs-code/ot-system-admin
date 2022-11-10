@@ -4,7 +4,7 @@ import "@/common/css/base.less";
 import "./index.less";
 import { Form, Input, Button, Checkbox, message } from "antd";
 import { routePaths, historyPush, getHistory } from "@/router";
-import { checkPhone, checkUser, checkPassword } from "@/utils";
+import { checkPhone, checkUser, checkPassword, checkEmail } from "@/utils";
 import VerificationCode from "@/common/component/VerificationCode";
 
 const layout = {
@@ -19,7 +19,7 @@ const Index = () => {
   const onFinish = async (values) => {
     // console.log('register=', register);
     // console.log('Success:', values);
-    console.log('values======',values)
+    console.log("values======", values);
     const data = await register(values);
     message.success("注册成功");
     setTimeout(() => {
@@ -45,7 +45,7 @@ const Index = () => {
       >
         <Form.Item
           label="用户名"
-          name="username"
+          name="name"
           validateFirst={true}
           rules={[
             {
@@ -79,6 +79,28 @@ const Index = () => {
                   return Promise.resolve();
                 }
                 return Promise.reject("请输入正确的手机号码");
+              },
+            }),
+          ]}
+        >
+          <Input />
+        </Form.Item>
+
+        <Form.Item
+          label="邮箱"
+          name="email"
+          validateFirst={true}
+          rules={[
+            {
+              required: true,
+              message: "请输入邮箱！",
+            },
+            ({ getFieldValue }) => ({
+              validator(rule, value) {
+                if (checkEmail(value)) {
+                  return Promise.resolve();
+                }
+                return Promise.reject("请输入正确的邮箱");
               },
             }),
           ]}
@@ -144,11 +166,11 @@ const Index = () => {
         <VerificationCode />
         <Form.Item {...tailLayout}>
           <div className="buttons">
-            <Button className="submit" type="primary" htmlType="submit"
-            onClick={() => {
-              
-            }}
-            
+            <Button
+              className="submit"
+              type="primary"
+              htmlType="submit"
+              onClick={() => {}}
             >
               确定
             </Button>

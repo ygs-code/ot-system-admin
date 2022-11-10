@@ -50,7 +50,7 @@ export default {
   effects: (dispatch) => {
     return {
       async getUserInfo(state, { payload: param = {} }) {
-        const { data } = await getUserInfo();
+        const { data } = await getUserInfo(param);
 
         dispatch({
           modelsName: "user",

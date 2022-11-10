@@ -66,14 +66,14 @@ const Index = memo((props) => {
         user: { setUserInfo, login, fetchUser, getUserInfo },
       },
     } = props;
-    getUserInfo();
+    getUserInfo({
+      // id:8
+    });
     return () => {};
   }, []);
   const toggle = useCallback(() => {
     setCollapsed(!collapsed);
   }, [collapsed]);
-  // console.log("home props=========", props);
-  // console.log("breadcrumb=========", breadcrumb);
   return (
     <Layout className="root-layout">
       {/*左侧菜单*/}

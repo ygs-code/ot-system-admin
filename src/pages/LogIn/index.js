@@ -5,12 +5,7 @@ import { Form, Input, Button, message, Checkbox } from "antd";
 import { routePaths, historyPush, getHistory } from "@/router";
 import { login, createUser, getVerifyCode } from "@/common/js/request/index";
 import VerificationCode from "@/common/component/VerificationCode";
-import {
-  checkPhone,
-  checkUser,
-  checkPassword,
-  checkVerificationCode,
-} from "@/utils";
+import { checkPhone, checkUser, checkPassword, checkEmail } from "@/utils";
 import Store, { mapRedux } from "@/redux";
 const layout = {
   labelCol: { span: 8 },
@@ -62,20 +57,24 @@ const Index = (props) => {
         onFinishFailed={onFinishFailed}
       >
         <Form.Item
-          label="用户名"
-          name="username"
+          label="用户名/手机号/邮箱"
+          name="name"
           validateFirst={true}
           rules={[
             {
               required: true,
-              message: "请输入用户名!",
+              message: "请输入用户名或手机号或邮箱",
             },
             ({ getFieldValue }) => ({
               validator(rule, value) {
-                if (checkUser(value)) {
+                if (
+                  checkUser(value) ||
+                  checkPhone(value) ||
+                  checkEmail(value)
+                ) {
                   return Promise.resolve();
                 }
-                return Promise.reject("用户名必须最少为6位，并且以字母开头");
+                return Promise.reject("格式不正确请重新输入");
               },
             }),
           ]}

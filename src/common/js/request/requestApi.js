@@ -7,7 +7,7 @@
  * @FilePath: /Blogs/BlogsAdmin/src/common/js/request/requestApi.js
  */
 import Request, { gql, GraphqlClient } from "./request";
-import filterGraphqlData from "./filterGraphqlData";
+
 
 var userId = "559645cd1a38532d14349246";
 
@@ -99,13 +99,13 @@ export const register = (parameter) => {
 // 登录
 export const login = (parameter) => {
   console.log("parameter=====", parameter);
-  const { password, username, verificationCode } = parameter;
+  const { password, name, verificationCode } = parameter;
   return query(
     "login",
     ` query{
         login(
           password:"${password}",
-          username:"${username}",
+          name:"${name}",
           verificationCode:"${verificationCode}",
           ){
             code
@@ -166,11 +166,13 @@ export const setUserInfo = (parameter) => {
 };
 
 // 查询
-export const getUserInfo = (id = "") => {
-  return GraphqlClient.query(
-    {
-      operationName: "getUserInfo",
-      query: `
+export const getUserInfo = (parameter={}) => {
+  const {
+    id=''
+  } =parameter
+  return query(
+    "getUserInfo",
+    `
       query{
           getUserInfo(id: "${id}") {
             code
@@ -184,33 +186,14 @@ export const getUserInfo = (id = "") => {
           }
       }
     `,
-    },
+    {},
     {
       filterData: true,
     }
   );
 };
 
-// // 查询
-// export const getUserInfo = (id='') => {
-//   return GraphqlClient.query({
-//     query: `
-//       query($id:ID){
-//           getUserInfo(id:$id) {
-//             code
-//             message
-//             data {
-//               name
-//               phone
-//             }
-//           }
-//       }
-//     `,
-//     variables: {
-//       id:123
-//     },
-//   });
-// };
+ 
 
 export const hello = (data) => {
   return GraphqlClient.query({

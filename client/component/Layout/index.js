@@ -29,7 +29,6 @@ const Index = memo((props) => {
     } = {},
     children
   } = props;
-  console.log("props=", props);
 
   // useEffect(() => {
   //   // 登录拦截

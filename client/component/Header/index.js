@@ -1,6 +1,10 @@
 import "./index.less";
 
-import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
+import {
+  MenuFoldOutlined,
+  MenuUnfoldOutlined,
+  UserOutlined
+} from "@ant-design/icons";
 import { Avatar, Dropdown, Layout } from "antd";
 import Breadcrumb from "client/component/Breadcrumb";
 import React, { memo } from "react";
@@ -151,7 +155,7 @@ export default memo((props) => {
             {avatar ? (
               <img src={avatar} />
             ) : (
-              <Avatar size="small" icon="user" />
+              <Avatar size="large" icon={<UserOutlined />} />
             )}
             <span className="account-name">{nickname} </span>
           </div>

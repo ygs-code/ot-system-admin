@@ -58,7 +58,6 @@ export default memo((props) => {
     routePaths = {},
     pushRoute
   } = props;
-  console.log("Menu props=====", props);
 
   const [selectedKeys, setSelectedKeys] = useState("-1");
   const [openKeys, setOpenKeys] = useState([]);

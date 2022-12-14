@@ -26,9 +26,6 @@ class Index extends Component {
     //   pushRoute,
     //   routePaths: { accountManagement }
     // } = this.props;
-    console.log("home");
-    console.log("this.props==", this.props);
-
     // debugger;
     // getUserList();
   }

@@ -144,7 +144,7 @@ const BaseForm = (props) => {
         {fields.map((item, index) => {
           const { type, title, items = [], render } = item;
           delete item.render;
-          console.log("item===", item);
+
           return type !== "section" ? (
             <Form.Item {...item} key={index}>
               <ItemChild {...item} render={render}></ItemChild>

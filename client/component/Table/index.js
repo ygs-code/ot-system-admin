@@ -26,7 +26,7 @@ const Index = (props) => {
     } = {},
     onChange = () => {}
   } = props;
-  console.log("tableProps==", tableProps);
+
   return (
     <div className="table-box">
       <div className="table">

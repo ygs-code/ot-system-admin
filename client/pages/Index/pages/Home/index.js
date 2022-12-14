@@ -209,10 +209,10 @@ export default mapRedux()(
         // path: "xxxx",
       },
       {
-        label: "菜单2",
+        label: "菜单2"
         // href: "http://localhost:3000/index",
-        path: "/",
-        component: ""
+        // path: "/",
+        // component: ""
       }
       // {
       //   label: "菜单3",

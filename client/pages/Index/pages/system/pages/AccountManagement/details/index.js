@@ -2,7 +2,7 @@ import { Button, Input } from "antd";
 import FormPage from "client/component/FormPage";
 import setBreadcrumbAndTitle from "client/component/setBreadcrumbAndTitle";
 import { mapRedux } from "client/redux";
-import { addRouterApi } from "client/router";
+import { addRouterApi, routePaths } from "client/router";
 import React, { useMemo } from "react";
 
 const Index = (props) => {
@@ -105,15 +105,14 @@ export default mapRedux()(
     //设置面包屑和标题
     breadcrumb: [
       {
-        label: "角色管理"
-        // href: "http://localhost:3000/index",
-        // path: "xxxx",
+        label: "账号管理",
+        path: routePaths.accountManagement
       },
       {
-        label: "详情",
+        label: "详情"
         // href: "http://localhost:3000/index",
-        path: "/",
-        component: ""
+        // path: "/",
+        // component: ""
       }
       // {
       //   label: "菜单3",

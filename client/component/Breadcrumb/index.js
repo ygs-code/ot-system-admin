@@ -9,32 +9,42 @@
 import "./index.less";
 
 import { Breadcrumb } from "antd";
-import { historyPush } from "client/router";
+import { addRouterApi, historyPush, routePaths } from "client/router";
 import React, { memo } from "react";
 
 const { Item } = Breadcrumb;
-export default memo((props) => {
-  const { data = [] } = props;
-
+export default addRouterApi((props) => {
+  const { data = [], pushRoute } = props;
   return (
     <Breadcrumb className="breadcrumb">
       {data.map((item, index) => {
-        const { label, href, path, component } = item;
-        return href || path ? (
+        const {
+          label,
+          href,
+          url,
+          path,
+          component,
+          params = {}, // 地址传参
+          query = {}, // get 传参
+          render
+        } = item;
+        return href || path || url ? (
           <Item
             key={index}
             className="has-link"
-            href={href || null}
             onClick={() => {
-              path && historyPush(path);
+              (href || path || url) &&
+                pushRoute({
+                  path: href || path || url,
+                  params,
+                  query
+                });
             }}>
-            {component ? component : null}
-            {label ? label : null}
+            {render ? render : component ? component : label ? label : null}
           </Item>
         ) : (
           <Item key={index}>
-            {component ? component : null}
-            {label ? label : null}
+            {render ? render : component ? component : label ? label : null}
           </Item>
         );
       })}

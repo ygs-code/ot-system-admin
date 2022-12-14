@@ -125,6 +125,8 @@ class Index extends Component {
 
   // 定义表头字段
   getTableColumns = () => {
+    const { pushRoute, routePaths: { accountManagementDetails } = {} } =
+      this.props;
     return [
       {
         title: "用户ID",
@@ -162,7 +164,9 @@ class Index extends Component {
         dataIndex: "actions",
         key: "actions",
         width: 300,
-        render: () => {
+        render: (text, row) => {
+          const { id } = row;
+
           return (
             <TableButton
               render={[
@@ -172,7 +176,15 @@ class Index extends Component {
                   label: "编辑", // 按钮文字
                   status: true, //权限控制
                   props: {
-                    onClick: () => {}
+                    onClick: () => {
+                      pushRoute({
+                        path: accountManagementDetails,
+                        params: {
+                          action: "edit",
+                          id
+                        } // 地址传参
+                      });
+                    }
                   }
                 },
                 {
@@ -205,8 +217,8 @@ class Index extends Component {
    * 定义表格的数据加载功能
    */
   tableDataLoader = async (searchParams = {}) => {
-    console.log("searchParams==", searchParams);
-    debugger;
+    // console.log("searchParams==", searchParams);
+    // debugger;
     const { data } = await getUserList(searchParams);
 
     return data;
@@ -215,12 +227,7 @@ class Index extends Component {
   getTableProps = () => {
     return {};
   };
-  componentDidMount() {
-    setTimeout(() => {
-      console.log(" this.searchForm==", this.searchForm);
-      debugger;
-    }, 1000);
-  }
+  componentDidMount() {}
   render() {
     return (
       <div className="table-page">

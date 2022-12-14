@@ -6,12 +6,10 @@
  * @FilePath: /react-ssr-lazy-loading/client/App/App.js
  * @Description:
  */
-import "antd/dist/antd.css";   
+import "antd/dist/antd.css";
 import "./index.less";
 import "client/assets/css/base.less";
 import "bootstrap/dist/css/bootstrap.css";
-
-
 
 import { ConfigProvider } from "antd";
 // 由于 antd 组件的默认文案是英文，所以需要修改为中文

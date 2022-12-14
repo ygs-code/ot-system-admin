@@ -6,39 +6,41 @@
  * @Description: In User Settings Edit
  * @FilePath: /error-sytem/client/src/common/component/Form/index.js
  */
-import React, {
-  Suspense,
-  lazy,
-  useState,
-  useCallback,
-  Children,
-  PureComponent,
-  useEffect,
-  useRef,
-} from "react";
+import "./index.less";
+
 import {
-  Form as AntdForm,
-  Input,
   Button,
   Checkbox,
+  Form as AntdForm,
+  Input,
   InputNumber,
   Radio,
   Rate,
   Select,
-  Switch,
   Slider,
+  Switch,
   TimePicker,
-  Transfer,
+  Transfer
 } from "antd";
-import Form from "client/common/component/Form";
-import "./index.less";
+import Form from "client/component/Form";
+import React, {
+  Children,
+  lazy,
+  PureComponent,
+  Suspense,
+  useCallback,
+  useEffect,
+  useRef,
+  useState
+} from "react";
+
 export default (props) => {
   const formRef = useRef(null);
   let {
     fields = [],
     formProps = {},
     onReady = () => {},
-    footer = () => null,
+    footer = () => null
   } = props;
 
   const ready = (form) => {
@@ -51,9 +53,8 @@ export default (props) => {
       <div
         className="form-box"
         style={{
-          height: footerNode ? "calc(100% - 65px)" : "100%",
-        }}
-      >
+          height: footerNode ? "calc(100% - 65px)" : "100%"
+        }}>
         <Form {...props} onReady={ready}></Form>
       </div>
       {footerNode ? <div className="footer">{footerNode}</div> : null}

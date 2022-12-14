@@ -43,6 +43,7 @@ const ItemChild = (props) => {
     value
   } = props;
   type = type.toLowerCase();
+  delete itemChildProps.render;
   const mapTpye = {
     input: (
       <Input {...itemChildProps} value={value} onChange={onChange}></Input>
@@ -92,7 +93,7 @@ const ItemChild = (props) => {
     )
   };
   return render
-    ? render(props)
+    ? render(itemChildProps, props)
     : component
     ? component
     : type in mapTpye
@@ -141,19 +142,22 @@ const BaseForm = (props) => {
         onFinishFailed={onFinishFailed}
         {...formProps}>
         {fields.map((item, index) => {
-          const { type, title, items = [] } = item;
+          const { type, title, items = [], render } = item;
+          delete item.render;
           console.log("item===", item);
           return type !== "section" ? (
             <Form.Item {...item} key={index}>
-              <ItemChild {...item}></ItemChild>
+              <ItemChild {...item} render={render}></ItemChild>
             </Form.Item>
           ) : (
             <div className="section" key={index}>
               <div className="title">{title}</div>
-              {items.map((item, index) => {
+              {items.map(($item, index) => {
+                const { render } = $item;
+                delete $item.render;
                 return (
-                  <Form.Item {...item} key={index}>
-                    <ItemChild {...item}></ItemChild>
+                  <Form.Item {...$item} key={index}>
+                    <ItemChild {...$item} render={render}></ItemChild>
                   </Form.Item>
                 );
               })}
@@ -224,16 +228,12 @@ const SearchForm = (props) => {
     for (let index = 0; index < length; index++) {
       const item = fields[index];
 
-      // label: "用户名称",
-      // name: "name",
-      // type: "input",
-      // span: 1
-
-      const { span = 1 } = item;
+      const { span = 1, render } = item;
+      delete item.render;
       fieldsVonde.push(
         <div key={index} className={`span span-${span}`}>
           <Form.Item {...item}>
-            <ItemChild {...item}></ItemChild>
+            <ItemChild {...item} render={render}></ItemChild>
           </Form.Item>
         </div>
       );

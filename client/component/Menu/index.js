@@ -393,6 +393,19 @@ export default memo((props) => {
   //   };
   //   return (key in ionComponent && ionComponent[key]) || null;
   // }, []);
+
+  const getItems = useCallback((menuData, index = null) => {
+    return menuData.map((item, _index) => {
+      const menuKey = index === null ? _index : `${index}_${_index}`;
+      const { title, iconComponent = null, children = [] } = item;
+      return {
+        label: title,
+        key: menuKey,
+        icon: iconComponent,
+        children: children.length ? getItems(children, menuKey) : []
+      };
+    });
+  }, []);
   const getMenu = useCallback((menuData = [], index = null) => {
     return menuData.map((item, _index) => {
       const menuKey = index === null ? _index : `${index}_${_index}`;
@@ -438,6 +451,7 @@ export default memo((props) => {
         setSelectedKeys(selectedKeys);
         setOpenKeys(keyPath);
       }}
+      items={getItems(menuData)}
       defaultSelectedKeys={[selectedKeys]}>
       {/*
         //   isProjectPage() ? (
@@ -463,8 +477,9 @@ export default memo((props) => {
         //   </Menu.Item>
         // ) : null}
         */}
-
-      {getMenu(menuData)}
+      {/*
+    {getMenu(menuData)}
+    */}
     </Menu>
   );
 });

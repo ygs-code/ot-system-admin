@@ -1,103 +1,136 @@
-import { Button, Input } from "antd";
+import "./index.less";
+
+import { getUserInfo } from "client/assets/js/request";
 import FormPage from "client/component/FormPage";
 import setBreadcrumbAndTitle from "client/component/setBreadcrumbAndTitle";
 import { mapRedux } from "client/redux";
 import { addRouterApi, routePaths } from "client/router";
-import React, { useMemo } from "react";
+import React from "react";
 
-const Index = (props) => {
-  const onFinish = (values) => {
-    console.log("Success:", values);
+class Index extends FormPage {
+  /**
+   * 用于将从接口获取到的初始化数据，转换成form需要的格式
+   * 这个函数需要在getInitData中手动调用，因此函数名不限于mapInitData
+   */
+  mapInitData = async (initData) => {
+    return initData;
   };
-
-  const onFinishFailed = (errorInfo) => {
-    console.log("Failed:", errorInfo);
-  };
-
-  const submit = async (formRef) => {
+  // 初始化值
+  getInitialValues = async () => {
     const {
-      current: { validateFields }
-    } = formRef;
+      match: {
+        params: { id }
+      }
+    } = this.props;
+    console.log("this.props=", this.props);
+    const { data: { user = {} } = {} } = await getUserInfo({
+      id
+    });
 
-    const values = await validateFields()
-      .then((value) => {
-        console.log("value===", value);
-      })
-      .catch((error) => {
-        console.log("error=", error);
-      });
+    return await this.mapInitData(user);
   };
 
-  // 底部按钮
-  const getFooter = (formRef) => {
-    return (
-      <div className="button-box">
-        <Button
-          type="primary"
-          onClick={() => {
-            submit(formRef);
-          }}>
-          确认
-        </Button>
-        <Button>返回</Button>
-      </div>
-    );
+  /**
+   * 用于将form的字段值转换为接口需要的格式
+   */
+  mapSubmitData = (formData) => {
+    return formData;
   };
-  // 字段
-  const fields = useMemo(() => {
+  //    提交请求到接口
+  onSubmitForm = async (formData) => {
+    const data = await this.mapSubmitData(formData);
+    console.log("formData=", data);
+    debugger;
+  };
+  getFields = () => {
     return [
       {
         type: "section",
         title: "详情基本设置",
         items: [
           {
-            label: "Username1",
-            name: "username1",
-            type: "input",
+            label: "用户ID",
+            name: "id",
+            // type: "input",
             // labelCol: { span: 5 },
             // wrapperCol: { span: 10 },
-            rules: [
-              {
-                required: true,
-                message: "Please input your username1"
-              }
-            ]
-          },
-          {
-            label: "Username2",
-            name: "username2",
-            type: "input",
-            component: <div>123</div>,
-            // labelCol: { span: 5 },
-            // wrapperCol: { span: 10 },
-            rules: [
-              {
-                required: true,
-                message: "Please input your username2"
-              }
-            ]
-          },
-          {
-            label: "Username3",
-            name: "username3",
-            type: "input",
+
             render: (props) => {
-              return <Input {...props}></Input>;
+              const { value } = props;
+
+              return <div>{value}</div>;
             },
             rules: [
+              // {
+              //   required: true,
+              //   message: "Please input your username1"
+              // }
+            ]
+          },
+          {
+            label: "用户名称",
+            name: "name",
+            type: "input",
+            // labelCol: { span: 5 },
+            // wrapperCol: { span: 10 },
+            rules: [
               {
                 required: true,
-                message: "Please input your username3"
+                message: "请输入用户名称"
+              }
+            ]
+          },
+          {
+            label: "邮箱地址",
+            name: "email",
+            type: "input",
+            // labelCol: { span: 5 },
+            // wrapperCol: { span: 10 },
+            rules: [
+              {
+                required: true,
+                message: "请输入邮箱地址"
+              }
+            ]
+          },
+          {
+            label: "手机号码",
+            name: "phone",
+            type: "input",
+            // labelCol: { span: 5 },
+            // wrapperCol: { span: 10 },
+            rules: [
+              {
+                required: true,
+                message: "请输入手机号码"
               }
             ]
           }
         ]
       }
     ];
-  }, []);
+  };
 
-  return <FormPage {...props} footer={getFooter} fields={fields} />;
-};
+  // // 底部按钮
+  // getFooter = () => {
+  //   return (
+  //     <div className="button-box">
+  //       <Button type="primary" onClick={() => {}}>
+  //         确认
+  //       </Button>
+  //       <Button>返回</Button>
+  //     </div>
+  //   );
+  // };
+  componentDidMount() {}
+  render() {
+    return (
+      <div className="form-page account-management-details">
+        {this.renderForm()}
+      </div>
+    );
+  }
+}
 
 export default mapRedux()(
   // 权限控制

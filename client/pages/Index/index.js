@@ -25,7 +25,7 @@ const Index = (props) => {
     });
   }, []);
   return (
-    <Skeleton loading={loading}>
+    <Skeleton active loading={loading}>
       <Layout>
         <Routers
           level={2}

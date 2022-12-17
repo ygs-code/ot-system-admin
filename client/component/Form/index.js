@@ -18,6 +18,7 @@ import {
   Radio,
   Rate,
   Select,
+  Skeleton,
   Slider,
   Switch,
   TimePicker,
@@ -43,7 +44,7 @@ const ItemChild = (props) => {
     value
   } = props;
   type = type.toLowerCase();
-  delete itemChildProps.render;
+
   const mapTpye = {
     input: (
       <Input {...itemChildProps} value={value} onChange={onChange}></Input>
@@ -92,8 +93,12 @@ const ItemChild = (props) => {
         onChange={onChange}></Password>
     )
   };
+
   return render
-    ? render(itemChildProps, props)
+    ? render({
+        ...props,
+        render: undefined
+      })
     : component
     ? component
     : type in mapTpye
@@ -108,10 +113,35 @@ const BaseForm = (props) => {
     onReady = () => {},
     children = [],
     onConfirm = () => {},
-    onReset = () => {}
+    // onReset = () => {},
+    initialValues = {}
   } = props;
-  const [form] = Form.useForm();
 
+  const [form] = Form.useForm();
+  const [formInitialValues, setFormInitialValues] = useState({});
+  const [isLoading, setIsLoading] = useState(true);
+
+  const getInitialValues = useCallback(async () => {
+    setFormInitialValues(await transformInitialValues(initialValues));
+    setIsLoading(false);
+  }, []);
+
+  useEffect(() => {
+    getInitialValues();
+  }, []);
+
+  const transformInitialValues = async (initialValues) => {
+    if (CheckDataType.isFunction(initialValues)) {
+      return initialValues(form);
+    }
+    if (CheckDataType.isPromise(initialValues)) {
+      return await initialValues(form);
+    }
+
+    return initialValues;
+  };
+
+  // initialValues
   const onFinish = (values) => {
     console.log("Success:", values);
     onConfirm(values);
@@ -126,53 +156,52 @@ const BaseForm = (props) => {
 
   return (
     <div className="base-form">
-      <Form
-        form={form}
-        name="basic"
-        labelCol={{
-          span: 5
-        }}
-        wrapperCol={{
-          span: 8
-        }}
-        initialValues={{
-          remember: true
-        }}
-        onFinish={onFinish}
-        onFinishFailed={onFinishFailed}
-        {...formProps}>
-        {fields.map((item, index) => {
-          const { type, title, items = [], render } = item;
-          delete item.render;
+      <Skeleton active loading={isLoading}>
+        <Form
+          form={form}
+          name="basic"
+          labelCol={{
+            span: 4
+          }}
+          wrapperCol={{
+            span: 8
+          }}
+          initialValues={formInitialValues}
+          onFinish={onFinish}
+          onFinishFailed={onFinishFailed}
+          {...formProps}>
+          {fields.map((item, index) => {
+            const { type, title, items = [], render } = item;
 
-          return type !== "section" ? (
-            <Form.Item {...item} key={index}>
-              <ItemChild {...item} render={render}></ItemChild>
-            </Form.Item>
-          ) : (
-            <div className="section" key={index}>
-              <div className="title">{title}</div>
-              {items.map(($item, index) => {
-                const { render } = $item;
-                delete $item.render;
-                return (
-                  <Form.Item {...$item} key={index}>
-                    <ItemChild {...$item} render={render}></ItemChild>
-                  </Form.Item>
-                );
-              })}
-            </div>
-          );
-        })}
+            return type !== "section" ? (
+              <Form.Item {...item} render={undefined} key={index}>
+                <ItemChild {...item} render={render}></ItemChild>
+              </Form.Item>
+            ) : (
+              <div className="section" key={index}>
+                <div className="title">{title}</div>
+                {items.map(($item, index) => {
+                  const { render } = $item;
 
-        {/* 子节点 */}
-        {Children.map(
-          CheckDataType.isFunction(children) ? children() : children,
-          (child) => {
-            return cloneElement(child, props);
-          }
-        )}
-      </Form>
+                  return (
+                    <Form.Item {...$item} render={undefined} key={index}>
+                      <ItemChild {...$item} render={render}></ItemChild>
+                    </Form.Item>
+                  );
+                })}
+              </div>
+            );
+          })}
+
+          {/* 子节点 */}
+          {Children.map(
+            CheckDataType.isFunction(children) ? children() : children,
+            (child) => {
+              return cloneElement(child, props);
+            }
+          )}
+        </Form>
+      </Skeleton>
     </div>
   );
 };
@@ -185,9 +214,34 @@ const SearchForm = (props) => {
     children = [],
     shrinkLength,
     onConfirm = () => {},
-    onReset = () => {}
+    onReset = () => {},
+    initialValues = {}
   } = props;
   const [form] = Form.useForm();
+
+  const [formInitialValues, setFormInitialValues] = useState({});
+  const [isLoading, setIsLoading] = useState(true);
+
+  const getInitialValues = useCallback(async () => {
+    setFormInitialValues(await transformInitialValues(initialValues));
+    setIsLoading(false);
+  }, []);
+
+  useEffect(() => {
+    getInitialValues();
+  }, []);
+
+  const transformInitialValues = async (initialValues) => {
+    if (CheckDataType.isFunction(initialValues)) {
+      return initialValues(form);
+    }
+    if (CheckDataType.isPromise(initialValues)) {
+      return await initialValues(form);
+    }
+
+    return initialValues;
+  };
+
   const [expand, setExpand] = useState(false);
 
   const onFinish = (values) => {
@@ -228,12 +282,12 @@ const SearchForm = (props) => {
     for (let index = 0; index < length; index++) {
       const item = fields[index];
 
-      const { span = 1, render } = item;
-      delete item.render;
+      const { span = 1 } = item;
+
       fieldsVonde.push(
         <div key={index} className={`span span-${span}`}>
-          <Form.Item {...item}>
-            <ItemChild {...item} render={render}></ItemChild>
+          <Form.Item {...item} render={undefined}>
+            <ItemChild {...item}></ItemChild>
           </Form.Item>
         </div>
       );
@@ -243,58 +297,58 @@ const SearchForm = (props) => {
 
   return (
     <div className="search-base-form-box">
-      <Form
-        className="search-base-form"
-        form={form}
-        name="basic"
-        labelCol={{
-          span: 10
-        }}
-        wrapperCol={{
-          span: 30
-        }}
-        initialValues={{
-          remember: true
-        }}
-        onFinish={onFinish}
-        onFinishFailed={onFinishFailed}
-        {...formProps}>
-        {renderFields()}
-        <div className={`buttons`}>
-          {shrinkLength >= fields.length ? null : (
-            <a
-              style={{ fontSize: 12 }}
-              onClick={() => {
-                setExpand(!expand);
-              }}>
-              {expand ? (
-                <>
-                  <UpOutlined />
-                  收起
-                </>
-              ) : (
-                <>
-                  <DownOutlined /> 展开
-                </>
-              )}
-            </a>
-          )}
-          <Button type="primary" htmlType="submit">
-            搜索
-          </Button>
-          <Button htmlType="button" onClick={onFill}>
-            重置
-          </Button>
-        </div>
+      <Skeleton active loading={isLoading}>
+        <Form
+          className="search-base-form"
+          form={form}
+          name="basic"
+          labelCol={{
+            span: 10
+          }}
+          wrapperCol={{
+            span: 30
+          }}
+          initialValues={formInitialValues}
+          onFinish={onFinish}
+          onFinishFailed={onFinishFailed}
+          {...formProps}>
+          {renderFields()}
+          <div className={`buttons`}>
+            {shrinkLength >= fields.length ? null : (
+              <a
+                style={{ fontSize: 12 }}
+                onClick={() => {
+                  setExpand(!expand);
+                }}>
+                {expand ? (
+                  <>
+                    <UpOutlined />
+                    收起
+                  </>
+                ) : (
+                  <>
+                    <DownOutlined /> 展开
+                  </>
+                )}
+              </a>
+            )}
+            <Button type="primary" htmlType="submit">
+              搜索
+            </Button>
+            <Button htmlType="button" onClick={onFill}>
+              重置
+            </Button>
+          </div>
 
-        {/* 子节点 */}
-        {Children.map(
-          CheckDataType.isFunction(children) ? children() : children,
-          (child) => {
-            return cloneElement(child, props);
-          }
-        )}
-      </Form>
+          {/* 子节点 */}
+          {Children.map(
+            CheckDataType.isFunction(children) ? children() : children,
+            (child) => {
+              return cloneElement(child, props);
+            }
+          )}
+        </Form>
+      </Skeleton>
     </div>
   );
 };

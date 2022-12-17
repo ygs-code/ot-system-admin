@@ -3,7 +3,7 @@ import {
   //  Menu,
   Input
 } from "antd";
-import { getUserList } from "client/assets/js/request";
+// import { getUserList } from "client/assets/js/request";
 import setBreadcrumbAndTitle from "client/component/setBreadcrumbAndTitle";
 import { tablePage } from "client/component/TablePage";
 import { mapRedux } from "client/redux";

@@ -9,8 +9,8 @@
 import "./index.less";
 
 import { Breadcrumb } from "antd";
-import { addRouterApi, historyPush, routePaths } from "client/router";
-import React, { memo } from "react";
+import { addRouterApi } from "client/router";
+import React from "react";
 
 const { Item } = Breadcrumb;
 export default addRouterApi((props) => {

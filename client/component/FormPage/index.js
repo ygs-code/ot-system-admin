@@ -8,31 +8,12 @@
  */
 import "./index.less";
 
-import {
-  Button,
-  Checkbox,
-  Form as AntdForm,
-  Input,
-  InputNumber,
-  Radio,
-  Rate,
-  Select,
-  Slider,
-  Switch,
-  TimePicker,
-  Transfer
-} from "antd";
+import { Button } from "antd";
 import Form from "client/component/Form";
-import React, {
-  Children,
-  lazy,
-  PureComponent,
-  Suspense,
-  useCallback,
-  useEffect,
-  useRef,
-  useState
-} from "react";
+import React, { PureComponent } from "react";
+
+/*
+
 
 export default (props) => {
   const formRef = useRef(null);
@@ -49,15 +30,104 @@ export default (props) => {
   };
   let footerNode = footer(formRef);
   return (
-    <div className="form-page">
-      <div
-        className="form-box"
-        style={{
-          height: footerNode ? "calc(100% - 65px)" : "100%"
-        }}>
+    <div className="form-page-component">
+      <div className="form-box">
         <Form {...props} onReady={ready}></Form>
       </div>
       {footerNode ? <div className="footer">{footerNode}</div> : null}
     </div>
   );
 };
+*/
+export default class extends PureComponent {
+  /**
+   * 用于将form的字段值转换为接口需要的格式
+   */
+  mapSubmitData = (formData) => {
+    return formData;
+  };
+
+  /**
+   * 用于将从接口获取到的初始化数据，转换成form需要的格式
+   * 这个函数需要在getInitData中手动调用，因此函数名不限于mapInitData
+   */
+  mapInitData = async (initData) => {
+    return initData;
+  };
+
+  // 验证表单
+  onValidaForm = async () => {
+    const { validateFields } = this.form;
+
+    const values = await validateFields().catch((error) => {
+      console.log("error=", error);
+    });
+
+    await this.onSubmitForm(values);
+  };
+
+  //    提交请求到接口
+  onSubmitForm = async (formData) => {
+    const data = await this.mapSubmitData(formData);
+    console.log("formData=", data);
+  };
+
+  // 初始化表单
+  getInitialValues = async () => {
+    return await this.mapInitData({});
+  };
+  // 获取字段
+  getFields = () => {
+    return [];
+  };
+  // 底部按钮
+  getFooter = () => {
+    const { history = {} } = this.props;
+
+    return (
+      <div className="button-box">
+        <Button type="primary" onClick={this.onValidaForm}>
+          确认
+        </Button>
+        <Button
+          onClick={() => {
+            history.back();
+          }}>
+          返回
+        </Button>
+      </div>
+    );
+  };
+  renderForm = (props = {}) => {
+    return (
+      <div className="form-page-component">
+        <div className="form-box">
+          <Form
+            {...props}
+            fields={this.getFields()}
+            onReady={this.onFormReady}
+            initialValues={this.getInitialValues}></Form>
+        </div>
+        {this.getFooter() ? (
+          <div className="footer">{this.getFooter()}</div>
+        ) : null}
+      </div>
+    );
+  };
+  onFormReady = (form) => {
+    this.form = form;
+  };
+
+  render() {
+    return (
+      <div className="form-page-component">
+        <div className="form-box">
+          <Form fields={this.getFields()} onReady={this.onFormReady}></Form>
+        </div>
+        {this.getFooter() ? (
+          <div className="footer">{this.getFooter()}</div>
+        ) : null}
+      </div>
+    );
+  }
+}

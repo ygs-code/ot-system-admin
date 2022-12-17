@@ -141,15 +141,15 @@ export const login = (parameter) => {
   //return Request.post("/set/user/login", parameter);
 };
 
-export const getUser = () => {
-  return GraphqlClient.query({
-    query: gql`
-      {
-        hello
-      }
-    `
-  });
-};
+// export const getUser = () => {
+//   return GraphqlClient.query({
+//     query: gql`
+//       {
+//         hello
+//       }
+//     `
+//   });
+// };
 
 //   更改
 export const setUserInfo = () => {
@@ -244,6 +244,8 @@ export const getUserInfo = (parameter = {}) => {
                   name
                   phone
                   id
+                  email
+                  type
               } 
             }
             message

@@ -2,7 +2,7 @@ import "client/assets/css/base.less";
 import "./index.less";
 
 import { Button, Form, Input, message } from "antd";
-import { register } from "client/assets/js/request/index";
+import { createUser } from "client/assets/js/request/index";
 import VerificationCode from "client/component/VerificationCode";
 import { addRouterApi, toComponent } from "client/router";
 import { checkEmail, checkPassword, checkPhone, checkUser } from "client/utils";
@@ -19,7 +19,7 @@ const tailLayout = {
 const Index = (props) => {
   const { pushRoute, routePaths } = props;
   const onFinish = async (values) => {
-    await register({
+    await createUser({
       type: 1,
       ...values
     });

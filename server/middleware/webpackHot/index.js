@@ -1,21 +1,23 @@
-import webpack from "webpack";
 import fs from "fs";
-import path from "path";
-import webpackDevMiddleware from "webpack-dev-middleware";
-import webpackHotServerMiddleware from "webpack-hot-server-middleware";
-import webpackHotMiddleware from "webpack-hot-middleware";
-import ReactLoadableSSRAddon from "react-loadable-ssr-addon";
-import { createProxyMiddleware } from "http-proxy-middleware";
-import koaProxy from "koa2-proxy-middleware";
 import bodyparser from "koa-bodyparser";
 import historyApiFallback from "koa-history-api-fallback";
+// import ReactLoadableSSRAddon from "react-loadable-ssr-addon";
+// import { createProxyMiddleware } from "http-proxy-middleware";
+import koaProxy from "koa2-proxy-middleware";
+import path from "path";
+import webpack from "webpack";
+import webpackDevMiddleware from "webpack-dev-middleware";
+import webpackHotMiddleware from "webpack-hot-middleware";
+import webpackHotServerMiddleware from "webpack-hot-server-middleware";
+
 // import connectHistoryApiFallback from "connect-history-api-fallback";
 import { compiler, config } from "@/webpack";
-import { writeFile } from "@/webpack/utils";
+// import { writeFile } from "@/webpack/utils";
 
 let {
   NODE_ENV, // 环境参数
-  target // 环境参数
+  target, // 环境参数
+  port
 } = process.env; // 环境参数
 
 const isSsr = target === "ssr";
@@ -67,17 +69,14 @@ class WebpackHot {
   }
 
   addWebpackHotMiddleware() {
-    this.app.use(
-      async (ctx, next) => {
-        const { response, request, req, res } = ctx;
-        // console.log("req==", req);
-        // console.log("res==", res);
-        await webpackHotMiddleware(
-          this.compiler.compilers.find((compiler) => compiler.name === "client")
-        )(request, response, next);
-      }
- 
-    );
+    this.app.use(async (ctx, next) => {
+      const { response, request, req, res } = ctx;
+      // console.log("req==", req);
+      // console.log("res==", res);
+      await webpackHotMiddleware(
+        this.compiler.compilers.find((compiler) => compiler.name === "client")
+      )(request, response, next);
+    });
   }
   addMiddleware() {
     if (!isSsr) {

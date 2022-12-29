@@ -164,6 +164,7 @@ class ClientRouter {
           }
         }
       });
+      // console.log('renderedHtml ====',renderedHtml)
       ctx.body = renderedHtml;
     }
     next();
@@ -297,7 +298,7 @@ class ClientRouter {
       styles,
       initState
     });
-    console.log('renderedHtml===',renderedHtml)
+    // console.log('renderedHtml===',renderedHtml)
     return renderedHtml;
   }
 }

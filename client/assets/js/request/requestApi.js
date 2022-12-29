@@ -8,23 +8,6 @@
  */
 import { gql, GraphqlClient } from "./request";
 
-// var userId = "559645cd1a38532d14349246";
-
-// 获取验证码
-// export const getVerifyCode = () => {
-//   return Request.get("/set/user/getVerifyCode");
-// };
-
-// export const getVerifyCode = () => {
-//   // return Request.get("/set/user/getVerifyCode");
-//   return GraphqlClient.query({
-//     query: gql`
-//       ${schema}
-//     `,
-//     variables: parameter,
-//   });
-// };
-
 // 查询
 export const query = (operationName, schema, parameter = {}, options = {}) => {
   return GraphqlClient.query(
@@ -47,7 +30,7 @@ export const mutation = (
   parameter = {},
   options = {}
 ) => {
-  return GraphqlClient.mutate(
+  return GraphqlClient.mutation(
     {
       operationName,
       mutation: `${schema}`,
@@ -77,17 +60,35 @@ export const getVerifyCode = () => {
   );
 };
 
-// 注册
-export const register = (parameter) => {
+// 注册用户
+export const createUser = (parameter) => {
   return mutation(
     "createUser",
     `
-        mutation($userInfo: UserInfoInput!) { 
+        mutation($userInfo: CreateUserInfoInput!) { 
           createUser(userInfo: $userInfo) {
               code
               message
             }
         }
+    `,
+    {
+      userInfo: parameter
+    }
+  );
+};
+
+//  编辑用户
+export const editUser = (parameter = {}) => {
+  return mutation(
+    "editUser",
+    `
+      mutation ($userInfo: EditUserInfoInput!) {
+        editUser(userInfo: $userInfo) {
+          code
+          message
+        }
+      }
     `,
     {
       userInfo: parameter
@@ -141,41 +142,7 @@ export const login = (parameter) => {
   //return Request.post("/set/user/login", parameter);
 };
 
-// export const getUser = () => {
-//   return GraphqlClient.query({
-//     query: gql`
-//       {
-//         hello
-//       }
-//     `
-//   });
-// };
-
-//   更改
-export const setUserInfo = () => {
-  return GraphqlClient.mutate({
-    operationName: "setUserInfo",
-    mutation: `
-      mutation ($user: UserInfoInput!) {
-        setUserInfo(user: $user) {
-          code
-          mgs
-          data {
-            name
-            phone
-          }
-        }
-      }
-    `,
-    variables: {
-      user: {
-        id: 123,
-        toKen: "123"
-      }
-    }
-  });
-};
-
+// 获取用户列表
 export const getUserList = (parameter = {}) => {
   // const { type = "" } = parameter;
 
@@ -216,7 +183,7 @@ export const getUserList = (parameter = {}) => {
   );
 };
 
-// 查询
+// 查询用户
 export const getUserInfo = (parameter = {}) => {
   const { id = "" } = parameter;
   return query(
@@ -257,19 +224,4 @@ export const getUserInfo = (parameter = {}) => {
       filterData: true
     }
   );
-};
-
-export const hello = () => {
-  return GraphqlClient.query({
-    operationName: "getUserInfo",
-    name: "hello",
-    query: gql`
-            {
-                hello()
-                {
-
-                }
-            }
-        `
-  });
 };

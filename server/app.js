@@ -8,8 +8,9 @@
  */
 // import Loadable from "react-loadable"; // "client/component/Loadable";
 import Koa from "koa";
-import Router from "./router";
+
 import Middleware from "./middleware";
+import Router from "./router";
 
 let {
   NODE_ENV, // 环境参数

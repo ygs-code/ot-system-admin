@@ -353,7 +353,7 @@ export class Graphql {
     // return Request.post(this.url, parameter, this.options);
   }
   // 突变
-  mutate(parameter, options) {
+  mutation(parameter, options) {
     this.options = {
       ...this.options,
       ...options

@@ -18,7 +18,6 @@ import {
   Radio,
   Rate,
   Select,
-  Skeleton,
   Slider,
   Switch,
   TimePicker,
@@ -119,18 +118,8 @@ const BaseForm = (props) => {
 
   const [form] = Form.useForm();
   const [formInitialValues, setFormInitialValues] = useState({});
-  const [isLoading, setIsLoading] = useState(true);
 
-  const getInitialValues = useCallback(async () => {
-    setFormInitialValues(await transformInitialValues(initialValues));
-    setIsLoading(false);
-  }, []);
-
-  useEffect(() => {
-    getInitialValues();
-  }, []);
-
-  const transformInitialValues = async (initialValues) => {
+  const transformInitialValues = useCallback(async (initialValues) => {
     if (CheckDataType.isFunction(initialValues)) {
       return initialValues(form);
     }
@@ -139,7 +128,15 @@ const BaseForm = (props) => {
     }
 
     return initialValues;
-  };
+  }, []);
+  const getInitialValues = useCallback(async () => {
+    const vavlues = await transformInitialValues(initialValues);
+    setFormInitialValues(vavlues);
+  }, []);
+
+  useEffect(() => {
+    getInitialValues();
+  }, []);
 
   // initialValues
   const onFinish = (values) => {
@@ -152,56 +149,55 @@ const BaseForm = (props) => {
   };
   useEffect(() => {
     onReady(form);
-  }, []);
+  }, [form]);
 
   return (
     <div className="base-form">
-      <Skeleton active loading={isLoading}>
-        <Form
-          form={form}
-          name="basic"
-          labelCol={{
-            span: 4
-          }}
-          wrapperCol={{
-            span: 8
-          }}
-          initialValues={formInitialValues}
-          onFinish={onFinish}
-          onFinishFailed={onFinishFailed}
-          {...formProps}>
-          {fields.map((item, index) => {
-            const { type, title, items = [], render } = item;
+      <Form
+        key={JSON.stringify(formInitialValues)}
+        form={form}
+        name="basic"
+        labelCol={{
+          span: 4
+        }}
+        wrapperCol={{
+          span: 8
+        }}
+        initialValues={formInitialValues}
+        onFinish={onFinish}
+        onFinishFailed={onFinishFailed}
+        {...formProps}>
+        {fields.map((item, index) => {
+          const { type, title, items = [], render } = item;
 
-            return type !== "section" ? (
-              <Form.Item {...item} render={undefined} key={index}>
-                <ItemChild {...item} render={render}></ItemChild>
-              </Form.Item>
-            ) : (
-              <div className="section" key={index}>
-                <div className="title">{title}</div>
-                {items.map(($item, index) => {
-                  const { render } = $item;
+          return type !== "section" ? (
+            <Form.Item {...item} render={undefined} key={index}>
+              <ItemChild {...item} render={render}></ItemChild>
+            </Form.Item>
+          ) : (
+            <div className="section" key={index}>
+              <div className="title">{title}</div>
+              {items.map(($item, index) => {
+                const { render } = $item;
 
-                  return (
-                    <Form.Item {...$item} render={undefined} key={index}>
-                      <ItemChild {...$item} render={render}></ItemChild>
-                    </Form.Item>
-                  );
-                })}
-              </div>
-            );
-          })}
+                return (
+                  <Form.Item {...$item} render={undefined} key={index}>
+                    <ItemChild {...$item} render={render}></ItemChild>
+                  </Form.Item>
+                );
+              })}
+            </div>
+          );
+        })}
 
-          {/* 子节点 */}
-          {Children.map(
-            CheckDataType.isFunction(children) ? children() : children,
-            (child) => {
-              return cloneElement(child, props);
-            }
-          )}
-        </Form>
-      </Skeleton>
+        {/* 子节点 */}
+        {Children.map(
+          CheckDataType.isFunction(children) ? children() : children,
+          (child) => {
+            return cloneElement(child, props);
+          }
+        )}
+      </Form>
     </div>
   );
 };
@@ -220,18 +216,8 @@ const SearchForm = (props) => {
   const [form] = Form.useForm();
 
   const [formInitialValues, setFormInitialValues] = useState({});
-  const [isLoading, setIsLoading] = useState(true);
 
-  const getInitialValues = useCallback(async () => {
-    setFormInitialValues(await transformInitialValues(initialValues));
-    setIsLoading(false);
-  }, []);
-
-  useEffect(() => {
-    getInitialValues();
-  }, []);
-
-  const transformInitialValues = async (initialValues) => {
+  const transformInitialValues = useCallback(async (initialValues) => {
     if (CheckDataType.isFunction(initialValues)) {
       return initialValues(form);
     }
@@ -240,7 +226,15 @@ const SearchForm = (props) => {
     }
 
     return initialValues;
-  };
+  }, []);
+  const getInitialValues = useCallback(async () => {
+    const values = await transformInitialValues(initialValues);
+    setFormInitialValues(values);
+  }, []);
+
+  useEffect(() => {
+    getInitialValues();
+  }, []);
 
   const [expand, setExpand] = useState(false);
 
@@ -297,58 +291,57 @@ const SearchForm = (props) => {
 
   return (
     <div className="search-base-form-box">
-      <Skeleton active loading={isLoading}>
-        <Form
-          className="search-base-form"
-          form={form}
-          name="basic"
-          labelCol={{
-            span: 10
-          }}
-          wrapperCol={{
-            span: 30
-          }}
-          initialValues={formInitialValues}
-          onFinish={onFinish}
-          onFinishFailed={onFinishFailed}
-          {...formProps}>
-          {renderFields()}
-          <div className={`buttons`}>
-            {shrinkLength >= fields.length ? null : (
-              <a
-                style={{ fontSize: 12 }}
-                onClick={() => {
-                  setExpand(!expand);
-                }}>
-                {expand ? (
-                  <>
-                    <UpOutlined />
-                    收起
-                  </>
-                ) : (
-                  <>
-                    <DownOutlined /> 展开
-                  </>
-                )}
-              </a>
-            )}
-            <Button type="primary" htmlType="submit">
-              搜索
-            </Button>
-            <Button htmlType="button" onClick={onFill}>
-              重置
-            </Button>
-          </div>
-
-          {/* 子节点 */}
-          {Children.map(
-            CheckDataType.isFunction(children) ? children() : children,
-            (child) => {
-              return cloneElement(child, props);
-            }
+      <Form
+        // key={JSON.stringify(formInitialValues)}
+        className="search-base-form"
+        form={form}
+        name="basic"
+        labelCol={{
+          span: 10
+        }}
+        wrapperCol={{
+          span: 30
+        }}
+        initialValues={formInitialValues}
+        onFinish={onFinish}
+        onFinishFailed={onFinishFailed}
+        {...formProps}>
+        {renderFields()}
+        <div className={`buttons`}>
+          {shrinkLength >= fields.length ? null : (
+            <a
+              style={{ fontSize: 12 }}
+              onClick={() => {
+                setExpand(!expand);
+              }}>
+              {expand ? (
+                <>
+                  <UpOutlined />
+                  收起
+                </>
+              ) : (
+                <>
+                  <DownOutlined /> 展开
+                </>
+              )}
+            </a>
           )}
-        </Form>
-      </Skeleton>
+          <Button type="primary" htmlType="submit">
+            搜索
+          </Button>
+          <Button htmlType="button" onClick={onFill}>
+            重置
+          </Button>
+        </div>
+
+        {/* 子节点 */}
+        {Children.map(
+          CheckDataType.isFunction(children) ? children() : children,
+          (child) => {
+            return cloneElement(child, props);
+          }
+        )}
+      </Form>
     </div>
   );
 };

@@ -1,6 +1,6 @@
 import "./index.less";
 
-import { getUserInfo } from "client/assets/js/request";
+import { editUser, getUserInfo } from "client/assets/js/request";
 import FormPage from "client/component/FormPage";
 import setBreadcrumbAndTitle from "client/component/setBreadcrumbAndTitle";
 import { mapRedux } from "client/redux";
@@ -8,6 +8,12 @@ import { addRouterApi, routePaths } from "client/router";
 import React from "react";
 
 class Index extends FormPage {
+  constructor(props) {
+    super(props);
+    this.state = {
+      data: {}
+    };
+  }
   /**
    * 用于将从接口获取到的初始化数据，转换成form需要的格式
    * 这个函数需要在getInitData中手动调用，因此函数名不限于mapInitData
@@ -27,6 +33,10 @@ class Index extends FormPage {
       id
     });
 
+    this.setState({
+      data: user
+    });
+
     return await this.mapInitData(user);
   };
 
@@ -38,7 +48,13 @@ class Index extends FormPage {
   };
   //    提交请求到接口
   onSubmitForm = async (formData) => {
+    const {
+      data: { type }
+    } = this.state;
     const data = await this.mapSubmitData(formData);
+
+    editUser({ ...data, type });
+
     console.log("formData=", data);
     debugger;
   };

@@ -1,5 +1,6 @@
 import "./index.less";
 
+import { message } from "antd";
 import { editUser, getUserInfo } from "client/assets/js/request";
 import FormPage from "client/component/FormPage";
 import setBreadcrumbAndTitle from "client/component/setBreadcrumbAndTitle";
@@ -46,17 +47,17 @@ class Index extends FormPage {
   mapSubmitData = (formData) => {
     return formData;
   };
-  //    提交请求到接口
+  // 提交请求到接口
   onSubmitForm = async (formData) => {
     const {
-      data: { type }
-    } = this.state;
-    const data = await this.mapSubmitData(formData);
-
-    editUser({ ...data, type });
-
-    console.log("formData=", data);
-    debugger;
+      history: { back }
+    } = this.props;
+    const values = await this.mapSubmitData(formData);
+    const { message: mgs } = await editUser({ ...values });
+    message.success(mgs);
+    setTimeout(() => {
+      back();
+    }, 500);
   };
   getFields = () => {
     return [
@@ -67,6 +68,7 @@ class Index extends FormPage {
           {
             label: "用户ID",
             name: "id",
+            itemProps: {},
             // type: "input",
             // labelCol: { span: 5 },
             // wrapperCol: { span: 10 },
@@ -121,6 +123,33 @@ class Index extends FormPage {
                 message: "请输入手机号码"
               }
             ]
+          },
+          {
+            label: "用户类型",
+            name: "type",
+            type: "select",
+            props: {
+              options: [
+                {
+                  label: "管理员",
+                  value: 1
+                },
+                {
+                  label: "会员",
+                  value: 2
+                }
+              ]
+            },
+            itemProps: {},
+            options: {},
+            // labelCol: { span: 5 },
+            // wrapperCol: { span: 10 },
+            rules: [
+              {
+                required: true,
+                message: "请选择用户类型"
+              }
+            ]
           }
         ]
       }
@@ -154,8 +183,8 @@ export default mapRedux()(
     //设置面包屑和标题
     breadcrumb: [
       {
-        label: "账号管理",
-        path: routePaths.accountManagement
+        label: "用户管理",
+        path: routePaths.userManagement
       },
       {
         label: "详情"

@@ -8,16 +8,16 @@ export default [
     level: 2,
     children: [
       {
-        path: "/account-management",
-        name: "accountManagement",
-        entry: "/pages/Index/pages/system/pages/AccountManagement/index.js",
+        path: "/user-management",
+        name: "userManagement",
+        entry: "/pages/Index/pages/system/pages/UserManagement/index.js",
         level: 2,
         children: [
           {
             path: "/details/:action/:id?",
-            name: "accountManagementDetails",
+            name: "userManagementDetails",
             entry:
-              "/pages/Index/pages/system/pages/AccountManagement/details/index.js",
+              "/pages/Index/pages/system/pages/UserManagement/details/index.js",
             level: 2,
             children: []
           }

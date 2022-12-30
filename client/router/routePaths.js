@@ -1,6 +1,6 @@
 export default {
-  accountManagementDetails: "/system/account-management/details/:action/:id?",
-  accountManagement: "/system/account-management",
+  userManagementDetails: "/system/user-management/details/:action/:id?",
+  userManagement: "/system/user-management",
   system: "/system",
   home: "/home",
   index: "/",

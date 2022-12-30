@@ -11,7 +11,7 @@ import { history, historyPush, routePaths } from "client/router";
 import token from "./token";
 
 export const codeMap = {
-  // 没有权限跳转到登录页面
+  // 未经授权。对于需要登录或身份验证的网页，服务器可能返回此响应。 需要重新登陆
   401: (errorInfo) => {
     let XHRQueue = (errorInfo && errorInfo[2] && errorInfo[2].XHRQueue) || [];
     localStorage.removeItem("token");
@@ -29,10 +29,16 @@ export const codeMap = {
       url: routePaths.logIn
     });
   },
-  415: () => {
-    historyPush({
-      history,
-      url: routePaths.logIn
-    });
-  }
+
+  // 服务器拒绝了你的地址请求。与管理员确认是否拥有请求权限。 已经登录，但是没有数据读写权限
+  403: () => {},
+
+  // 服务器未满足请求者在请求中设置的其中一个前提条件。
+  412: () => {}
+  // 415: () => {
+  //   // historyPush({
+  //   //   history,
+  //   //   url: routePaths.logIn
+  //   // });
+  // }
 };

@@ -114,14 +114,14 @@ export default memo((props) => {
         key: "1",
         children: [
           {
-            title: "账号权限",
-            url: "http:xxxxx", // 路由地址
+            title: "用户权限设置",
+            // url: "http:xxxxx", // 路由地址
             // iconComponent: <SettingOutlined />,
             key: "2",
             children: [
               {
-                title: "账号管理",
-                url: routePaths.accountManagement, // 路由地址
+                title: "用户管理",
+                url: routePaths.userManagement, // 路由地址
                 // iconComponent: <HomeOutlined/>,
                 key: "5",
                 children: [
@@ -137,6 +137,7 @@ export default memo((props) => {
                   // 子菜单
                 ]
               },
+
               {
                 title: "权限管理",
                 url: "http:xxxxx", // 路由地址
@@ -145,7 +146,28 @@ export default memo((props) => {
                 children: [
                   // 子菜单
                 ]
+              },
+
+              {
+                title: "用户&角色",
+                url: "http:xxxxx", // 路由地址
+                // iconComponent: <HomeOutlined/>,
+                key: "4",
+                children: [
+                  // 子菜单
+                ]
+              },
+
+              {
+                title: "角色&权限",
+                url: "http:xxxxx", // 路由地址
+                // iconComponent: <HomeOutlined/>,
+                key: "4",
+                children: [
+                  // 子菜单
+                ]
               }
+
               // {
               //   title: "页面(URL)",
               //   url: "http:xxxxx", // 路由地址
@@ -213,14 +235,14 @@ export default memo((props) => {
   //     key: "1",
   //     children: [
   //       {
-  //         title: "账号权限",
+  //         title: "用户权限设置",
   //         url: "http:xxxxx", // 路由地址
   //         // iconComponent: <SettingOutlined />,
   //         key: "2",
   //         children: [
   //           {
-  //             title: "账号管理",
-  //             url: routePaths.accountManagement, // 路由地址
+  //             title: "用户管理",
+  //             url: routePaths.userManagement, // 路由地址
   //             // iconComponent: <HomeOutlined/>,
   //             key: "5",
   //             children: [
@@ -318,14 +340,14 @@ export default memo((props) => {
   //       key: "1",
   //       children: [
   //         {
-  //           title: "账号权限",
+  //           title: "用户权限设置",
   //           url: "http:xxxxx", // 路由地址
   //           // iconComponent: <SettingOutlined />,
   //           key: "2",
   //           children: [
   //             {
-  //               title: "账号管理",
-  //               url: routePaths.accountManagement, // 路由地址
+  //               title: "用户管理",
+  //               url: routePaths.userManagement, // 路由地址
   //               // iconComponent: <HomeOutlined/>,
   //               key: "5",
   //               children: [

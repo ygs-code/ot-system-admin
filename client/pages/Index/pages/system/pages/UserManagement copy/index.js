@@ -14,7 +14,7 @@ import React, { Component } from "react";
   //设置面包屑和标题
   breadcrumb: [
     {
-      label: "账号管理"
+      label: "用户管理"
       // href: "http://localhost:3000/index",
       // path: "xxxx",
     }
@@ -31,7 +31,7 @@ import React, { Component } from "react";
     //   component: "",
     // },
   ],
-  title: "账号管理"
+  title: "用户管理"
 })
 @addRouterApi
 @tablePage
@@ -114,6 +114,31 @@ class Index extends Component {
         //     message: "Please input your username3",
         //   },
         // ],
+      },
+      {
+        label: "用户类型",
+        name: "type",
+        type: "select",
+        props: {
+          options: [
+            {
+              label: "全部类型",
+              value: ""
+            },
+            {
+              label: "管理员",
+              value: "1"
+            },
+            {
+              label: "会员",
+              value: "2"
+            }
+          ]
+        },
+        itemProps: {},
+        options: {}
+        // labelCol: { span: 5 },
+        // wrapperCol: { span: 10 },
       }
     ];
   }
@@ -125,7 +150,7 @@ class Index extends Component {
 
   // 定义表头字段
   getTableColumns = () => {
-    const { pushRoute, routePaths: { accountManagementDetails } = {} } =
+    const { pushRoute, routePaths: { userManagementDetails } = {} } =
       this.props;
     return [
       {
@@ -178,7 +203,7 @@ class Index extends Component {
                   props: {
                     onClick: () => {
                       pushRoute({
-                        path: accountManagementDetails,
+                        path: userManagementDetails,
                         params: {
                           action: "edit",
                           id
@@ -232,7 +257,10 @@ class Index extends Component {
     return (
       <div className="table-page">
         {this.renderSearch({
-          shrinkLength: 5
+          shrinkLength: 5,
+          initialValues: {
+            type: ""
+          }
           // style: {
           //   padding: "10px 0",
           // },

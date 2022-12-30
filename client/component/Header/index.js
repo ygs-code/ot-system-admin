@@ -27,7 +27,7 @@ export default memo((props) => {
     {
       label: (
         <ul className="dropdown-select">
-          <li className="odd"> 账号管理</li>
+          <li className="odd"> 用户</li>
           <li>
             <dl>
               <dd>
@@ -98,7 +98,7 @@ export default memo((props) => {
                 <ul
                   onClick={onClick.bind(null, "account")}
                   className="dropdown-select">
-                  <li className="odd"> 账号管理</li>
+                  <li className="odd"> 用户</li>
                   <li>
                     <dl>
                       <dd>

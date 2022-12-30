@@ -36,60 +36,42 @@ const { Password } = Input;
 const ItemChild = (props) => {
   let {
     type = "",
-    itemChildProps = {},
+    props: formProps = {},
     component,
     render,
     onChange = () => {},
-    value
+    value,
+    options = []
   } = props;
   type = type.toLowerCase();
 
+  console.log("formProps====", formProps);
+  console.log("type====", type);
+
   const mapTpye = {
-    input: (
-      <Input {...itemChildProps} value={value} onChange={onChange}></Input>
-    ),
+    input: <Input {...formProps} value={value} onChange={onChange}></Input>,
     inputnumber: (
       <InputNumber
-        {...itemChildProps}
+        {...formProps}
         value={value}
         onChange={onChange}></InputNumber>
     ),
-    radio: (
-      <Radio {...itemChildProps} value={value} onChange={onChange}></Radio>
-    ),
-    rate: <Rate {...itemChildProps} value={value} onChange={onChange}></Rate>,
-    select: (
-      <Select {...itemChildProps} value={value} onChange={onChange}></Select>
-    ),
-    switch: (
-      <Switch {...itemChildProps} value={value} onChange={onChange}></Switch>
-    ),
-    slider: (
-      <Slider {...itemChildProps} value={value} onChange={onChange}></Slider>
-    ),
+    radio: <Radio {...formProps} value={value} onChange={onChange}></Radio>,
+    rate: <Rate {...formProps} value={value} onChange={onChange}></Rate>,
+    select: <Select {...formProps} value={value} onChange={onChange}></Select>,
+    switch: <Switch {...formProps} value={value} onChange={onChange}></Switch>,
+    slider: <Slider {...formProps} value={value} onChange={onChange}></Slider>,
     timepicker: (
-      <TimePicker
-        {...itemChildProps}
-        value={value}
-        onChange={onChange}></TimePicker>
+      <TimePicker {...formProps} value={value} onChange={onChange}></TimePicker>
     ),
     transfer: (
-      <Transfer
-        {...itemChildProps}
-        value={value}
-        onChange={onChange}></Transfer>
+      <Transfer {...formProps} value={value} onChange={onChange}></Transfer>
     ),
     checkbox: (
-      <Checkbox
-        {...itemChildProps}
-        value={value}
-        onChange={onChange}></Checkbox>
+      <Checkbox {...formProps} value={value} onChange={onChange}></Checkbox>
     ),
     password: (
-      <Password
-        {...itemChildProps}
-        value={value}
-        onChange={onChange}></Password>
+      <Password {...formProps} value={value} onChange={onChange}></Password>
     )
   };
 
@@ -168,21 +150,51 @@ const BaseForm = (props) => {
         onFinishFailed={onFinishFailed}
         {...formProps}>
         {fields.map((item, index) => {
-          const { type, title, items = [], render } = item;
+          const {
+            type,
+            title,
+            items = [],
+            render,
+            itemProps = {},
+            label,
+            name,
+            props = {},
+            options = []
+          } = item;
 
           return type !== "section" ? (
-            <Form.Item {...item} render={undefined} key={index}>
-              <ItemChild {...item} render={render}></ItemChild>
+            <Form.Item label={label} name={name} {...itemProps} key={index}>
+              <ItemChild
+                type={type}
+                props={props}
+                options={options}
+                render={render}></ItemChild>
             </Form.Item>
           ) : (
             <div className="section" key={index}>
               <div className="title">{title}</div>
               {items.map(($item, index) => {
-                const { render } = $item;
+                const {
+                  render,
+                  itemProps = {},
+                  label,
+                  name,
+                  options = [],
+                  props = {},
+                  type
+                } = $item;
 
                 return (
-                  <Form.Item {...$item} render={undefined} key={index}>
-                    <ItemChild {...$item} render={render}></ItemChild>
+                  <Form.Item
+                    label={label}
+                    name={name}
+                    {...itemProps}
+                    key={index}>
+                    <ItemChild
+                      type={type}
+                      props={props}
+                      options={options}
+                      render={render}></ItemChild>
                   </Form.Item>
                 );
               })}
@@ -276,12 +288,25 @@ const SearchForm = (props) => {
     for (let index = 0; index < length; index++) {
       const item = fields[index];
 
-      const { span = 1 } = item;
+      const {
+        span = 1,
+        label,
+        name,
+        itemProps = {},
+        render,
+        type,
+        props,
+        options
+      } = item;
 
       fieldsVonde.push(
         <div key={index} className={`span span-${span}`}>
-          <Form.Item {...item} render={undefined}>
-            <ItemChild {...item}></ItemChild>
+          <Form.Item label={label} name={name} {...itemProps}>
+            <ItemChild
+              type={type}
+              props={props}
+              options={options}
+              render={render}></ItemChild>
           </Form.Item>
         </div>
       );
@@ -292,7 +317,7 @@ const SearchForm = (props) => {
   return (
     <div className="search-base-form-box">
       <Form
-        // key={JSON.stringify(formInitialValues)}
+        key={JSON.stringify(formInitialValues)}
         className="search-base-form"
         form={form}
         name="basic"

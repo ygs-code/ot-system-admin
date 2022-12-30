@@ -24,7 +24,7 @@ class Index extends Component {
   componentDidMount() {
     // const {
     //   pushRoute,
-    //   routePaths: { accountManagement }
+    //   routePaths: { userManagement }
     // } = this.props;
     // debugger;
     // getUserList();

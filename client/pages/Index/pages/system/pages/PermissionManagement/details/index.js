@@ -21,6 +21,16 @@ class Index extends FormPage {
       data: {}
     };
   }
+
+
+
+
+  getPermissionList = async()=>{
+    const data  =  await getPermissionList({
+      
+    });
+  }
+
   /**
    * 用于将从接口获取到的初始化数据，转换成form需要的格式
    * 这个函数需要在getInitData中手动调用，因此函数名不限于mapInitData

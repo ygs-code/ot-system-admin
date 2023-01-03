@@ -63,8 +63,6 @@ export default memo((props) => {
   const [openKeys, setOpenKeys] = useState([]);
 
   const goTo = useCallback((url) => {
-    console.log("url==", url);
-    debugger;
     pushRoute({
       url
     });
@@ -130,7 +128,7 @@ export default memo((props) => {
               },
               {
                 title: "角色管理",
-                url: "http:xxxxx", // 路由地址
+                url: routePaths.roleManagement, // 路由地址
                 // iconComponent: <HomeOutlined/>,
                 key: "3",
                 children: [
@@ -140,7 +138,7 @@ export default memo((props) => {
 
               {
                 title: "权限管理",
-                url: "http:xxxxx", // 路由地址
+                url: routePaths.permissionManagement, // 路由地址
                 // iconComponent: <HomeOutlined/>,
                 key: "4",
                 children: [

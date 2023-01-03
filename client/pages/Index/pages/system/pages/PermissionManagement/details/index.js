@@ -1,8 +1,14 @@
 import "./index.less";
 
-import { message } from "antd";
-import { editUser, getUserInfo } from "client/assets/js/request";
+import { message, Tree } from "antd";
+import {
+  editPermission,
+  getPermissionInfo,
+  getPermissionList,
+  getUserList
+} from "client/assets/js/request";
 import FormPage from "client/component/FormPage";
+import LazySelect from "client/component/LazySelect";
 import setBreadcrumbAndTitle from "client/component/setBreadcrumbAndTitle";
 import { mapRedux } from "client/redux";
 import { addRouterApi, routePaths } from "client/router";
@@ -29,16 +35,19 @@ class Index extends FormPage {
         params: { id }
       }
     } = this.props;
-    console.log("this.props=", this.props);
-    const { data: { user = {} } = {} } = await getUserInfo({
-      id
-    });
 
-    this.setState({
-      data: user
-    });
+    const { data: { description, name, authKey, parentId } = {} } =
+      await getPermissionInfo({
+        id
+      });
 
-    return await this.mapInitData(user);
+    return await this.mapInitData({
+      description,
+      id,
+      name,
+      authKey,
+      parentId
+    });
   };
 
   /**
@@ -53,21 +62,25 @@ class Index extends FormPage {
       history: { back }
     } = this.props;
     const values = await this.mapSubmitData(formData);
-    const { message: mgs } = await editUser({ ...values });
+
+    const { message: mgs } = await editPermission({ ...values });
+
     message.success(mgs);
     setTimeout(() => {
       back();
     }, 500);
   };
   getFields = () => {
+    // 权限名称	权限ID	权限parentID	权限key	描述
     return [
       {
         type: "section",
         title: "详情基本设置",
         items: [
           {
-            label: "用户ID",
+            label: "权限ID",
             name: "id",
+            itemProps: {},
             // type: "input",
             // labelCol: { span: 5 },
             // wrapperCol: { span: 10 },
@@ -85,7 +98,7 @@ class Index extends FormPage {
             ]
           },
           {
-            label: "用户名称",
+            label: "权限名称",
             name: "name",
             type: "input",
             props: {
@@ -97,13 +110,14 @@ class Index extends FormPage {
             rules: [
               {
                 required: true,
-                message: "请输入用户名称"
+                message: "请输入权限名称"
               }
             ]
           },
+
           {
-            label: "邮箱地址",
-            name: "email",
+            label: "权限key",
+            name: "authKey",
             type: "input",
             props: {
               showCount: true,
@@ -114,51 +128,66 @@ class Index extends FormPage {
             rules: [
               {
                 required: true,
-                message: "请输入邮箱地址"
+                message: "请输入权限名称"
               }
             ]
           },
+
           {
-            label: "手机号码",
-            name: "phone",
+            label: "权限parentID",
+            name: "parentId",
             type: "input",
             props: {
               showCount: true,
-              maxLength: 11
+              maxLength: 100
             },
             // labelCol: { span: 5 },
             // wrapperCol: { span: 10 },
+            render: (props) => {
+              const { value, onChange } = props;
+              return (
+                <LazySelect
+                  value={value}
+                  onChange={onChange}
+                  defaultOptions={[
+                    {
+                      name: "账号管理",
+                      id: "4"
+                    }
+                  ]}
+                  fieldNames={{
+                    label: "name",
+                    value: "id"
+                  }}
+                  searchKey={"name"}
+                  loadData={async (searchParams) => {
+                    return await getPermissionList(searchParams);
+                  }}
+                />
+              );
+            },
             rules: [
               {
                 required: true,
-                message: "请输入手机号码"
+                message: "请输入权限名称"
               }
             ]
           },
+
           {
-            label: "用户类型",
-            name: "type",
-            type: "select",
+            label: "描述",
+            name: "description",
+            type: "textArea",
             props: {
-              options: [
-                {
-                  label: "管理员",
-                  value: 1
-                },
-                {
-                  label: "会员",
-                  value: 2
-                }
-              ]
+              showCount: true,
+              maxLength: 200
             },
-            itemProps: {},
-            options: {},
             // labelCol: { span: 5 },
             // wrapperCol: { span: 10 },
             rules: [
               {
                 required: true,
-                message: "请选择用户类型"
+                message: "请输入描述"
               }
             ]
           }
@@ -194,8 +223,8 @@ export default mapRedux()(
     //设置面包屑和标题
     breadcrumb: [
       {
-        label: "用户管理",
-        path: routePaths.userManagement
+        label: "权限管理",
+        path: routePaths.permissionManagement
       },
       {
         label: "详情"

@@ -59,11 +59,13 @@ export default class extends PureComponent {
   onValidaForm = async () => {
     const { validateFields } = this.form;
 
-    const values = await validateFields().catch((error) => {
-      console.log("error=", error);
-    });
-
-    await this.onSubmitForm(values);
+    const values = await validateFields()
+      .then(async (values) => {
+        await this.onSubmitForm(values);
+      })
+      .catch((error) => {
+        console.error("form error:", error);
+      });
   };
 
   //    提交请求到接口

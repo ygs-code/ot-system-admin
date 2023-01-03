@@ -121,7 +121,6 @@ export const login = (parameter) => {
                 name 
                 description 
                 authKey 
-                parentAuthKey 
               }
               user {
                   name
@@ -205,7 +204,6 @@ export const getUserInfo = (parameter = {}) => {
                 name 
                 description 
                 authKey 
-                parentAuthKey 
               }
               user {
                   name
@@ -222,6 +220,178 @@ export const getUserInfo = (parameter = {}) => {
     {},
     {
       filterData: true
+    }
+  );
+};
+
+// 获取角色列表
+export const getRoleList = (parameter = {}) => {
+  // const { type = "" } = parameter;
+
+  // const { type, pageName = 1, pageSize = 10 } = parameter;
+
+  return query(
+    "getRoleList",
+    `
+    query($parameter: ListInfoInput!){
+      getRoleList(parameter: $parameter) {
+          code
+          data {
+            hasNextPage
+            pageNum
+            pageSize
+            pages
+            total
+            list{
+              name
+              id
+              description
+              createTime
+              updateTime
+            }
+          }
+          message
+        } 
+    }
+  `,
+    {
+      parameter
+    },
+    {
+      filterData: true
+    }
+  );
+};
+
+// 查询角色
+export const getRoleInfo = (parameter = {}) => {
+  const { id = "" } = parameter;
+  return query(
+    "getRoleInfo",
+    `
+      query{
+        getRoleInfo(id: "${id}") {
+            code
+            data {
+                id 
+                name 
+                description
+                createTime 
+                updateTime
+            }
+            message
+          } 
+      }
+    `,
+    {},
+    {
+      filterData: true
+    }
+  );
+};
+
+//  编辑用户
+export const editRole = (parameter = {}) => {
+  return mutation(
+    "editRole",
+    `
+      mutation ($roleInfo: EditInfoInput!) {
+        editRole(roleInfo: $roleInfo) {
+          code
+          message
+        }
+      }
+    `,
+    {
+      roleInfo: parameter
+    }
+  );
+};
+
+// 获取权限列表
+export const getPermissionList = (parameter = {}) => {
+  // const { type = "" } = parameter;
+
+  // const { type, pageName = 1, pageSize = 10 } = parameter;
+
+  return query(
+    "getPermissionList",
+    `
+    query($parameter: ListInfoInput!){
+      getPermissionList(parameter: $parameter) {
+          code
+          data {
+            hasNextPage
+            pageNum
+            pageSize
+            pages
+            total
+            list{
+              name
+              id
+              description
+              authKey 
+              parentId
+              createTime
+              updateTime
+            }
+          }
+          message
+        } 
+    }
+  `,
+    {
+      parameter
+    },
+    {
+      filterData: true
+    }
+  );
+};
+
+// 查询角色
+export const getPermissionInfo = (parameter = {}) => {
+  const { id = "" } = parameter;
+  return query(
+    "getPermissionInfo",
+    `
+      query{
+        getPermissionInfo(id: "${id}") {
+            code
+            data {
+                id 
+                name 
+                authKey
+                parentId
+                description
+                createTime 
+                updateTime
+            }
+            message
+          } 
+      }
+    `,
+    {},
+    {
+      filterData: true
+    }
+  );
+};
+
+//  编辑用户
+export const editPermission = (parameter = {}) => {
+  return mutation(
+    "editPermission",
+    `
+      mutation ($permissionInfo: EditInfoInput!) {
+        editPermission(permissionInfo: $permissionInfo) {
+          code
+          message
+        }
+      }
+    `,
+    {
+      permissionInfo: parameter
     }
   );
 };

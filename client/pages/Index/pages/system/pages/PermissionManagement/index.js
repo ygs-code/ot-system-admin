@@ -1,9 +1,9 @@
 import {
   // Layout,
   //  Menu,
-  Input
+  Button
 } from "antd";
-import { getUserList } from "client/assets/js/request";
+import { getPermissionList } from "client/assets/js/request";
 import setBreadcrumbAndTitle from "client/component/setBreadcrumbAndTitle";
 import TableButton from "client/component/TableButton";
 import { tablePage } from "client/component/TablePage";
@@ -14,7 +14,7 @@ import React, { Component } from "react";
   //设置面包屑和标题
   breadcrumb: [
     {
-      label: "用户管理"
+      label: "权限管理"
       // href: "http://localhost:3000/index",
       // path: "xxxx",
     }
@@ -31,7 +31,7 @@ import React, { Component } from "react";
     //   component: "",
     // },
   ],
-  title: "用户管理"
+  title: "权限管理"
 })
 @addRouterApi
 @tablePage
@@ -40,7 +40,7 @@ class Index extends Component {
     super(props);
     this.state = {
       tableData: {
-        list: [{ title: "你好" }]
+        list: []
       },
       dataSource: []
     };
@@ -57,88 +57,25 @@ class Index extends Component {
   getSearchFields() {
     return [
       {
-        label: "用户名称",
+        label: "权限名称",
         name: "name",
         type: "input",
         span: 1
-        // labelCol: { span: 5 },
-        // wrapperCol: { span: 10 },
-        // rules: [
-        //   {
-        //     required: true,
-        //     message: "Please input your username1",
-        //   },
-        // ],
       },
       {
-        label: "用户ID",
+        label: "权限ID",
         name: "id",
         type: "input"
-        // span: 2
-        // labelCol: { span: 5 },
-        // wrapperCol: { span: 10 }
-        // rules: [
-        //   {
-        //     required: true,
-        //     message: "Please input your username2",
-        //   },
-        // ],
       },
       {
-        label: "用户Email",
-        name: "email",
-        type: "input",
-        // span: 3,
-        // labelCol: { span: 3 },
-        // wrapperCol: { span: 25 },
-        render: (props) => {
-          return <Input {...props}></Input>;
-        }
-        // rules: [
-        //   {
-        //     required: true,
-        //     message: "Please input your username3",
-        //   },
-        // ],
+        label: "权限parentID",
+        name: "parentId",
+        type: "input"
       },
       {
-        label: "用户手机",
-        name: "phone",
-        type: "input",
-        render: (props) => {
-          return <Input {...props}></Input>;
-        }
-        // rules: [
-        //   {
-        //     required: true,
-        //     message: "Please input your username3",
-        //   },
-        // ],
-      },
-      {
-        label: "用户类型",
-        name: "type",
-        type: "select",
-        props: {
-          options: [
-            {
-              label: "全部类型",
-              value: ""
-            },
-            {
-              label: "管理员",
-              value: "1"
-            },
-            {
-              label: "会员",
-              value: "2"
-            }
-          ]
-        },
-        itemProps: {},
-        options: {}
-        // labelCol: { span: 5 },
-        // wrapperCol: { span: 10 },
+        label: "权限key",
+        name: "authKey",
+        type: "input"
       }
     ];
   }
@@ -150,28 +87,36 @@ class Index extends Component {
 
   // 定义表头字段
   getTableColumns = () => {
-    const { pushRoute, routePaths: { userManagementDetails } = {} } =
+    const { pushRoute, routePaths: { permissionManagementDetails } = {} } =
       this.props;
     return [
       {
-        title: "用户ID",
+        title: "权限名称",
+        dataIndex: "name",
+        key: "name",
+        fixed: "left"
+      },
+      {
+        title: "权限ID",
         dataIndex: "id",
         key: "id"
       },
+
       {
-        title: "用户名称",
-        dataIndex: "name",
-        key: "name"
+        title: "权限parentID",
+        dataIndex: "parentId",
+        key: "parentId"
+      },
+
+      {
+        title: "权限key",
+        dataIndex: "authKey",
+        key: "authKey"
       },
       {
-        title: "Email",
-        dataIndex: "email",
-        key: "email"
-      },
-      {
-        title: "手机",
-        dataIndex: "phone",
-        key: "phone"
+        title: "描述",
+        dataIndex: "description",
+        key: "description"
       },
 
       {
@@ -189,6 +134,7 @@ class Index extends Component {
         dataIndex: "actions",
         key: "actions",
         width: 300,
+        fixed: "right",
         render: (text, row) => {
           const { id } = row;
 
@@ -203,7 +149,7 @@ class Index extends Component {
                   props: {
                     onClick: () => {
                       pushRoute({
-                        path: userManagementDetails,
+                        path: permissionManagementDetails,
                         params: {
                           action: "edit",
                           id
@@ -215,7 +161,7 @@ class Index extends Component {
                 {
                   // showPopconfirm: true, // 是否需要弹窗提示
                   // confirmInfo: "你确定要发布该标签吗？", //弹窗信息
-                  label: "查看拥有角色", // 按钮文字
+                  label: "查看", // 按钮文字
                   status: true, //权限控制
                   props: {
                     onClick: () => {}
@@ -224,7 +170,7 @@ class Index extends Component {
                 {
                   // showPopconfirm: true, // 是否需要弹窗提示
                   // confirmInfo: "你确定要发布该标签吗？", //弹窗信息
-                  label: "查看拥有权限", // 按钮文字
+                  label: "删除", // 按钮文字
                   status: true, //权限控制
                   props: {
                     onClick: () => {}
@@ -242,9 +188,7 @@ class Index extends Component {
    * 定义表格的数据加载功能
    */
   tableDataLoader = async (searchParams = {}) => {
-    // console.log("searchParams==", searchParams);
-    // debugger;
-    const { data } = await getUserList(searchParams);
+    const { data } = await getPermissionList(searchParams);
 
     return data;
   };
@@ -254,8 +198,29 @@ class Index extends Component {
   };
   componentDidMount() {}
   render() {
+    const { pushRoute, routePaths: { permissionManagementDetails } = {} } =
+      this.props;
     return (
       <div className="table-page">
+        <div
+          style={{
+            marginBottom: "20px"
+          }}>
+          <Button
+            type="primary"
+            onClick={() => {
+              console.log("this.props=", this.props);
+
+              pushRoute({
+                path: permissionManagementDetails,
+                params: {
+                  action: "create"
+                } // 地址传参
+              });
+            }}>
+            新建权限
+          </Button>
+        </div>
         {this.renderSearch({
           shrinkLength: 5,
           initialValues: {
@@ -266,7 +231,10 @@ class Index extends Component {
           // },
         })}
         {this.renderTable({
-          rowKey: "id"
+          rowKey: "id",
+          scroll: {
+            x: 1300
+          }
         })}
       </div>
     );

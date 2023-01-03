@@ -41,9 +41,11 @@ const Index = (props) => {
       <div className="pagination-box">
         <Pagination
           className="ant-pagination ant-table-pagination ant-table-pagination-right ant-table-pagination-right"
-          showQuickJumper={true}
+          showSizeChanger
+          showQuickJumper
           defaultCurrent={pageNum}
           total={total}
+          showTotal={(total) => `总共 ${total} 条`}
           onChange={(pageNum) => {
             onChange({
               pageNum

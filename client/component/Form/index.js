@@ -32,7 +32,7 @@ import React, {
   useState
 } from "react";
 
-const { Password } = Input;
+const { Password, TextArea } = Input;
 const ItemChild = (props) => {
   let {
     type = "",
@@ -45,10 +45,10 @@ const ItemChild = (props) => {
   } = props;
   type = type.toLowerCase();
 
-  console.log("formProps====", formProps);
-  console.log("type====", type);
-
   const mapTpye = {
+    textarea: (
+      <TextArea {...formProps} value={value} onChange={onChange} rows={4} />
+    ),
     input: <Input {...formProps} value={value} onChange={onChange}></Input>,
     inputnumber: (
       <InputNumber
@@ -159,11 +159,17 @@ const BaseForm = (props) => {
             label,
             name,
             props = {},
-            options = []
+            options = [],
+            rules
           } = item;
 
           return type !== "section" ? (
-            <Form.Item label={label} name={name} {...itemProps} key={index}>
+            <Form.Item
+              rules={rules}
+              label={label}
+              name={name}
+              {...itemProps}
+              key={index}>
               <ItemChild
                 type={type}
                 props={props}
@@ -181,13 +187,15 @@ const BaseForm = (props) => {
                   name,
                   options = [],
                   props = {},
-                  type
+                  type,
+                  rules
                 } = $item;
 
                 return (
                   <Form.Item
                     label={label}
                     name={name}
+                    rules={rules}
                     {...itemProps}
                     key={index}>
                     <ItemChild
@@ -296,12 +304,13 @@ const SearchForm = (props) => {
         render,
         type,
         props,
-        options
+        options,
+        rules
       } = item;
 
       fieldsVonde.push(
         <div key={index} className={`span span-${span}`}>
-          <Form.Item label={label} name={name} {...itemProps}>
+          <Form.Item rules={rules} label={label} name={name} {...itemProps}>
             <ItemChild
               type={type}
               props={props}

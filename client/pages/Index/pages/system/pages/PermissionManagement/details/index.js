@@ -18,18 +18,14 @@ class Index extends FormPage {
   constructor(props) {
     super(props);
     this.state = {
+      ...this.defaultState(),
       data: {}
     };
   }
 
-
-
-
-  getPermissionList = async()=>{
-    const data  =  await getPermissionList({
-      
-    });
-  }
+  getPermissionList = async () => {
+    const data = await getPermissionList({});
+  };
 
   /**
    * 用于将从接口获取到的初始化数据，转换成form需要的格式

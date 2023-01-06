@@ -12,6 +12,7 @@ class Index extends FormPage {
   constructor(props) {
     super(props);
     this.state = {
+      ...this.defaultState(),
       data: {}
     };
   }

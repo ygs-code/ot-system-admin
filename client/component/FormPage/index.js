@@ -40,6 +40,12 @@ export default (props) => {
 };
 */
 export default class extends PureComponent {
+  defaultState = () => {
+    return {
+      loading: false
+    };
+  };
+
   /**
    * 用于将form的字段值转换为接口需要的格式
    */
@@ -61,7 +67,15 @@ export default class extends PureComponent {
 
     const values = await validateFields()
       .then(async (values) => {
+        this.setState(() => {
+          return {
+            loading: true
+          };
+        });
         await this.onSubmitForm(values);
+        this.setState({
+          loading: true
+        });
       })
       .catch((error) => {
         console.error("form error:", error);
@@ -85,13 +99,17 @@ export default class extends PureComponent {
   // 底部按钮
   getFooter = () => {
     const { history = {} } = this.props;
+    const { loading } = this.state;
+
+    console.log("this.state==", this.state);
 
     return (
       <div className="button-box">
-        <Button type="primary" onClick={this.onValidaForm}>
+        <Button type="primary" loading={loading} onClick={this.onValidaForm}>
           确认
         </Button>
         <Button
+          loading={loading}
           onClick={() => {
             history.back();
           }}>

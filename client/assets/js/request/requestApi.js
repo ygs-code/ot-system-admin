@@ -295,7 +295,7 @@ export const editRole = (parameter = {}) => {
   return mutation(
     "editRole",
     `
-      mutation ($roleInfo: EditInfoInput!) {
+      mutation ($roleInfo: EditRoleInfoInput!) {
         editRole(roleInfo: $roleInfo) {
           code
           message
@@ -392,6 +392,91 @@ export const editPermission = (parameter = {}) => {
     `,
     {
       permissionInfo: parameter
+    }
+  );
+};
+
+// 获取用户_权限列表
+export const getUserRoleList = (parameter = {}) => {
+  // const { type = "" } = parameter;
+
+  // const { type, pageName = 1, pageSize = 10 } = parameter;
+
+  return query(
+    "getUserRoleList",
+    `
+    query($parameter: ListInfoInput!){
+      getUserRoleList(parameter: $parameter) {
+          code
+          data {
+            hasNextPage
+            pageNum
+            pageSize
+            pages
+            total
+            list{
+              id
+              userId
+              roleId 
+              createTime
+              updateTime
+            }
+          }
+          message
+        } 
+    }
+  `,
+    {
+      parameter
+    },
+    {
+      filterData: true
+    }
+  );
+};
+
+// 获取用户_权限详情
+
+export const getUserRoleInfo = (parameter = {}) => {
+  const { id = "" } = parameter;
+  return query(
+    "getUserRoleInfo",
+    `
+      query{
+        getUserRoleInfo(id: "${id}") {
+            code
+            data {
+              id
+              userId
+              roleId 
+              createTime
+              updateTime
+            }
+            message
+          } 
+      }
+    `,
+    {},
+    {
+      filterData: true
+    }
+  );
+};
+
+//  创建或者编辑用户&角色
+export const editUserRole = (parameter = {}) => {
+  return mutation(
+    "editUserRole",
+    `
+      mutation ($userRoleInfo: EditInfoInput!) {
+        editUserRole(userRoleInfo: $userRoleInfo) {
+          code
+          message
+        }
+      }
+    `,
+    {
+      userRoleInfo: parameter
     }
   );
 };

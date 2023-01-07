@@ -54,6 +54,22 @@ export default [
             children: []
           }
         ]
+      },
+
+      {
+        path: "/user-role",
+        name: "userRole",
+        entry: "/pages/Index/pages/system/pages/UserRole/index.js",
+        level: 2,
+        children: [
+          {
+            path: "/details/:action/:id?",
+            name: "userRoleDetails",
+            entry: "/pages/Index/pages/system/pages/UserRole/details/index.js",
+            level: 2,
+            children: []
+          }
+        ]
       }
     ]
   }

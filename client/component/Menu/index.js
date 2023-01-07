@@ -148,7 +148,7 @@ export default memo((props) => {
 
               {
                 title: "用户&角色",
-                url: "http:xxxxx", // 路由地址
+                url: routePaths.userRole, // 路由地址
                 // iconComponent: <HomeOutlined/>,
                 key: "4",
                 children: [

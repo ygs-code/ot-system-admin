@@ -6,6 +6,8 @@ export default {
   permissionManagementDetails:
     "/system/permission-management/details/:action/:id?",
   permissionManagement: "/system/permission-management",
+  userRoleDetails: "/system/user-role/details/:action/:id?",
+  userRole: "/system/user-role",
   system: "/system",
   home: "/home",
   index: "/",

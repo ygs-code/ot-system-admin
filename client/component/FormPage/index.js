@@ -126,7 +126,14 @@ export default class extends PureComponent {
             {...props}
             fields={this.getFields()}
             onReady={this.onFormReady}
-            initialValues={this.getInitialValues}></Form>
+            initialValues={async () => {
+              const {
+                match: {
+                  params: { id }
+                }
+              } = this.props;
+              return id === undefined ? {} : await this.getInitialValues();
+            }}></Form>
         </div>
         {this.getFooter() ? (
           <div className="footer">{this.getFooter()}</div>

@@ -8,7 +8,7 @@
     "copyFile": "node ./webpack/utils/copyFile.js",
     "webpack-plugin-copy-file": "node  ./webpack/definePlugin/webpack-plugin-copy-file/index.js",
     "//注释10": "eslint校验",
-    "eslint": "eslint ./src&&eslint ./server",
+    "eslint": "eslint ./client/**/*.{js,jsx}&&eslint ./server/**/*.{js,jsx}",
     "watchFile": "node  ./webpack/utils/watchFile.js",
     "test": "node  -r @babel/register    ./client/assets/js/request/test.js",
     "bin": "cross-env NODE_ENV=development       target=ssr   node   -r @babel/register    ./bin/index.js",

@@ -378,6 +378,7 @@ module.exports = {
       fix: true //自动修复
     }),
 
+     // 清理文件
     new CleanWebpackPlugin(),
 
     // 使用此插件有助于缓解OSX上的开发人员不遵循严格的路径区分大小写的情况，
@@ -494,7 +495,7 @@ module.exports = {
           })
         ]),
 
-    new webpack.NoEmitOnErrorsPlugin(),
+    // new webpack.NoEmitOnErrorsPlugin(),
     // new ReactLoadablePlugin({
     //   filename: path.join(rootPath, "./dist/client/react-loadable.json")
     // }),

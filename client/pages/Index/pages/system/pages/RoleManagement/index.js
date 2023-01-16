@@ -1,7 +1,7 @@
 import {
   // Layout,
   //  Menu,
-  Input
+  Button
 } from "antd";
 import { getRoleList } from "client/assets/js/request";
 import setBreadcrumbAndTitle from "client/component/setBreadcrumbAndTitle";
@@ -191,8 +191,29 @@ class Index extends Component {
   };
   componentDidMount() {}
   render() {
+    const { pushRoute, routePaths: { roleManagementDetails } = {} } =
+      this.props;
     return (
       <div className="table-page">
+        <div
+          style={{
+            marginBottom: "20px"
+          }}>
+          <Button
+            type="primary"
+            onClick={() => {
+              console.log("this.props=", this.props);
+
+              pushRoute({
+                path: roleManagementDetails,
+                params: {
+                  action: "create"
+                } // 地址传参
+              });
+            }}>
+            新建角色
+          </Button>
+        </div>
         {this.renderSearch({
           shrinkLength: 5,
           initialValues: {

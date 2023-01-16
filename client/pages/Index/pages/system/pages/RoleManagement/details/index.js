@@ -1,7 +1,7 @@
 import "./index.less";
 
 import { message } from "antd";
-import { editRole, getRoleInfo } from "client/assets/js/request";
+import { createRole, editRole, getRoleInfo } from "client/assets/js/request";
 import FormPage from "client/component/FormPage";
 import setBreadcrumbAndTitle from "client/component/setBreadcrumbAndTitle";
 import { mapRedux } from "client/redux";
@@ -53,10 +53,23 @@ class Index extends FormPage {
     const {
       history: { back }
     } = this.props;
-    const values = await this.mapSubmitData(formData);
-    const { message: mgs } = await editRole({ ...values });
+    const {
+      match: {
+        params: { id }
+      }
+    } = this.props;
 
-    message.success(mgs);
+    const values = await this.mapSubmitData(formData);
+
+    if (id) {
+      const { message: mgs } = await editRole({ ...values });
+      message.success(mgs);
+    } else {
+      const { message: mgs } = await createRole({ ...values });
+
+      message.success(mgs);
+    }
+
     setTimeout(() => {
       back();
     }, 500);

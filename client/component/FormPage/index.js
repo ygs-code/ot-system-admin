@@ -72,14 +72,19 @@ export default class extends PureComponent {
             loading: true
           };
         });
-        await this.onSubmitForm(values);
-        this.setState({
-          loading: true
+        return await this.onSubmitForm(values).catch((error) => {
+          throw error;
         });
       })
       .catch((error) => {
-        console.error("form error:", error);
+        this.setState({
+          loading: false
+        });
+        console.error("error:", error);
       });
+    this.setState({
+      loading: false
+    });
   };
 
   //    提交请求到接口

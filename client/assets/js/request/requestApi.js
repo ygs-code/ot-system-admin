@@ -61,19 +61,19 @@ export const getVerifyCode = () => {
 };
 
 // 注册用户
-export const createUser = (parameter) => {
+export const createUser = (parameter = {}) => {
   return mutation(
     "createUser",
     `
-        mutation($userInfo: CreateUserInfoInput!) { 
-          createUser(userInfo: $userInfo) {
+        mutation($parameter: CreateUserInput!) { 
+          createUser(parameter: $parameter) {
               code
               message
             }
         }
     `,
     {
-      userInfo: parameter
+      parameter
     }
   );
 };
@@ -83,15 +83,15 @@ export const editUser = (parameter = {}) => {
   return mutation(
     "editUser",
     `
-      mutation ($userInfo: EditUserInfoInput!) {
-        editUser(userInfo: $userInfo) {
+      mutation ($parameter: EditUserInput!) {
+        editUser(parameter: $parameter) {
           code
           message
         }
       }
     `,
     {
-      userInfo: parameter
+      parameter
     }
   );
 };
@@ -290,12 +290,30 @@ export const getRoleInfo = (parameter = {}) => {
   );
 };
 
-//  编辑用户
+//  编辑角色
+export const createRole = (parameter = {}) => {
+  return mutation(
+    "createRole",
+    `
+      mutation ($parameter: RoleCreateInput!) {
+        createRole(parameter: $parameter) {
+          code
+          message
+        }
+      }
+    `,
+    {
+      parameter
+    }
+  );
+};
+
+//  编辑角色
 export const editRole = (parameter = {}) => {
   return mutation(
     "editRole",
     `
-      mutation ($parameter: RoleEditRoleInput!) {
+      mutation ($parameter: RoleEditInput!) {
         editRole(parameter: $parameter) {
           code
           message
@@ -468,15 +486,15 @@ export const editUserRole = (parameter = {}) => {
   return mutation(
     "editUserRole",
     `
-      mutation ($userRoleInfo: EditInfoInput!) {
-        editUserRole(userRoleInfo: $userRoleInfo) {
+      mutation ($parameter: EditInfoInput!) {
+        editUserRole(parameter: $parameter) {
           code
           message
         }
       }
     `,
     {
-      userRoleInfo: parameter
+      parameter
     }
   );
 };

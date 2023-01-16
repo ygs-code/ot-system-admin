@@ -173,10 +173,10 @@ class Index extends FormPage {
               );
             },
             rules: [
-              {
-                required: true,
-                message: "请输入权限名称"
-              }
+              // {
+              //   required: true,
+              //   message: "请输入权限名称"
+              // }
             ]
           },
 

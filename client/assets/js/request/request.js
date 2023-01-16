@@ -159,7 +159,10 @@ export default class Request {
                 ["request-id"]: requestId
               },
               success: async (...ags) => {
-                ags = await responseInterceptors(ags);
+                ags = await responseInterceptors(ags).catch(() => {
+                  error(ags);
+                  reject(ags);
+                });
                 // const data = ags.length ? ags[0] : null;
                 // if (data) {
                 // const { code, message = "" } = data;
@@ -193,7 +196,9 @@ export default class Request {
               ["request-id"]: requestId
             },
             success: async (...ags) => {
-              ags = await responseInterceptors(ags);
+              ags = await responseInterceptors(ags).catch(() => {
+                error(ags);
+              });
               success(ags);
             },
             error: (...ags) => {
@@ -254,7 +259,11 @@ export default class Request {
                 ["request-id"]: requestId
               },
               success: async (...ags) => {
-                ags = await responseInterceptors(ags);
+                ags = await responseInterceptors(ags).catch(() => {
+                  error(...ags);
+                  reject(ags);
+                });
+
                 success(...ags);
                 resolve(...ags);
               },
@@ -325,10 +334,11 @@ Request.interceptors = {
     return config;
   },
   //响应拦截
-  response: (response) => {
+  response: async (response) => {
     const { code } = response[0] || {};
     if (code !== 200) {
       Request.error(response);
+
       return Promise.reject(response);
     }
     return response[0];
@@ -406,6 +416,7 @@ export const gql = Graphql.gql;
 //Graphql 错误请求
 Graphql.error = (errorInfo) => {
   const { code, message } = errorInfo[0] || {};
+
   if (!code) {
     errorMessage("系统错误");
   } else {
@@ -423,20 +434,19 @@ Graphql.interceptors.response = (response) => {
   const options = response[2] || {};
   const { code } = data;
   if (code && code !== 200) {
-    Graphql.error(response);
     return Promise.reject(response);
   }
   for (let key in data) {
     if (data.hasOwnProperty(key)) {
       const { code } = data[key];
       if (code !== 200) {
-        Graphql.error([data[key]]);
+        response[0] = data[key];
         return Promise.reject(response);
       }
     }
   }
   const { filterData } = options;
-  return filterData ? filterGraphqlData(data) : response;
+  return Promise.resolve(filterData ? filterGraphqlData(data) : response);
 };
 // Graphql 配置项 end
 
@@ -457,7 +467,7 @@ export const GraphqlClient = new Graphql({
     }
   },
   // 错误请求
-  error: (errorInfo) => {
-    Graphql.error(errorInfo);
+  error: (error) => {
+    Graphql.error(error);
   }
 });

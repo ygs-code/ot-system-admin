@@ -295,15 +295,15 @@ export const editRole = (parameter = {}) => {
   return mutation(
     "editRole",
     `
-      mutation ($roleInfo: EditRoleInfoInput!) {
-        editRole(roleInfo: $roleInfo) {
+      mutation ($parameter: RoleEditRoleInput!) {
+        editRole(parameter: $parameter) {
           code
           message
         }
       }
     `,
     {
-      roleInfo: parameter
+      parameter
     }
   );
 };
@@ -349,7 +349,7 @@ export const getPermissionList = (parameter = {}) => {
   );
 };
 
-// 查询角色
+// 查询权限
 export const getPermissionInfo = (parameter = {}) => {
   const { id = "" } = parameter;
   return query(
@@ -378,20 +378,20 @@ export const getPermissionInfo = (parameter = {}) => {
   );
 };
 
-//  编辑用户
+//  编辑权限
 export const editPermission = (parameter = {}) => {
   return mutation(
     "editPermission",
     `
-      mutation ($permissionInfo: EditInfoInput!) {
-        editPermission(permissionInfo: $permissionInfo) {
+      mutation ($parameter: PermissionEditInput!) {
+        editPermission(parameter: $parameter) {
           code
           message
         }
       }
     `,
     {
-      permissionInfo: parameter
+      parameter
     }
   );
 };

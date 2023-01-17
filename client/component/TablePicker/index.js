@@ -1,8 +1,6 @@
-import {
-  // Layout,
-  //  Menu,
-  Input
-} from "antd";
+import "./index.less";
+
+import { Button, Input, Modal } from "antd";
 import { getUserList } from "client/assets/js/request";
 import TableButton from "client/component/TableButton";
 import { tablePage } from "client/component/TablePage";
@@ -225,8 +223,25 @@ class TablePage extends Component {
   };
 
   getTableProps = () => {
-    return {};
+    return {
+      isShowSelect: true
+      // rowSelection: {
+      //   onChange: (selectedRowKeys, selectedRows) => {
+      //     console.log(
+      //       `selectedRowKeys: ${selectedRowKeys}`,
+      //       "selectedRows: ",
+      //       selectedRows
+      //     );
+      //   },
+      //   getCheckboxProps: (record) => ({
+      //     disabled: record.name === "Disabled User",
+      //     // Column configuration not to be checked
+      //     name: record.name
+      //   })
+      // }
+    };
   };
+
   componentDidMount() {}
   render() {
     return (
@@ -240,6 +255,7 @@ class TablePage extends Component {
           //   padding: "10px 0",
           // },
         })}
+
         {this.renderTable({
           rowKey: "id"
         })}
@@ -252,16 +268,58 @@ class Index extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      tableData: {
-        list: [{ title: "你好" }]
-      },
-      dataSource: []
+      isModalOpen: false
     };
   }
 
   componentDidMount() {}
+  showModal = async () => {
+    const { modalProps: { showModal = () => {} } = {} } = this.props;
+    await showModal();
+    this.setState({
+      isModalOpen: true
+    });
+  };
+  onOk = async () => {
+    const { modalProps: { onOk = () => {} } = {} } = this.props;
+    await onOk();
+    this.setState({
+      isModalOpen: false
+    });
+  };
+  onCancel = async () => {
+    const { modalProps: { onCancel = () => {} } = {} } = this.props;
+    await onCancel();
+    this.setState({
+      isModalOpen: false
+    });
+  };
   render() {
-    return <TablePage />;
+    const {
+      modalProps = {},
+      buttonText = "打开弹窗",
+      tableProps = {}
+    } = this.props;
+    const { isModalOpen } = this.state;
+
+    return (
+      <div className="table-picker">
+        <Button type="primary" onClick={this.showModal}>
+          {buttonText}
+        </Button>
+        <Modal
+          width={800}
+          title="Modal标题"
+          open={isModalOpen}
+          {...modalProps}
+          onOk={this.onOk}
+          onCancel={this.onCancel}>
+          <div className="table-picker-content">
+            <TablePage {...tableProps} />
+          </div>
+        </Modal>
+      </div>
+    );
   }
 }
 

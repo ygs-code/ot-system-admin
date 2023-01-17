@@ -24,8 +24,59 @@ const Index = (props) => {
       // pages,
       total
     } = {},
-    onChange = () => {}
+    onChange = () => {},
+    onSelect = () => {}
   } = props;
+  const { rowSelection = {}, isShowSelect } = tableProps;
+
+  const {
+    onChange: rowSelectionOnSelect = () => {},
+    onChange: rowSelectionOnSelectAll = () => {}
+  } = rowSelection;
+
+  let $rowSelection = isShowSelect
+    ? {
+        // onChange: (selectedRowKeys, selectedRows) => {
+        //   rowSelectionOnchange(selectedRowKeys, selectedRows);
+        //   console.log(
+        //     "onChange:",
+        //     "selectedRowKeys:",
+        //     selectedRowKeys,
+        //     "selectedRows: ",
+        //     selectedRows
+        //   );
+        // },
+        onSelect: (changeRow, selected, selectedRows, nativeEvent) => {
+          console.log("onSelect=");
+          console.log("changeRow=", changeRow);
+          console.log("selected=", selected);
+          console.log("selectedRows=", selectedRows);
+
+          rowSelectionOnSelect(changeRow, selected, selectedRows, nativeEvent);
+        },
+        onSelectAll: (selected, selectedRows, changeRows) => {
+          console.log("onSelectAll=", selected, selectedRows, changeRows);
+          rowSelectionOnSelectAll(selected, selectedRows, changeRows);
+        }
+        // onSelectInvert: (selectedRowKeys) => {
+        //   console.log("onSelectInvert=", selectedRowKeys);
+        // }
+        // getCheckboxProps: (record) => ({
+        //   disabled: record.name === "Disabled User",
+        //   // Column configuration not to be checked
+        //   name: record.name
+        // })
+      }
+    : {};
+
+  $rowSelection =
+    Object.keys(rowSelection).length == 0 &&
+    Object.keys($rowSelection).length == 0
+      ? null
+      : {
+          ...rowSelection,
+          ...$rowSelection
+        };
 
   return (
     <div className="table-box">
@@ -34,6 +85,7 @@ const Index = (props) => {
           columns={columns}
           dataSource={list}
           {...tableProps}
+          rowSelection={$rowSelection}
           pagination={false}
         />
       </div>

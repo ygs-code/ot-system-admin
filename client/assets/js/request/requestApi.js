@@ -397,6 +397,24 @@ export const getPermissionInfo = (parameter = {}) => {
 };
 
 //  编辑权限
+export const createPermission = (parameter = {}) => {
+  return mutation(
+    "createPermission",
+    `
+      mutation ($parameter: PermissionCreateInput!) {
+        createPermission(parameter: $parameter) {
+          code
+          message
+        }
+      }
+    `,
+    {
+      parameter
+    }
+  );
+};
+
+//  编辑权限
 export const editPermission = (parameter = {}) => {
   return mutation(
     "editPermission",

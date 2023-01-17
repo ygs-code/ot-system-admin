@@ -1,15 +1,10 @@
 import "./index.less";
 
-import { message, Tree } from "antd";
-import {
-  createPermission,
-  editPermission,
-  getPermissionInfo,
-  getPermissionList
-} from "client/assets/js/request";
+import { message } from "antd";
+import { editUser, getUserInfo } from "client/assets/js/request";
 import FormPage from "client/component/FormPage";
-import LazySelect from "client/component/LazySelect";
 import setBreadcrumbAndTitle from "client/component/setBreadcrumbAndTitle";
+import TablePicker from "client/component/TablePicker";
 import { mapRedux } from "client/redux";
 import { addRouterApi, routePaths } from "client/router";
 import React from "react";
@@ -22,11 +17,6 @@ class Index extends FormPage {
       data: {}
     };
   }
-
-  getPermissionList = async () => {
-    const data = await getPermissionList({});
-  };
-
   /**
    * 用于将从接口获取到的初始化数据，转换成form需要的格式
    * 这个函数需要在getInitData中手动调用，因此函数名不限于mapInitData
@@ -41,19 +31,16 @@ class Index extends FormPage {
         params: { id }
       }
     } = this.props;
-
-    const { data: { description, name, authKey, parentId } = {} } =
-      await getPermissionInfo({
-        id
-      });
-
-    return await this.mapInitData({
-      description,
-      id,
-      name,
-      authKey,
-      parentId
+    console.log("this.props=", this.props);
+    const { data: { user = {} } = {} } = await getUserInfo({
+      id
     });
+
+    this.setState({
+      data: user
+    });
+
+    return await this.mapInitData(user);
   };
 
   /**
@@ -65,38 +52,24 @@ class Index extends FormPage {
   // 提交请求到接口
   onSubmitForm = async (formData) => {
     const {
-      history: { back },
-      match: {
-        params: { id }
-      }
+      history: { back }
     } = this.props;
-
     const values = await this.mapSubmitData(formData);
-
-    if (id) {
-      const { message: mgs } = await editPermission({ ...values });
-      message.success(mgs);
-    } else {
-      const { message: mgs } = await createPermission({ ...values });
-
-      message.success(mgs);
-    }
-
+    const { message: mgs } = await editUser({ ...values });
+    message.success(mgs);
     setTimeout(() => {
       back();
     }, 500);
   };
   getFields = () => {
-    // 权限名称	权限ID	权限parentID	权限key	描述
     return [
       {
         type: "section",
         title: "详情基本设置",
         items: [
           {
-            label: "权限ID",
+            label: "用户ID",
             name: "id",
-            itemProps: {},
             // type: "input",
             // labelCol: { span: 5 },
             // wrapperCol: { span: 10 },
@@ -114,7 +87,7 @@ class Index extends FormPage {
             ]
           },
           {
-            label: "权限名称",
+            label: "用户名称",
             name: "name",
             type: "input",
             props: {
@@ -126,87 +99,90 @@ class Index extends FormPage {
             rules: [
               {
                 required: true,
-                message: "请输入权限名称"
+                message: "请输入用户名称"
               }
             ]
           },
-
           {
-            label: "权限key",
-            name: "authKey",
-            type: "input",
-            props: {
-              showCount: true,
-              maxLength: 100
-            },
+            label: "设置角色",
+            name: "role",
+            // type: "input",
             // labelCol: { span: 5 },
             // wrapperCol: { span: 10 },
-            rules: [
-              {
-                required: true,
-                message: "请输入权限名称"
-              }
-            ]
-          },
 
-          {
-            label: "权限parentID",
-            name: "parentId",
-            type: "input",
-            props: {
-              showCount: true,
-              maxLength: 100
-            },
-            // labelCol: { span: 5 },
-            // wrapperCol: { span: 10 },
             render: (props) => {
-              const { value, onChange } = props;
-              return (
-                <LazySelect
-                  value={value}
-                  onChange={onChange}
-                  defaultOptions={[
-                    {
-                      name: "账号管理",
-                      id: "4"
-                    }
-                  ]}
-                  fieldNames={{
-                    label: "name",
-                    value: "id"
-                  }}
-                  searchKey={"name"}
-                  loadData={async (searchParams) => {
-                    return await getPermissionList(searchParams);
-                  }}
-                />
-              );
+              const { value } = props;
+
+              return <TablePicker></TablePicker>;
             },
             rules: [
               // {
               //   required: true,
-              //   message: "请输入权限名称"
+              //   message: "Please input your username1"
               // }
             ]
-          },
-
-          {
-            label: "描述",
-            name: "description",
-            type: "textArea",
-            props: {
-              showCount: true,
-              maxLength: 200
-            },
-            // labelCol: { span: 5 },
-            // wrapperCol: { span: 10 },
-            rules: [
-              {
-                required: true,
-                message: "请输入描述"
-              }
-            ]
           }
+          // {
+          //   label: "邮箱地址",
+          //   name: "email",
+          //   type: "input",
+          //   props: {
+          //     showCount: true,
+          //     maxLength: 100
+          //   },
+          //   // labelCol: { span: 5 },
+          //   // wrapperCol: { span: 10 },
+          //   rules: [
+          //     {
+          //       required: true,
+          //       message: "请输入邮箱地址"
+          //     }
+          //   ]
+          // },
+          // {
+          //   label: "手机号码",
+          //   name: "phone",
+          //   type: "input",
+          //   props: {
+          //     showCount: true,
+          //     maxLength: 11
+          //   },
+          //   // labelCol: { span: 5 },
+          //   // wrapperCol: { span: 10 },
+          //   rules: [
+          //     {
+          //       required: true,
+          //       message: "请输入手机号码"
+          //     }
+          //   ]
+          // },
+          // {
+          //   label: "用户类型",
+          //   name: "type",
+          //   type: "select",
+          //   props: {
+          //     options: [
+          //       {
+          //         label: "管理员",
+          //         value: 1
+          //       },
+          //       {
+          //         label: "会员",
+          //         value: 2
+          //       }
+          //     ]
+          //   },
+          //   itemProps: {},
+          //   options: {},
+          //   // labelCol: { span: 5 },
+          //   // wrapperCol: { span: 10 },
+          //   rules: [
+          //     {
+          //       required: true,
+          //       message: "请选择用户类型"
+          //     }
+          //   ]
+          // }
         ]
       }
     ];
@@ -239,8 +215,8 @@ export default mapRedux()(
     //设置面包屑和标题
     breadcrumb: [
       {
-        label: "权限管理",
-        path: routePaths.permissionManagement
+        label: "用户管理",
+        path: routePaths.userManagement
       },
       {
         label: "详情"

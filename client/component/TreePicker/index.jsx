@@ -348,8 +348,14 @@ const TreeContent = (props) => {
 
                 console.log('onSearch')
               }}
-              onChange={(v) => {
+              onChange={({
+               
+                  target
+                
+              }) => {
                 console.log('onChange')
+
+                onSearch(target.value)
                 // isKeypadsSearchChange && this.handleSearch(v.target.value)
                 // onChange(v.target.value)
               }}

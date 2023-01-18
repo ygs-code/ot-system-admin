@@ -93,7 +93,7 @@ class Index extends Component {
   };
 
   // 定义表头字段
-  getTableColumns = () => {
+  getColumns = () => {
     const { pushRoute, routePaths: { roleManagementDetails } = {} } =
       this.props;
     return [

@@ -38,13 +38,14 @@ import React, { Component } from "react";
 class Index extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      tableData: {
-        list: [{ title: "你好" }]
-      },
-      dataSource: []
-    };
+    this.state = {};
   }
+
+  getTableProps = () => {
+    return {
+      isShowSelect: true // 显示选中
+    };
+  };
 
   // // 获取默认搜索参数
   // getDefaultSearchParams = () => {
@@ -149,7 +150,7 @@ class Index extends Component {
   };
 
   // 定义表头字段
-  getTableColumns = () => {
+  getColumns = () => {
     const { pushRoute, routePaths: { userSetRoleDetails } = {} } = this.props;
     return [
       {
@@ -248,11 +249,12 @@ class Index extends Component {
     return data;
   };
 
-  getTableProps = () => {
-    return {};
-  };
+  // getTableProps = () => {
+  //   return {};
+  // };
   componentDidMount() {}
   render() {
+    console.log("this.state=", this.state);
     return (
       <div className="table-page">
         {this.renderSearch({

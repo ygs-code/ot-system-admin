@@ -10,7 +10,7 @@
 import "./index.less";
 
 import { Pagination, Table } from "antd";
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 const Index = (props) => {
   const {
@@ -19,53 +19,90 @@ const Index = (props) => {
     paginationProps = {},
     data: {
       list = [],
-      pageNum,
-      // pageSize,
+      pageNum = 1,
+      pageSize = 10,
       // pages,
       total
     } = {},
+    // onChange = () => {},
+    // onSelect = () => {}
+    // rowSelection = {},
+    // isShowSelect,
+    // rowKey,
     onChange = () => {},
     onSelect = () => {}
   } = props;
-  const { rowSelection = {}, isShowSelect } = tableProps;
+  const {
+    rowSelection = {},
+    isShowSelect,
+    rowKey
+    // onChange = () => {},
+    // onSelect = () => {}
+  } = tableProps;
 
   const {
     onChange: rowSelectionOnSelect = () => {},
-    onChange: rowSelectionOnSelectAll = () => {}
+    onChange: rowSelectionOnSelectAll = () => {},
+    selectedRowKeys: rowSelectionSelectedRowKeys = []
   } = rowSelection;
+
+  let [selectedRows, setSelectedRows] = useState([]);
+  let [selectedRowKeys, setSelectedRowKeys] = useState([]);
+
+  useEffect(() => {
+    setSelectedRowKeys(rowSelectionSelectedRowKeys);
+  }, []);
 
   let $rowSelection = isShowSelect
     ? {
-        // onChange: (selectedRowKeys, selectedRows) => {
-        //   rowSelectionOnchange(selectedRowKeys, selectedRows);
-        //   console.log(
-        //     "onChange:",
-        //     "selectedRowKeys:",
-        //     selectedRowKeys,
-        //     "selectedRows: ",
-        //     selectedRows
-        //   );
-        // },
-        onSelect: (changeRow, selected, selectedRows, nativeEvent) => {
-          console.log("onSelect=");
-          console.log("changeRow=", changeRow);
-          console.log("selected=", selected);
-          console.log("selectedRows=", selectedRows);
-
-          rowSelectionOnSelect(changeRow, selected, selectedRows, nativeEvent);
+        selectedRowKeys,
+        onSelect: (changeRow, selected, $selectedRows, nativeEvent) => {
+          if (!rowKey) {
+            return console.error("rowKey未设置，请设置表格rowKey");
+          }
+          if (selected) {
+            selectedRows.push(changeRow);
+            selectedRowKeys.push(changeRow[rowKey]);
+          } else {
+            let index = selectedRows.findIndex((item) => {
+              return changeRow[rowKey] === selectedRows[rowKey];
+            });
+            selectedRows.splice(index, 1);
+            selectedRowKeys.splice(index, 1);
+          }
+          setSelectedRows([...selectedRows]);
+          setSelectedRowKeys([...selectedRowKeys]);
+          rowSelectionOnSelect(changeRow, selected, $selectedRows, nativeEvent);
+          onSelect(selectedRows, selectedRowKeys);
         },
-        onSelectAll: (selected, selectedRows, changeRows) => {
-          console.log("onSelectAll=", selected, selectedRows, changeRows);
-          rowSelectionOnSelectAll(selected, selectedRows, changeRows);
+        onSelectAll: (selected, $selectedRows, changeRows) => {
+          if (!rowKey) {
+            return console.error("rowKey未设置，请设置表格rowKey");
+          }
+          if (selected) {
+            selectedRows = selectedRows.concat(changeRows);
+            selectedRowKeys = selectedRowKeys.concat(
+              changeRows.map((item) => {
+                return item[rowKey];
+              })
+            );
+          } else {
+            let flag;
+            for (let index = selectedRows.length - 1; index >= 0; index--) {
+              flag = changeRows.some((item) => {
+                return selectedRowKeys.includes(item[rowKey]);
+              });
+              if (flag) {
+                selectedRows.splice(index, 1);
+                selectedRowKeys.splice(index, 1);
+              }
+            }
+          }
+          setSelectedRows([...selectedRows]);
+          setSelectedRowKeys([...selectedRowKeys]);
+          rowSelectionOnSelectAll(selected, $selectedRows, changeRows);
+          onSelect(selectedRows, selectedRowKeys);
         }
-        // onSelectInvert: (selectedRowKeys) => {
-        //   console.log("onSelectInvert=", selectedRowKeys);
-        // }
-        // getCheckboxProps: (record) => ({
-        //   disabled: record.name === "Disabled User",
-        //   // Column configuration not to be checked
-        //   name: record.name
-        // })
       }
     : {};
 
@@ -82,9 +119,9 @@ const Index = (props) => {
     <div className="table-box">
       <div className="table">
         <Table
+          {...tableProps}
           columns={columns}
           dataSource={list}
-          {...tableProps}
           rowSelection={$rowSelection}
           pagination={false}
         />
@@ -96,14 +133,19 @@ const Index = (props) => {
           showSizeChanger
           showQuickJumper
           defaultCurrent={pageNum}
+          current={pageNum}
+          defaultPageSize={pageSize}
           total={total}
           showTotal={(total) => `总共 ${total} 条`}
-          onChange={(pageNum) => {
+          // rowKey={rowKey}
+          rowKey={(record) => record.uid}
+          {...paginationProps}
+          onChange={(pageNum, pageSize) => {
             onChange({
-              pageNum
+              pageNum,
+              pageSize
             });
           }}
-          {...paginationProps}
         />
       </div>
     </div>

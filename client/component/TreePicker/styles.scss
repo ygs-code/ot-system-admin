@@ -1,0 +1,114 @@
+
+  .tree-picker {
+    .lz-component-store-picker {
+      &[data-read-only='true'] {
+        .ant-tree-checkbox {
+          pointer-events: none;
+        }
+
+        .ant-tree-node-content-wrapper {
+          cursor: default;
+
+          span.ant-tree-title {
+            color: #666;
+            cursor: default;
+          }
+        }
+      }
+
+      .tree-transfer {
+        display: flex;
+        border: 1px solid #e8e8e8;
+        margin: 15px 20px;
+
+        .transfer-list {
+          flex: 1;
+        }
+
+        .transfer-list:first-child {
+          border-right: 1px solid #e8e8e8;
+        }
+      }
+
+      .header {
+        padding: 10px 15px;
+        height: 40px;
+
+        .amount .all {
+          float: right;
+        }
+      }
+
+      .search {
+        width: 100%;
+        padding: 0 10px;
+        box-sizing: border-box;
+      }
+
+      .content {
+        box-sizing: border-box;
+        height: 390px;
+        margin: 0;
+        padding: 0 10px;
+        border-top: 1px solid #e8e8e8;
+        overflow: auto;
+        // width: 100%;
+
+        .ant-list {
+          min-width: 370px;
+
+          .ant-list-item {
+            padding: 4px 0;
+            margin: 0 auto;
+            // width: 360px;
+          }
+        }
+      }
+
+      .list {
+        height: 430px;
+      }
+
+      .store-tree {
+        padding: 0 10px;
+        box-sizing: border-box;
+
+        li span.ant-tree-checkbox {
+          float: right;
+        }
+
+        li.hidden {
+          display: none;
+        }
+
+        li .ant-tree-node-content-wrapper.ant-tree-node-selected {
+          background-color: transparent;
+        }
+      }
+
+      .empty-placeholder {
+        height: 100px;
+        margin: 80px 0 0 0;
+        padding-top: 60px;
+        background-image: url(/static/images/icons/icon_table_empty.png);
+        background-position: 50% 0;
+        background-repeat: no-repeat;
+        background-size: 60px 60px;
+        text-align: center;
+        line-height: 40px;
+      }
+
+      .footer {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        height: 60px;
+        padding: 0 15px;
+        border-top: 1px solid #e8e8e8;
+
+        .ant-btn {
+          margin-left: 10px;
+        }
+      }
+    }
+  }

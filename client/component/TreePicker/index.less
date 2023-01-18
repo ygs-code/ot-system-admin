@@ -1,0 +1,106 @@
+.tree-picker {
+  width: 900px;
+
+  .color {
+    color: #1890ff;
+  }
+
+  .ant-modal-body {
+    padding: 0;
+  }
+
+  &-select {
+    display: inline-block;
+    // margin: 0 5px;
+    margin-right: 10px;
+
+    span {
+      color: #1890ff;
+    }
+  }
+
+  &-content {
+    height: 500px;
+    width: 100%;
+    // border: 1px solid     #f0f0f0;
+
+    .tree-content {
+      .header {
+        width: 100%;
+        padding: 0 15px;
+        box-sizing: border-box;
+        border-bottom: 1px solid #f0f0f0;
+        overflow: visible;
+        min-height: 35px;
+
+        > div:nth-child(1) {
+          float: left;
+          height: 35px;
+          line-height: 35px;
+        }
+
+        > div:nth-child(2) {
+          float: right;
+          height: 35px;
+          line-height: 35px;
+        }
+
+        .select-all {
+          cursor: pointer;
+        }
+
+        .delete {
+          cursor: pointer;
+
+          svg {
+            margin-top: -7px;
+          }
+        }
+      }
+
+      .tree-content-list {
+        .ant-list-item {
+          padding: 0 10px 0 20px !important;
+          box-sizing: border-box;
+
+          .ant-list-item-action {
+            position: relative;
+
+            li {
+              position: relative;
+              top: 5px;
+            }
+          }
+        }
+
+        .ant-list-item:last-child {
+          border-bottom: 1px solid #f0f0f0;
+        }
+      }
+
+      .search {
+        width: 100%;
+        padding: 5px 0;
+        box-sizing: border-box;
+      }
+
+      > div {
+        width: 50%;
+        height: 500px;
+        overflow-y: auto;
+        display: inline-block;
+      }
+
+      > div:nth-child(1) {
+        box-sizing: border-box;
+        border-right: 1px #ccc solid;
+        height: 500px;
+
+        .tree-box {
+          padding: 10px;
+          box-sizing: border-box;
+        }
+      }
+    }
+  }
+}

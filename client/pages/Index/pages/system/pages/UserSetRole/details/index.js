@@ -1,10 +1,17 @@
 import "./index.less";
 
-import { message } from "antd";
-import { editUser, getUserInfo } from "client/assets/js/request";
+import { Input, message } from "antd";
+import {
+  editUser,
+  getRoleList,
+  getUserInfo,
+  getUserList
+} from "client/assets/js/request";
 import FormPage from "client/component/FormPage";
 import setBreadcrumbAndTitle from "client/component/setBreadcrumbAndTitle";
+import TableButton from "client/component/TableButton";
 import TablePicker from "client/component/TablePicker";
+import TreePicker from "client/component/TreePicker";
 import { mapRedux } from "client/redux";
 import { addRouterApi, routePaths } from "client/router";
 import React from "react";
@@ -111,9 +118,111 @@ class Index extends FormPage {
             // wrapperCol: { span: 10 },
 
             render: (props) => {
-              const { value } = props;
+              const { value, onChange } = props;
 
-              return <TablePicker></TablePicker>;
+              return (
+                <TablePicker
+                  buttonText="请选择角色"
+                  value={value}
+                  onChange={onChange}
+                  request={getRoleList}
+                  modalProps={{
+                    title: "设置角色"
+                  }}
+                  tableProps={{
+                    rowKey: "name",
+                    getSearchFields: () => {
+                      return [
+                        {
+                          label: "角色名称",
+                          name: "name",
+                          type: "input",
+                          span: 1
+                          // labelCol: { span: 5 },
+                          // wrapperCol: { span: 10 },
+                          // rules: [
+                          //   {
+                          //     required: true,
+                          //     message: "Please input your username1",
+                          //   },
+                          // ],
+                        },
+                        {
+                          label: "角色ID",
+                          name: "id",
+                          type: "input"
+                          // span: 2
+                          // labelCol: { span: 5 },
+                          // wrapperCol: { span: 10 }
+                          // rules: [
+                          //   {
+                          //     required: true,
+                          //     message: "Please input your username2",
+                          //   },
+                          // ],
+                        }
+                      ];
+                    },
+                    getColumns: () => {
+                      const {
+                        pushRoute,
+                        routePaths: { userManagementDetails } = {}
+                      } = this.props;
+                      return [
+                        {
+                          title: "角色ID",
+                          dataIndex: "id",
+                          key: "id"
+                        },
+                        {
+                          title: "角色名称",
+                          dataIndex: "name",
+                          key: "name"
+                        },
+                        {
+                          title: "描述",
+                          dataIndex: "description",
+                          key: "description"
+                        },
+                        // {
+                        //   title: "创建时间",
+                        //   dataIndex: "createTime",
+                        //   key: "createTime"
+                        // },
+                        // {
+                        //   title: "更新时间",
+                        //   dataIndex: "updateTime",
+                        //   key: "updateTime"
+                        // },
+                        {
+                          title: "操作",
+                          dataIndex: "actions",
+                          key: "actions",
+                          width: 180,
+                          render: (text, row) => {
+                            const { id } = row;
+
+                            return (
+                              <TableButton
+                                render={[
+                                  {
+                                    // showPopconfirm: true, // 是否需要弹窗提示
+                                    // confirmInfo: "你确定要发布该标签吗？", //弹窗信息
+                                    label: "查看角色用户权限", // 按钮文字
+                                    status: true, //权限控制
+                                    props: {
+                                      onClick: () => {}
+                                    }
+                                  }
+                                ]}
+                              />
+                            );
+                          }
+                        }
+                      ];
+                    }
+                  }}></TablePicker>
+              );
             },
             rules: [
               // {
@@ -202,7 +311,16 @@ class Index extends FormPage {
   componentDidMount() {}
   render() {
     return (
-      <div className="form-page account-management-details">
+      <div className="form-page user-set-role-details">
+        <TreePicker
+          openButton={false}
+          modalProps={{
+            open: true,
+            onCancel: () => {},
+            onOk: () => {}
+          }}
+        />
+
         {this.renderForm()}
       </div>
     );

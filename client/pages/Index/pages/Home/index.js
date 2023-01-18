@@ -152,7 +152,7 @@ class Index extends Component {
   };
 
   // 定义表头字段
-  getTableColumns = () => {
+  getColumns = () => {
     return [
       {
         title: "姓名",

@@ -41,7 +41,7 @@ import React from "react"; // , { memo, PureComponent }
 //   };
 
 //   // 定义表头字段
-//   // getTableColumns = () => {
+//   // getColumns = () => {
 //   //   return [];
 //   // };
 
@@ -65,8 +65,6 @@ import React from "react"; // , { memo, PureComponent }
 //   };
 
 //   componentDidMount() {
-//     // console.log(" this.searchForm = form;==", this.searchForm);
-//     // debugger;
 //   }
 
 //   renderSearch = (props = {}) => {
@@ -88,7 +86,7 @@ import React from "react"; // , { memo, PureComponent }
 //   renderTable = (props = {}) => {
 //     return (
 //       <Table
-//         columns={this.getTableColumns ? this.getTableColumns() : []}
+//         columns={this.getColumns ? this.getColumns() : []}
 //         dataSource={this.getDataSource()}
 //         // title={() => "Header"}
 //         // footer={() => "Footer"}
@@ -113,13 +111,16 @@ const tablePage = (Component) => {
     // };
     constructor(props) {
       super(props);
+      const { selectedRows = [], selectedRowKeys = [] } = this.state;
       this.state = {
         ...this.state,
         searchParams: {
           pageNum: 1,
           pageSize: 10
         },
-        tableData: {}
+        tableData: {},
+        selectedRows,
+        selectedRowKeys
       };
     }
 
@@ -141,7 +142,7 @@ const tablePage = (Component) => {
     };
 
     // // 定义表头字段
-    // getTableColumns = () => {
+    // getColumns = () => {
     //   return [];
     // };
 
@@ -185,8 +186,8 @@ const tablePage = (Component) => {
         },
 
         {
-          name: "getTableColumns",
-          message: "getTableColumns是抽象方法需要实现,请配置表格columns"
+          name: "getColumns",
+          message: "getColumns是抽象方法需要实现,请配置表格columns"
         }
       ];
 
@@ -252,15 +253,9 @@ const tablePage = (Component) => {
     };
 
     // getTableProps = () => {
-
     //   return {
     //     rowSelection: {
-    //       onChange: (selectedRowKeys, selectedRows) => {
-    //         console.log(
-    //           `selectedRowKeys: ${selectedRowKeys}`,
-    //           "selectedRows: ",
-    //           selectedRows
-    //         );
+    //       onChange: (selectedRows, selectedRowKeys) => {
     //       },
     //       getCheckboxProps: (record) => ({
     //         disabled: record.name === "Disabled User",
@@ -302,6 +297,12 @@ const tablePage = (Component) => {
       );
     };
 
+    onSelect = (selectedRows, selectedRowKeys) => {
+      this.setState({
+        selectedRows,
+        selectedRowKeys
+      });
+    };
     renderTable = (props = {}) => {
       const { tableData } = this.state;
       let { tableProps = {}, paginationProps = {} } = props;
@@ -312,14 +313,21 @@ const tablePage = (Component) => {
         ...(this.getTableProps ? this.getTableProps() : {})
       };
 
+      const { onSelect = () => {} } = tableProps;
+
       return (
         <Table
-          columns={this.getTableColumns ? this.getTableColumns() : []}
           tableProps={tableProps}
+          // {...tableProps}
+          columns={this.getColumns ? this.getColumns() : []}
           data={tableData}
           paginationProps={paginationProps}
           onChange={(searchParams) => {
             this.loadTableData(searchParams);
+          }}
+          onSelect={(selectedRows, selectedRowKeys) => {
+            this.onSelect(selectedRows, selectedRowKeys);
+            onSelect(selectedRows, selectedRowKeys);
           }}
         />
       );

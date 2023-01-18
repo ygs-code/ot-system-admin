@@ -1,35 +1,4 @@
 import { CheckDataType } from "./CheckDataType";
-// 递归treeData 会给 treeData 添加index 索引
-const recursionTreeData = (parameter, _index = null) => {
-  const {
-    treeData = [],
-    childrenCallback = () => {},
-    itemCallback = () => {}
-  } = parameter;
-  return treeData.map((item, index) => {
-    if (item.children && item.children.length >= 1) {
-      item = {
-        ...item,
-        children: recursionTreeData(
-          {
-            treeData: item.children,
-            childrenCallback,
-            itemCallback
-          },
-          _index === null ? `${index}` : `${_index}-${index}`
-        ),
-        index: _index === null ? `${index}` : `${_index}-${index}`
-      };
-      childrenCallback(item);
-    }
-    item = {
-      ...item,
-      index: _index === null ? `${index}` : `${_index}-${index}`
-    };
-    itemCallback(item);
-    return item;
-  });
-};
 
 // 过滤数据 可以用于搜索，包括父层的数据树形结构
 const filterTreeData = (
@@ -84,21 +53,20 @@ const deepCopy = (
 const findTreeData = (
   treeData, // 树形数组或者数组数据
   value, // 需要查找的value
-  key, // 需要查找数组对象的key
-  nextKey = "children"
+  key, //需要查找数组对象的key
+  findValue = null, //获取到的值，这个不用传
+  nextKey = "children" // 下一级的key，这个不用传
 ) => {
-  let findValue = null;
-  for (const item of treeData) {
-    if (item[key] === value) {
+  for (let item of treeData) {
+    if (value !== undefined && item[key] !== undefined && item[key] === value) {
       return item;
     }
     if (item && item[nextKey] && item[nextKey].length >= 1) {
-      findValue = findTreeData(item[nextKey], value, key, nextKey);
+      findValue = findTreeData(item[nextKey], value, key, findValue, nextKey);
     }
   }
   return findValue;
 };
-
 // 深度比较两个数据
 const diffData = (oldData, newData) => {
   let flag = true;
@@ -136,4 +104,37 @@ const diffData = (oldData, newData) => {
   }
   return flag;
 };
-export { deepCopy, diffData, filterTreeData, findTreeData, recursionTreeData };
+// 用于 查找 树 形结构数据，形成一个路劲数组
+const findTreePath = (options, path = []) => {
+  const {
+    treeData,
+    value,
+    valueKey,
+    nextKey = "children",
+    callback = () => {}
+  } = options;
+
+  for (var i = 0; i < treeData.length; i++) {
+    var tempPath = [...path];
+    tempPath.push(treeData[i]);
+    if (treeData[i][valueKey] === value) {
+      return tempPath;
+    }
+    if (treeData[i][nextKey] && treeData[i][nextKey].length) {
+      const reuslt = findTreePath(
+        {
+          treeData: treeData[i][nextKey],
+          value,
+          valueKey,
+          callback
+        },
+        tempPath
+      );
+      if (reuslt) {
+        callback(reuslt);
+        return reuslt;
+      }
+    }
+  }
+};
+export { deepCopy, diffData, filterTreeData, findTreeData, findTreePath };

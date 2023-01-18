@@ -1,249 +1,84 @@
 import "./index.less";
 
-import { Button, Input, Modal } from "antd";
-import { getUserList } from "client/assets/js/request";
-import TableButton from "client/component/TableButton";
+import { ExclamationCircleOutlined } from "@ant-design/icons";
+import { Button, Modal, Popconfirm } from "antd";
 import { tablePage } from "client/component/TablePage";
 import { addRouterApi } from "client/router";
 import React, { Component } from "react";
 
+const { confirm } = Modal;
 @addRouterApi
 @tablePage
 class TablePage extends Component {
   constructor(props) {
     super(props);
+
+    const { tableProps: { rowSelection: { selectedRowKeys = [] } = {} } = {} } =
+      this.props;
+
     this.state = {
-      tableData: {
-        list: [{ title: "你好" }]
-      },
-      dataSource: []
+      selectedRowKeys
     };
   }
 
-  // // 获取默认搜索参数
-  // getDefaultSearchParams = () => {
-  //   return {
-  //     status: ""
-  //   };
-  // };
-
   // 定义搜索栏字段
   getSearchFields() {
-    return [
-      {
-        label: "用户名称",
-        name: "name",
-        type: "input",
-        span: 1
-        // labelCol: { span: 5 },
-        // wrapperCol: { span: 10 },
-        // rules: [
-        //   {
-        //     required: true,
-        //     message: "Please input your username1",
-        //   },
-        // ],
-      },
-      {
-        label: "用户ID",
-        name: "id",
-        type: "input"
-        // span: 2
-        // labelCol: { span: 5 },
-        // wrapperCol: { span: 10 }
-        // rules: [
-        //   {
-        //     required: true,
-        //     message: "Please input your username2",
-        //   },
-        // ],
-      },
-      {
-        label: "用户Email",
-        name: "email",
-        type: "input",
-        // span: 3,
-        // labelCol: { span: 3 },
-        // wrapperCol: { span: 25 },
-        render: (props) => {
-          return <Input {...props}></Input>;
-        }
-        // rules: [
-        //   {
-        //     required: true,
-        //     message: "Please input your username3",
-        //   },
-        // ],
-      },
-      {
-        label: "用户手机",
-        name: "phone",
-        type: "input",
-        render: (props) => {
-          return <Input {...props}></Input>;
-        }
-        // rules: [
-        //   {
-        //     required: true,
-        //     message: "Please input your username3",
-        //   },
-        // ],
-      },
-      {
-        label: "用户类型",
-        name: "type",
-        type: "select",
-        props: {
-          options: [
-            {
-              label: "全部类型",
-              value: ""
-            },
-            {
-              label: "管理员",
-              value: "1"
-            },
-            {
-              label: "会员",
-              value: "2"
-            }
-          ]
-        },
-        itemProps: {},
-        options: {}
-        // labelCol: { span: 5 },
-        // wrapperCol: { span: 10 },
-      }
-    ];
+    const { searchFields = [], getSearchFields = () => ({}) } = this.props;
+
+    return searchFields.length ? searchFields : getSearchFields(this);
   }
 
   // 定义Tab字段
   getTabFilterItems = () => {
-    return [];
+    const { tabFilterItems = [], getTabFilterItems = () => ({}) } = this.props;
+    return tabFilterItems.length ? tabFilterItems : getTabFilterItems(this);
   };
 
   // 定义表头字段
-  getTableColumns = () => {
-    const { pushRoute, routePaths: { userSetRoleDetails } = {} } = this.props;
-    return [
-      {
-        title: "用户ID",
-        dataIndex: "id",
-        key: "id"
-      },
-      {
-        title: "用户名称",
-        dataIndex: "name",
-        key: "name"
-      },
-      // {
-      //   title: "Email",
-      //   dataIndex: "email",
-      //   key: "email"
-      // },
-      // {
-      //   title: "手机",
-      //   dataIndex: "phone",
-      //   key: "phone"
-      // },
-
-      // {
-      //   title: "创建时间",
-      //   dataIndex: "createTime",
-      //   key: "createTime"
-      // },
-      // {
-      //   title: "更新时间",
-      //   dataIndex: "updateTime",
-      //   key: "updateTime"
-      // },
-      {
-        title: "操作",
-        dataIndex: "actions",
-        key: "actions",
-        width: 300,
-        render: (text, row) => {
-          const { id } = row;
-
-          return (
-            <TableButton
-              render={[
-                {
-                  // showPopconfirm: true, // 是否需要弹窗提示
-                  // confirmInfo: "你确定要发布该标签吗？", //弹窗信息
-                  label: "编辑", // 按钮文字
-                  status: true, //权限控制
-                  props: {
-                    onClick: () => {
-                      pushRoute({
-                        path: userSetRoleDetails,
-                        params: {
-                          action: "edit",
-                          id
-                        } // 地址传参
-                      });
-                    }
-                  }
-                },
-                {
-                  // showPopconfirm: true, // 是否需要弹窗提示
-                  // confirmInfo: "你确定要发布该标签吗？", //弹窗信息
-                  label: "查看拥有角色", // 按钮文字
-                  status: true, //权限控制
-                  props: {
-                    onClick: () => {}
-                  }
-                },
-                {
-                  // showPopconfirm: true, // 是否需要弹窗提示
-                  // confirmInfo: "你确定要发布该标签吗？", //弹窗信息
-                  label: "查看拥有权限", // 按钮文字
-                  status: true, //权限控制
-                  props: {
-                    onClick: () => {}
-                  }
-                }
-              ]}
-            />
-          );
-        }
-      }
-    ];
+  getColumns = () => {
+    const { columns = [], getColumns = () => ({}) } = this.props;
+    return columns.length ? columns : getColumns(this);
   };
 
   /**
    * 定义表格的数据加载功能
    */
   tableDataLoader = async (searchParams = {}) => {
-    // console.log("searchParams==", searchParams);
-    // debugger;
-    const { data } = await getUserList(searchParams);
+    const { request = () => {} } = this.props;
+    const { data } = await request(searchParams);
 
-    return data;
+    return {
+      ...data,
+      list: (() => {
+        // for (let i = 0; i < 100; i++) {
+        //   data.list.push(data.list[0]);
+        // }
+        return data.list;
+      })()
+    };
   };
 
   getTableProps = () => {
+    const { tableProps = {}, getTableProps = () => ({}) } = this.props;
+    // const { onSelect = () => {} } = tableProps;
+    // const { onSelect: $onSelect = () => {} } = getTableProps();
     return {
+      ...tableProps,
+      ...getTableProps(),
       isShowSelect: true
-      // rowSelection: {
-      //   onChange: (selectedRowKeys, selectedRows) => {
-      //     console.log(
-      //       `selectedRowKeys: ${selectedRowKeys}`,
-      //       "selectedRows: ",
-      //       selectedRows
-      //     );
-      //   },
-      //   getCheckboxProps: (record) => ({
-      //     disabled: record.name === "Disabled User",
-      //     // Column configuration not to be checked
-      //     name: record.name
-      //   })
+      // onSelect: (selectedRowKeys,selectedRows ) => {
+      //   onSelect(selectedRowKeys,selectedRows );
+      //   $onSelect(selectedRowKeys,selectedRows );
+      //   this.setState({
+      //     isOnSelect: true
+      //   });
       // }
     };
   };
 
   componentDidMount() {}
   render() {
+    const { tableProps: { rowKey } = {} } = this.props;
     return (
       <div className="table-page">
         {this.renderSearch({
@@ -257,7 +92,7 @@ class TablePage extends Component {
         })}
 
         {this.renderTable({
-          rowKey: "id"
+          rowKey
         })}
       </div>
     );
@@ -267,55 +102,181 @@ class TablePage extends Component {
 class Index extends Component {
   constructor(props) {
     super(props);
+    const { value = [], tableProps = {} } = this.props;
+    const { rowKey } = tableProps;
+    let selectedRows = value;
+    let selectedRowKeys = value.map((item) => {
+      return item[rowKey];
+    });
     this.state = {
-      isModalOpen: false
+      loading: false,
+      isModalOpen: false,
+      isOnSelect: false,
+      cacheSelectedRows: selectedRows,
+      cacheSelectedRowKeys: value.map((item) => {
+        return item[rowKey];
+      }),
+      selectedRows,
+      selectedRowKeys
     };
   }
 
   componentDidMount() {}
   showModal = async () => {
     const { modalProps: { showModal = () => {} } = {} } = this.props;
+    this.setState(() => ({
+      loading: true
+    }));
     await showModal();
     this.setState({
-      isModalOpen: true
+      isModalOpen: true,
+      loading: false
     });
   };
   onOk = async () => {
-    const { modalProps: { onOk = () => {} } = {} } = this.props;
-    await onOk();
-    this.setState({
-      isModalOpen: false
+    const { modalProps: { onOk = () => {} } = {}, onChange = () => {} } =
+      this.props;
+    const {
+      cacheSelectedRows,
+      cacheSelectedRowKeys,
+      selectedRows,
+      selectedRowKeys
+    } = this.state;
+    this.setState(() => ({
+      loading: true
+    }));
+    await onOk({
+      cacheSelectedRows,
+      cacheSelectedRowKeys,
+      selectedRows,
+      selectedRowKeys,
+      isOnSelect: false
     });
+    this.setState({
+      isModalOpen: false,
+      loading: false,
+      cacheSelectedRows: selectedRows,
+      cacheSelectedRowKeys: selectedRowKeys,
+      isOnSelect: false
+    });
+
+    onChange(selectedRows, selectedRowKeys);
   };
   onCancel = async () => {
     const { modalProps: { onCancel = () => {} } = {} } = this.props;
-    await onCancel();
-    this.setState({
-      isModalOpen: false
+    const {
+      isOnSelect,
+      cacheSelectedRows,
+      cacheSelectedRowKeys,
+      selectedRows,
+      selectedRowKeys
+    } = this.state;
+    isOnSelect &&
+      (await new Promise((resolve, reject) => {
+        confirm({
+          icon: <ExclamationCircleOutlined />,
+          content: "已选数据已更改，但未保存，您确定关闭吗？",
+          onOk() {
+            resolve();
+          },
+          onCancel() {
+            reject();
+          }
+        });
+      }));
+
+    await onCancel({
+      cacheSelectedRows,
+      cacheSelectedRowKeys,
+      selectedRows,
+      selectedRowKeys,
+      isOnSelect: false
     });
+
+    this.setState({
+      isModalOpen: false,
+      loading: false,
+      selectedRows: cacheSelectedRows,
+      selectedRowKeys: cacheSelectedRowKeys,
+      isOnSelect: false
+    });
+  };
+  onSelect = (selectedRows, selectedRowKeys) => {
+    const { tableProps = {} } = this.props;
+
+    const { onSelect = () => {} } = tableProps;
+    this.setState({
+      isOnSelect: true,
+      selectedRows,
+      selectedRowKeys
+    });
+
+    onSelect(selectedRows, selectedRowKeys);
   };
   render() {
     const {
       modalProps = {},
-      buttonText = "打开弹窗",
-      tableProps = {}
+      buttonText = "请选择",
+      tableProps = {},
+      value = [],
+      request,
+      openButton = true
     } = this.props;
-    const { isModalOpen } = this.state;
+    const { isModalOpen, isOnSelect, loading, selectedRowKeys } = this.state;
 
     return (
       <div className="table-picker">
-        <Button type="primary" onClick={this.showModal}>
-          {buttonText}
-        </Button>
+        {openButton ? (
+          <>
+            <Button type="primary" onClick={this.showModal}>
+              {buttonText}
+            </Button>
+            <div>
+              <div key={"selected"} className="table-picker-select">
+                已选: <span>({selectedRowKeys.length})</span>
+              </div>
+            </div>
+          </>
+        ) : null}
+
         <Modal
+          destroyOnClose={true}
           width={800}
           title="Modal标题"
           open={isModalOpen}
-          {...modalProps}
+          onCancel={this.onCancel}
           onOk={this.onOk}
-          onCancel={this.onCancel}>
+          {...modalProps}
+          footer={[
+            <div key={"selected"} className="table-picker-select">
+              已选: <span>({selectedRowKeys.length})</span>
+            </div>,
+            <Button key="back" loading={loading} onClick={this.onCancel}>
+              关闭
+            </Button>,
+            <Button
+              key="submit"
+              type="primary"
+              loading={loading}
+              onClick={this.onOk}>
+              确定
+            </Button>
+          ]}>
           <div className="table-picker-content">
-            <TablePage {...tableProps} />
+            <div className="table-picker-content-table">
+              <TablePage
+                request={request}
+                {...tableProps}
+                tableProps={{
+                  ...tableProps,
+                  onSelect: this.onSelect,
+                  rowSelection: {
+                    selectedRowKeys,
+                    defaultSelectedRowKeys: selectedRowKeys
+                  }
+                }}
+              />
+            </div>
           </div>
         </Modal>
       </div>

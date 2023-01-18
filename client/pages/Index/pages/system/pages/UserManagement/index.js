@@ -54,7 +54,7 @@ class Index extends Component {
   // };
 
   // 定义搜索栏字段
-  getSearchFields() {
+  getSearchFields = () => {
     return [
       {
         label: "用户名称",
@@ -141,7 +141,7 @@ class Index extends Component {
         // wrapperCol: { span: 10 },
       }
     ];
-  }
+  };
 
   // 定义Tab字段
   getTabFilterItems = () => {
@@ -149,7 +149,7 @@ class Index extends Component {
   };
 
   // 定义表头字段
-  getTableColumns = () => {
+  getColumns = () => {
     const { pushRoute, routePaths: { userManagementDetails } = {} } =
       this.props;
     return [

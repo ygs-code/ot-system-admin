@@ -86,6 +86,38 @@ export default [
             children: []
           }
         ]
+      },
+      {
+        path: "/user-permission",
+        name: "userPermission",
+        entry: "/pages/Index/pages/system/pages/UserPermission/index.js",
+        level: 2,
+        children: [
+          {
+            path: "/details/:action/:id?",
+            name: "userPermissionDetails",
+            entry:
+              "/pages/Index/pages/system/pages/UserPermission/details/index.js",
+            level: 2,
+            children: []
+          }
+        ]
+      },
+      {
+        path: "/role-set-permission",
+        name: "roleSetPermission",
+        entry: "/pages/Index/pages/system/pages/RoleSetPermission/index.js",
+        level: 2,
+        children: [
+          {
+            path: "/details/:action/:id?",
+            name: "roleSetPermissionDetails",
+            entry:
+              "/pages/Index/pages/system/pages/RoleSetPermission/details/index.js",
+            level: 2,
+            children: []
+          }
+        ]
       }
     ]
   }

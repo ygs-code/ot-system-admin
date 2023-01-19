@@ -3,9 +3,11 @@ import "./index.less";
 import { Input, message } from "antd";
 import {
   editUser,
+  getPermissionList,
   getRoleList,
   getUserInfo,
-  getUserList
+  getUserList,
+  getUserRoleList
 } from "client/assets/js/request";
 import FormPage from "client/component/FormPage";
 import setBreadcrumbAndTitle from "client/component/setBreadcrumbAndTitle";
@@ -14,14 +16,24 @@ import TablePicker from "client/component/TablePicker";
 import TreePicker from "client/component/TreePicker";
 import { mapRedux } from "client/redux";
 import { addRouterApi, routePaths } from "client/router";
-import React from "react";
+import {
+  deepCopy,
+  filterTreeData,
+  findTreeData,
+  findTreePath,
+  recursionTreeData
+} from "client/utils";
+import React, { Children } from "react";
+
+import data from "./data";
 
 class Index extends FormPage {
   constructor(props) {
     super(props);
     this.state = {
       ...this.defaultState(),
-      data: {}
+      data: {},
+      authOpen: false
     };
   }
   /**
@@ -31,6 +43,31 @@ class Index extends FormPage {
   mapInitData = async (initData) => {
     return initData;
   };
+  transformTreeData = (data, treeData = []) => {
+    if (!data.length) {
+      return treeData;
+    }
+    let addIds = [];
+
+    for (let [index, item] of data.entries()) {
+      const { parentId, id } = item;
+      if (parentId === null) {
+        addIds.push(id);
+        treeData.push(item);
+      } else {
+        const data = findTreeData(treeData, parentId, "id", "children");
+        if (data) {
+          const { children = [] } = data;
+          data.children = [...children, item];
+          addIds.push(id);
+        }
+      }
+    }
+    data = data.filter((item) => {
+      return !addIds.includes(item.id);
+    });
+    return this.transformTreeData(data, treeData);
+  };
   // 初始化值
   getInitialValues = async () => {
     const {
@@ -38,7 +75,7 @@ class Index extends FormPage {
         params: { id }
       }
     } = this.props;
-    console.log("this.props=", this.props);
+
     const { data: { user = {} } = {} } = await getUserInfo({
       id
     });
@@ -211,7 +248,11 @@ class Index extends FormPage {
                                     label: "查看角色用户权限", // 按钮文字
                                     status: true, //权限控制
                                     props: {
-                                      onClick: () => {}
+                                      onClick: () => {
+                                        this.setState({
+                                          authOpen: true
+                                        });
+                                      }
                                     }
                                   }
                                 ]}
@@ -222,6 +263,55 @@ class Index extends FormPage {
                       ];
                     }
                   }}></TablePicker>
+              );
+            },
+            rules: [
+              // {
+              //   required: true,
+              //   message: "Please input your username1"
+              // }
+            ]
+          },
+          {
+            label: "查看权限",
+            name: "authority",
+            // type: "input",
+            // labelCol: { span: 5 },
+            // wrapperCol: { span: 10 },
+
+            render: (props) => {
+              const { value, onChange } = props;
+
+              return (
+                <TreePicker
+                  readOnly={true}
+                  value={value}
+                  onChange={onChange}
+                  // openButton={false}
+                  requestParameter={{
+                    pageNum: 1,
+                    pageSize: 10000
+                  }}
+                  promiseRequest={getPermissionList}
+                  searchKeys={["name", "id"]}
+                  totalTitle={"一共有{n}条数据"}
+                  selectedTitle={"已选{n}条数据"}
+                  valueKey="id"
+                  titleKey="name"
+                  nextLevelKey="children"
+                  dataMapper={(data) => {
+                    data = this.transformTreeData(data.data.list);
+
+                    return data;
+                  }}
+                  modalProps={
+                    {
+                      // open: true,
+                      // onCancel: () => {},
+                      // onOk: () => {}
+                    }
+                  }
+                />
               );
             },
             rules: [
@@ -310,14 +400,40 @@ class Index extends FormPage {
   // };
   componentDidMount() {}
   render() {
+    const { authOpen } = this.state;
     return (
       <div className="form-page user-set-role-details">
         <TreePicker
+          readOnly
           openButton={false}
+          requestParameter={{
+            pageNum: 1,
+            pageSize: 10000
+          }}
+          promiseRequest={getPermissionList}
+          searchKeys={["name", "code"]}
+          totalTitle={"一共有{n}条数据"}
+          selectedTitle={"已选{n}条数据"}
+          valueKey="code"
+          titleKey="name"
+          nextLevelKey="children"
+          dataMapper={() => {
+            // data = this.transformTreeData(data.data.list);
+            return data;
+          }}
           modalProps={{
-            open: true,
-            onCancel: () => {},
-            onOk: () => {}
+            title: "权限查看",
+            open: authOpen,
+            onCancel: async () => {
+              this.setState({
+                authOpen: false
+              });
+            },
+            onOk: async () => {
+              this.setState({
+                authOpen: false
+              });
+            }
           }}
         />
 

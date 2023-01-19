@@ -70,7 +70,7 @@ class TablePage extends Component {
       //   onSelect(selectedRowKeys,selectedRows );
       //   $onSelect(selectedRowKeys,selectedRows );
       //   this.setState({
-      //     isOnSelect: true
+      //     valueChanged: true
       //   });
       // }
     };
@@ -111,7 +111,7 @@ class Index extends Component {
     this.state = {
       loading: false,
       isModalOpen: false,
-      isOnSelect: false,
+      valueChanged: false,
       cacheSelectedRows: selectedRows,
       cacheSelectedRowKeys: value.map((item) => {
         return item[rowKey];
@@ -150,14 +150,14 @@ class Index extends Component {
       cacheSelectedRowKeys,
       selectedRows,
       selectedRowKeys,
-      isOnSelect: false
+      valueChanged: false
     });
     this.setState({
       isModalOpen: false,
       loading: false,
       cacheSelectedRows: selectedRows,
       cacheSelectedRowKeys: selectedRowKeys,
-      isOnSelect: false
+      valueChanged: false
     });
 
     onChange(selectedRows, selectedRowKeys);
@@ -165,13 +165,13 @@ class Index extends Component {
   onCancel = async () => {
     const { modalProps: { onCancel = () => {} } = {} } = this.props;
     const {
-      isOnSelect,
+      valueChanged,
       cacheSelectedRows,
       cacheSelectedRowKeys,
       selectedRows,
       selectedRowKeys
     } = this.state;
-    isOnSelect &&
+    valueChanged &&
       (await new Promise((resolve, reject) => {
         confirm({
           icon: <ExclamationCircleOutlined />,
@@ -190,7 +190,7 @@ class Index extends Component {
       cacheSelectedRowKeys,
       selectedRows,
       selectedRowKeys,
-      isOnSelect: false
+      valueChanged: false
     });
 
     this.setState({
@@ -198,7 +198,7 @@ class Index extends Component {
       loading: false,
       selectedRows: cacheSelectedRows,
       selectedRowKeys: cacheSelectedRowKeys,
-      isOnSelect: false
+      valueChanged: false
     });
   };
   onSelect = (selectedRows, selectedRowKeys) => {
@@ -206,7 +206,7 @@ class Index extends Component {
 
     const { onSelect = () => {} } = tableProps;
     this.setState({
-      isOnSelect: true,
+      valueChanged: true,
       selectedRows,
       selectedRowKeys
     });
@@ -222,7 +222,7 @@ class Index extends Component {
       request,
       openButton = true
     } = this.props;
-    const { isModalOpen, isOnSelect, loading, selectedRowKeys } = this.state;
+    const { isModalOpen, valueChanged, loading, selectedRowKeys } = this.state;
 
     return (
       <div className="table-picker">

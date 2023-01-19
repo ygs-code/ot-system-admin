@@ -1,20 +1,28 @@
 import { CheckDataType } from "./CheckDataType";
 
+const recursionTreeData = (
+  treeData,
+  callback = () => {},
+  nextLevelKey = "children"
+) => {
+  for (let item of treeData) {
+    if (item[nextLevelKey] && item[nextLevelKey].length >= 1) {
+      recursionTreeData(item[nextLevelKey], callback, nextLevelKey);
+    }
+
+    callback(item);
+  }
+};
+
 // 过滤数据 可以用于搜索，包括父层的数据树形结构
 const filterTreeData = (
   data = [], // 树形数组对象
   filterCallback = () => true, // 条件的回调函数
   nexKey = "children",
   _index = null
-) =>
-  data.filter((item, index) => {
+) => {
+  return data.filter((item, index) => {
     if (item[nexKey] && item[nexKey].length >= 1) {
-      item[nexKey] = filterTreeData(
-        item[nexKey],
-        filterCallback,
-        nexKey,
-        _index === null ? `${index}` : `${_index}-${index}`
-      );
       if (
         filterCallback(
           item,
@@ -23,13 +31,22 @@ const filterTreeData = (
       ) {
         return true;
       }
+      item.children = filterTreeData(
+        item[nexKey],
+        filterCallback,
+        nexKey,
+        _index === null ? `${index}` : `${_index}-${index}`
+      );
       return item[nexKey] && item[nexKey].length >= 1;
     }
+
     return filterCallback(
       item,
       _index === null ? `${index}` : `${_index}-${index}`
     );
   });
+};
+
 // 复杂类型数据，深拷贝
 const deepCopy = (
   source, // 来源数据
@@ -54,15 +71,15 @@ const findTreeData = (
   treeData, // 树形数组或者数组数据
   value, // 需要查找的value
   key, //需要查找数组对象的key
-  findValue = null, //获取到的值，这个不用传
-  nextKey = "children" // 下一级的key，这个不用传
+  nextKey = "children", // 下一级的key，这个不用传
+  findValue = null //获取到的值，这个不用传
 ) => {
   for (let item of treeData) {
     if (value !== undefined && item[key] !== undefined && item[key] === value) {
       return item;
     }
     if (item && item[nextKey] && item[nextKey].length >= 1) {
-      findValue = findTreeData(item[nextKey], value, key, findValue, nextKey);
+      findValue = findTreeData(item[nextKey], value, key, nextKey, findValue);
     }
   }
   return findValue;
@@ -137,4 +154,11 @@ const findTreePath = (options, path = []) => {
     }
   }
 };
-export { deepCopy, diffData, filterTreeData, findTreeData, findTreePath };
+export {
+  deepCopy,
+  diffData,
+  filterTreeData,
+  findTreeData,
+  findTreePath,
+  recursionTreeData
+};

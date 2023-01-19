@@ -45,33 +45,94 @@ const ItemChild = (props) => {
   } = props;
   type = type.toLowerCase();
 
+  const { readOnly, disabled } = formProps;
+
   const mapTpye = {
     textarea: (
-      <TextArea {...formProps} value={value} onChange={onChange} rows={4} />
+      <TextArea
+        {...formProps}
+        disabled={readOnly || disabled}
+        value={value}
+        onChange={onChange}
+        rows={4}
+      />
     ),
-    input: <Input {...formProps} value={value} onChange={onChange}></Input>,
+    input: (
+      <Input
+        {...formProps}
+        disabled={readOnly || disabled}
+        value={value}
+        onChange={onChange}></Input>
+    ),
     inputnumber: (
       <InputNumber
         {...formProps}
+        disabled={readOnly || disabled}
         value={value}
         onChange={onChange}></InputNumber>
     ),
-    radio: <Radio {...formProps} value={value} onChange={onChange}></Radio>,
-    rate: <Rate {...formProps} value={value} onChange={onChange}></Rate>,
-    select: <Select {...formProps} value={value} onChange={onChange}></Select>,
-    switch: <Switch {...formProps} value={value} onChange={onChange}></Switch>,
-    slider: <Slider {...formProps} value={value} onChange={onChange}></Slider>,
+    radio: (
+      <Radio
+        {...formProps}
+        disabled={readOnly || disabled}
+        value={value}
+        onChange={onChange}></Radio>
+    ),
+    rate: (
+      <Rate
+        {...formProps}
+        disabled={readOnly || disabled}
+        value={value}
+        onChange={onChange}></Rate>
+    ),
+    select: (
+      <Select
+        {...formProps}
+        disabled={readOnly || disabled}
+        value={value}
+        onChange={onChange}></Select>
+    ),
+    switch: (
+      <Switch
+        {...formProps}
+        disabled={readOnly || disabled}
+        value={value}
+        onChange={onChange}></Switch>
+    ),
+    slider: (
+      <Slider
+        {...formProps}
+        disabled={readOnly || disabled}
+        value={value}
+        onChange={onChange}></Slider>
+    ),
     timepicker: (
-      <TimePicker {...formProps} value={value} onChange={onChange}></TimePicker>
+      <TimePicker
+        {...formProps}
+        disabled={readOnly || disabled}
+        value={value}
+        onChange={onChange}></TimePicker>
     ),
     transfer: (
-      <Transfer {...formProps} value={value} onChange={onChange}></Transfer>
+      <Transfer
+        {...formProps}
+        disabled={readOnly || disabled}
+        value={value}
+        onChange={onChange}></Transfer>
     ),
     checkbox: (
-      <Checkbox {...formProps} value={value} onChange={onChange}></Checkbox>
+      <Checkbox
+        {...formProps}
+        disabled={readOnly || disabled}
+        value={value}
+        onChange={onChange}></Checkbox>
     ),
     password: (
-      <Password {...formProps} value={value} onChange={onChange}></Password>
+      <Password
+        {...formProps}
+        disabled={readOnly || disabled}
+        value={value}
+        onChange={onChange}></Password>
     )
   };
 

@@ -1,7 +1,7 @@
 .tree-picker {
   width: 900px;
 
-  .color {
+  &-color {
     color: #1890ff;
   }
 
@@ -17,6 +17,10 @@
     span {
       color: #1890ff;
     }
+  }
+
+  &-select-all {
+    cursor: pointer;
   }
 
   &-content {
@@ -45,10 +49,6 @@
           line-height: 35px;
         }
 
-        .select-all {
-          cursor: pointer;
-        }
-
         .delete {
           cursor: pointer;
 
@@ -58,10 +58,25 @@
         }
       }
 
+      .site-tree-search-value {
+        color: #f50;
+      }
+
+      .selected-tree {
+        color: #009e96;
+      }
+
       .tree-content-list {
         .ant-list-item {
           padding: 0 10px 0 20px !important;
           box-sizing: border-box;
+
+          .list-text {
+            width: 100%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+          }
 
           .ant-list-item-action {
             position: relative;
@@ -93,11 +108,11 @@
 
       > div:nth-child(1) {
         box-sizing: border-box;
-        border-right: 1px #ccc solid;
+        border-right: 1px #f0f0f0 solid;
         height: 500px;
 
         .tree-box {
-          padding: 10px;
+          padding: 10px 0 10px 10px;
           box-sizing: border-box;
         }
       }

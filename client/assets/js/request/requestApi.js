@@ -516,3 +516,42 @@ export const editUserRole = (parameter = {}) => {
     }
   );
 };
+
+// 获取角色_权限列表
+export const getRolePermissionList = (parameter = {}) => {
+  // const { type = "" } = parameter;
+
+  // const { type, pageName = 1, pageSize = 10 } = parameter;
+
+  return query(
+    "getRolePermissionList",
+    `
+    query($parameter: ListInfoInput!){
+      getRolePermissionList(parameter: $parameter) {
+          code
+          data {
+            hasNextPage
+            pageNum
+            pageSize
+            pages
+            total
+            list{
+              id
+              permissionId
+              roleId 
+              createTime
+              updateTime
+            }
+          }
+          message
+        } 
+    }
+  `,
+    {
+      parameter
+    },
+    {
+      filterData: true
+    }
+  );
+};

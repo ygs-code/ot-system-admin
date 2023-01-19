@@ -16,8 +16,8 @@ import {
   diffData,
   filterTreeData,
   findTreeData,
-  // recursionTreeData,
-  findTreePath
+  findTreePath,
+  recursionTreeData
 } from "./ergodic";
 import { getBaseInitState } from "./getBaseInitState";
 // import {FloatingBall} from './FloatingBall';
@@ -51,6 +51,7 @@ export {
   firstToUpper,
   getBaseInitState,
   getStyle, // 获取样式
+  recursionTreeData,
   // recursionTreeData, // 递归循环树数据
   stabilization, // 防抖函数
   statusThrottle, //  状态拦截器

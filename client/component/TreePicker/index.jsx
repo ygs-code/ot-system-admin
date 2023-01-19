@@ -175,9 +175,10 @@ const TreeContent = (props) => {
 
     if (isSelectLastHasParent) {
       let $$checkedKeys = [...$checkedKeys];
+
       for (let item of $checkedKeys) {
         const treePath = findTreePath({
-          treeData,
+          treeData: cacheTreeData,
           value: item,
           valueKey,
           nextKey: nextLevelKey
@@ -229,7 +230,7 @@ const TreeContent = (props) => {
     }
 
     const treePath = findTreePath({
-      treeData,
+      treeData: cacheTreeData,
       value: item[valueKey],
       valueKey,
       nextKey: nextLevelKey
@@ -311,11 +312,12 @@ const TreeContent = (props) => {
 
   const getTitle = (item) => {
     const treePath = findTreePath({
-      treeData,
+      treeData: cacheTreeData,
       value: item[valueKey],
       valueKey,
       nextKey: nextLevelKey
     });
+
     const title = treePath.map((item) => item[titleKey]).join(" - ");
 
     return (
@@ -396,8 +398,9 @@ const TreeContent = (props) => {
               placeholder="搜索门店名称/编码"
               name="keyword"
               {...searchProps}
-              onSearch={(v) => {
-                console.log("onSearch");
+              onSearch={({ target }) => {
+             
+                onSearch(target.value);
               }}
               onChange={({ target }) => {
                 onSearch(target.value);
@@ -538,7 +541,6 @@ class Index extends Component {
       }),
       selectedRows,
       selectedRowKeys,
-
       value: {},
       cacheValue: {}
     };
@@ -623,11 +625,12 @@ class Index extends Component {
       tableProps = {},
       request,
       openButton = true,
-      readOnly
+      readOnly,
+      isSelectLast = true
     } = this.props;
     const {
       isModalOpen,
-      value: { checkedChildrenKeys = [] } = {},
+      value: { checkedChildrenKeys = [], checkedKeys = [] } = {},
       loading,
       selectedRowKeys
     } = this.state;
@@ -641,7 +644,14 @@ class Index extends Component {
             </Button>
             <div>
               <div key={"selected"} className="tree-picker-select">
-                已选: <span>({checkedChildrenKeys.length})</span>
+                已选:{" "}
+                <span>
+                  (
+                  {isSelectLast
+                    ? checkedChildrenKeys.length
+                    : checkedKeys.length}
+                  )
+                </span>
               </div>
             </div>
           </>

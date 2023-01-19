@@ -168,7 +168,7 @@ export default memo((props) => {
 
               {
                 title: "角色&权限",
-                url: routePaths.userPermission, // 路由地址
+                url: routePaths.rolePermission, // 路由地址
                 // iconComponent: <HomeOutlined/>,
                 key: "6",
                 children: [

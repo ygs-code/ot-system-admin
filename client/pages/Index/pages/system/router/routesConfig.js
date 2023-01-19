@@ -88,16 +88,16 @@ export default [
         ]
       },
       {
-        path: "/user-permission",
-        name: "userPermission",
-        entry: "/pages/Index/pages/system/pages/UserPermission/index.js",
+        path: "/role-permission",
+        name: "rolePermission",
+        entry: "/pages/Index/pages/system/pages/RolePermission/index.js",
         level: 2,
         children: [
           {
             path: "/details/:action/:id?",
-            name: "userPermissionDetails",
+            name: "rolePermissionDetails",
             entry:
-              "/pages/Index/pages/system/pages/UserPermission/details/index.js",
+              "/pages/Index/pages/system/pages/RolePermission/details/index.js",
             level: 2,
             children: []
           }

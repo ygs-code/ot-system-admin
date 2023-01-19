@@ -9,9 +9,9 @@ import {
   findTreePath,
   recursionTreeData
 } from "client/utils";
-import React from "react";
+import React, { useEffect } from "react";
 
-export default (props) => {
+const Picker = (props) => {
   const transformTreeData = (data, treeData = []) => {
     if (!data.length) {
       return treeData;
@@ -74,4 +74,9 @@ export default (props) => {
       }}
     />
   );
+};
+
+export default (props) => {
+  useEffect(() => {}, []);
+  return <Picker {...props} />;
 };

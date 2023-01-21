@@ -12,8 +12,6 @@ export default {
   userSetRole: "/system/user-set-role",
   rolePermissionDetails: "/system/role-permission/details/:action/:id?",
   rolePermission: "/system/role-permission",
-  roleSetPermissionDetails: "/system/role-set-permission/details/:action/:id?",
-  roleSetPermission: "/system/role-set-permission",
   system: "/system",
   home: "/home",
   index: "/",

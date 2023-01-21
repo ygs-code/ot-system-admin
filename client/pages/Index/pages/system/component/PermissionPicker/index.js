@@ -1,15 +1,12 @@
 import "./index.less";
 
-import { getPermissionList } from "client/assets/js/request";
-import TreePicker from "client/component/TreePicker";
 import {
-  deepCopy,
-  filterTreeData,
-  findTreeData,
-  findTreePath,
-  recursionTreeData
-} from "client/utils";
-import React, { useEffect } from "react";
+  getPermissionList,
+  getRolePermissionList
+} from "client/assets/js/request";
+import TreePicker from "client/component/TreePicker";
+import { findTreeData } from "client/utils";
+import React, { useEffect, useState } from "react";
 
 const Picker = (props) => {
   const transformTreeData = (data, treeData = []) => {
@@ -37,10 +34,12 @@ const Picker = (props) => {
     });
     return transformTreeData(data, treeData);
   };
+
   return (
     <TreePicker
       //   readOnly
-      // openButton={false}
+      //   openButton={false}
+      {...props}
       isSelectLast={false}
       isSelectLastHasParent
       requestParameter={{
@@ -77,6 +76,24 @@ const Picker = (props) => {
 };
 
 export default (props) => {
-  useEffect(() => {}, []);
+  const { roleId, onChange } = props;
+
+  useEffect(() => {
+    getRolePermissionList({
+      roleId,
+      pageNum: 1,
+      pageSize: 10000
+    }).then((data) => {
+      const { data: { list = [] } = {} } = data;
+
+      onChange({
+        checkedKeys: list.map((item) => {
+          return item.id;
+        })
+      });
+    });
+  }, []);
+
+  console.log("props=", props);
   return <Picker {...props} />;
 };

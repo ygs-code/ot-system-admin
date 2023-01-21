@@ -30,7 +30,7 @@ class Index extends FormPage {
         params: { id }
       }
     } = this.props;
-    console.log("this.props=", this.props);
+
     const { data: { user = {} } = {} } = await getUserInfo({
       id
     });

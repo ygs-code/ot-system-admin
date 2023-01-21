@@ -1,9 +1,15 @@
 import "./index.less";
 
 import { message } from "antd";
-import { editUserRole, getUserRoleInfo } from "client/assets/js/request";
+import {
+  createRole,
+  editRole,
+  editRolePermission,
+  getRoleInfo
+} from "client/assets/js/request";
 import FormPage from "client/component/FormPage";
 import setBreadcrumbAndTitle from "client/component/setBreadcrumbAndTitle";
+import PermissionPicker from "client/pages/Index/pages/system/component/PermissionPicker";
 import { mapRedux } from "client/redux";
 import { addRouterApi, routePaths } from "client/router";
 import React from "react";
@@ -31,14 +37,14 @@ class Index extends FormPage {
       }
     } = this.props;
 
-    const { data: { roleId, userId } = {} } = await getUserRoleInfo({
+    const { data: { description, name } = {} } = await getRoleInfo({
       id
     });
 
     return await this.mapInitData({
-      roleId,
+      description,
       id,
-      userId
+      name
     });
   };
 
@@ -53,23 +59,47 @@ class Index extends FormPage {
     const {
       history: { back }
     } = this.props;
-    const values = await this.mapSubmitData(formData);
-    console.log("values===", values);
-    const { message: mgs } = await editUserRole({ ...values });
 
-    message.success(mgs);
-    setTimeout(() => {
-      back();
-    }, 500);
+    const {
+      id: roleId,
+      permissionIds: { checkedKeys: permissionIds = [] } = {}
+    } = await this.mapSubmitData(formData);
+
+    console.log(
+      " await this.mapSubmitData(formData)=",
+      await this.mapSubmitData(formData)
+    );
+
+    const { message: mgs } = await editRolePermission({
+      roleId,
+      permissionIds
+    });
+    // if (id) {
+    //   const { message: mgs } = await editRolePermission({ ...values });
+    //   message.success(mgs);
+    // } else {
+    //   const { message: mgs } = await createRole({ ...values });
+
+    //   message.success(mgs);
+    // }
+
+    // setTimeout(() => {
+    //   back();
+    // }, 500);
   };
   getFields = () => {
+    const {
+      match: {
+        params: { id }
+      }
+    } = this.props;
     return [
       {
         type: "section",
         title: "详情基本设置",
         items: [
           {
-            label: "角色&权限ID",
+            label: "角色ID",
             name: "id",
             itemProps: {},
             // type: "input",
@@ -88,14 +118,14 @@ class Index extends FormPage {
               // }
             ]
           },
-
           {
-            label: "角色ID",
-            name: "roleId",
+            label: "角色名称",
+            name: "name",
             type: "input",
             props: {
               showCount: true,
-              maxLength: 20
+              maxLength: 20,
+              readOnly: true
             },
             // labelCol: { span: 5 },
             // wrapperCol: { span: 10 },
@@ -106,20 +136,46 @@ class Index extends FormPage {
               }
             ]
           },
+
           {
-            label: "权限ID",
-            name: "userId",
-            type: "input",
+            label: "描述",
+            name: "description",
+            type: "textArea",
             props: {
               showCount: true,
-              maxLength: 20
+              maxLength: 200,
+              readOnly: true
             },
             // labelCol: { span: 5 },
             // wrapperCol: { span: 10 },
             rules: [
               {
                 required: true,
-                message: "请输入角色名称"
+                message: "请输入描述"
+              }
+            ]
+          },
+
+          {
+            label: "权限设置",
+            name: "permissionIds",
+            itemProps: {},
+            // type: "input",
+            // labelCol: { span: 5 },
+            // wrapperCol: { span: 10 },
+
+            render: (props) => {
+              const { onChange, value } = props;
+              return (
+                <PermissionPicker value={value} roleId={id} onChange={onChange}>
+                  {" "}
+                </PermissionPicker>
+              );
+            },
+            rules: [
+              {
+                required: true,
+                message: "请输入描述"
               }
             ]
           }

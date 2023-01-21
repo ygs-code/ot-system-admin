@@ -102,22 +102,6 @@ export default [
             children: []
           }
         ]
-      },
-      {
-        path: "/role-set-permission",
-        name: "roleSetPermission",
-        entry: "/pages/Index/pages/system/pages/RoleSetPermission/index.js",
-        level: 2,
-        children: [
-          {
-            path: "/details/:action/:id?",
-            name: "roleSetPermissionDetails",
-            entry:
-              "/pages/Index/pages/system/pages/RoleSetPermission/details/index.js",
-            level: 2,
-            children: []
-          }
-        ]
       }
     ]
   }

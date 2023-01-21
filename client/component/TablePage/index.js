@@ -277,6 +277,17 @@ const tablePage = (Component) => {
       super.componentDidMount(...ags);
       // window.clearTimeout(this.$timer);
     }
+
+    onResetForm = () => {
+      const { resetFields } = this.searchForm;
+      resetFields();
+      this.setState(() => ({
+        searchParams: {
+          pageNum: 1,
+          pageSize: 10
+        }
+      }));
+    };
     renderSearch = (props = {}) => {
       const { shrinkLength = 5 } = props;
       return (

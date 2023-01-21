@@ -201,8 +201,7 @@ class Index extends Component {
           <Button
             type="primary"
             onClick={() => {
-              console.log("this.props=", this.props);
-
+           
               pushRoute({
                 path: roleSetPermissionDetails,
                 params: {

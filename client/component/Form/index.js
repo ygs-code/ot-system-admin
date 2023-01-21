@@ -294,6 +294,7 @@ const SearchForm = (props) => {
     onReset = () => {},
     initialValues = {}
   } = props;
+
   const [form] = Form.useForm();
 
   const [formInitialValues, setFormInitialValues] = useState({});
@@ -382,7 +383,7 @@ const SearchForm = (props) => {
       );
     }
     return fieldsVonde;
-  }, [expand]);
+  }, [expand, fields]);
 
   return (
     <div className="search-base-form-box">

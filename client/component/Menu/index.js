@@ -174,16 +174,16 @@ export default memo((props) => {
                 children: [
                   // 子菜单
                 ]
-              },
-              {
-                title: "角色设置权限",
-                url: routePaths.roleSetPermission, // 路由地址
-                // iconComponent: <HomeOutlined/>,
-                key: "7",
-                children: [
-                  // 子菜单
-                ]
               }
+              // {
+              //   title: "角色设置权限",
+              //   url: routePaths.roleSetPermission, // 路由地址
+              //   // iconComponent: <HomeOutlined/>,
+              //   key: "7",
+              //   children: [
+              //     // 子菜单
+              //   ]
+              // }
 
               // {
               //   title: "页面(URL)",

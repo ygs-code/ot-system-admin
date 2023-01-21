@@ -555,3 +555,20 @@ export const getRolePermissionList = (parameter = {}) => {
     }
   );
 };
+
+export const editRolePermission = (parameter = {}) => {
+  return mutation(
+    "editRolePermission",
+    `
+      mutation ($parameter: EditRolePermissionInput!) {
+        editRolePermission(parameter: $parameter) {
+          code
+          message
+        }
+      }
+    `,
+    {
+      parameter
+    }
+  );
+};

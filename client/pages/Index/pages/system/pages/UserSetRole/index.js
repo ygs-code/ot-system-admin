@@ -254,7 +254,6 @@ class Index extends Component {
   // };
   componentDidMount() {}
   render() {
-    console.log("this.state=", this.state);
     return (
       <div className="table-page">
         {this.renderSearch({

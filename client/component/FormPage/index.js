@@ -106,8 +106,6 @@ export default class extends PureComponent {
     const { history = {} } = this.props;
     const { loading } = this.state;
 
-    console.log("this.state==", this.state);
-
     return (
       <div className="button-box">
         <Button type="primary" loading={loading} onClick={this.onValidaForm}>

@@ -1,12 +1,7 @@
 import "./index.less";
 
 import { message } from "antd";
-import {
-  createRole,
-  editRole,
-  editRolePermission,
-  getRoleInfo
-} from "client/assets/js/request";
+import { editRolePermission, getRoleInfo } from "client/assets/js/request";
 import FormPage from "client/component/FormPage";
 import setBreadcrumbAndTitle from "client/component/setBreadcrumbAndTitle";
 import PermissionPicker from "client/pages/Index/pages/system/component/PermissionPicker";
@@ -18,7 +13,7 @@ class Index extends FormPage {
   constructor(props) {
     super(props);
     this.state = {
-      ...this.defaultState(),
+      ...this.state,
       data: {}
     };
   }
@@ -65,27 +60,16 @@ class Index extends FormPage {
       permissionIds: { checkedKeys: permissionIds = [] } = {}
     } = await this.mapSubmitData(formData);
 
-    console.log(
-      " await this.mapSubmitData(formData)=",
-      await this.mapSubmitData(formData)
-    );
-
     const { message: mgs } = await editRolePermission({
       roleId,
       permissionIds
     });
-    // if (id) {
-    //   const { message: mgs } = await editRolePermission({ ...values });
-    //   message.success(mgs);
-    // } else {
-    //   const { message: mgs } = await createRole({ ...values });
 
-    //   message.success(mgs);
-    // }
+    message.success(mgs);
 
-    // setTimeout(() => {
-    //   back();
-    // }, 500);
+    setTimeout(() => {
+      back();
+    }, 500);
   };
   getFields = () => {
     const {
@@ -102,21 +86,13 @@ class Index extends FormPage {
             label: "角色ID",
             name: "id",
             itemProps: {},
-            // type: "input",
-            // labelCol: { span: 5 },
-            // wrapperCol: { span: 10 },
 
             render: (props) => {
               const { value } = props;
 
               return <div>{value}</div>;
             },
-            rules: [
-              // {
-              //   required: true,
-              //   message: "Please input your username1"
-              // }
-            ]
+            rules: []
           },
           {
             label: "角色名称",
@@ -127,8 +103,7 @@ class Index extends FormPage {
               maxLength: 20,
               readOnly: true
             },
-            // labelCol: { span: 5 },
-            // wrapperCol: { span: 10 },
+
             rules: [
               {
                 required: true,
@@ -146,8 +121,7 @@ class Index extends FormPage {
               maxLength: 200,
               readOnly: true
             },
-            // labelCol: { span: 5 },
-            // wrapperCol: { span: 10 },
+
             rules: [
               {
                 required: true,
@@ -160,16 +134,17 @@ class Index extends FormPage {
             label: "权限设置",
             name: "permissionIds",
             itemProps: {},
-            // type: "input",
-            // labelCol: { span: 5 },
-            // wrapperCol: { span: 10 },
 
             render: (props) => {
               const { onChange, value } = props;
               return (
-                <PermissionPicker value={value} roleId={id} onChange={onChange}>
-                  {" "}
-                </PermissionPicker>
+                <PermissionPicker
+                  value={value}
+                  roleId={id}
+                  onChange={onChange}
+                  modalProps={{
+                    title: "编辑权限"
+                  }}></PermissionPicker>
               );
             },
             rules: [
@@ -184,17 +159,6 @@ class Index extends FormPage {
     ];
   };
 
-  // // 底部按钮
-  // getFooter = () => {
-  //   return (
-  //     <div className="button-box">
-  //       <Button type="primary" onClick={() => {}}>
-  //         确认
-  //       </Button>
-  //       <Button>返回</Button>
-  //     </div>
-  //   );
-  // };
   componentDidMount() {}
   render() {
     return (
@@ -216,17 +180,8 @@ export default mapRedux()(
       },
       {
         label: "详情"
-        // href: "http://localhost:3000/index",
-        // path: "/",
-        // component: ""
       }
-      // {
-      //   label: "菜单3",
-      //   // href: "http://localhost:3000/index",
-      //   // path: "/",
-      //   component: "",
-      // },
-    ]
-    // title: "主页"
+    ],
+    title: "角色管理/详情"
   })(addRouterApi(Index))
 );

@@ -157,16 +157,6 @@ export default memo((props) => {
               },
 
               {
-                title: "用户设置角色",
-                url: routePaths.userSetRole, // 路由地址
-                // iconComponent: <HomeOutlined/>,
-                key: "5",
-                children: [
-                  // 子菜单
-                ]
-              },
-
-              {
                 title: "角色&权限",
                 url: routePaths.rolePermission, // 路由地址
                 // iconComponent: <HomeOutlined/>,

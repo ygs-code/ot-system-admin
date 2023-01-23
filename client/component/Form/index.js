@@ -40,8 +40,7 @@ const ItemChild = (props) => {
     component,
     render,
     onChange = () => {},
-    value,
-    options = []
+    value
   } = props;
   type = type.toLowerCase();
 

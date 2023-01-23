@@ -1,6 +1,6 @@
 import "./index.less";
 
-import { message, Tree } from "antd";
+import { message } from "antd";
 import {
   createPermission,
   editPermission,
@@ -18,14 +18,9 @@ class Index extends FormPage {
   constructor(props) {
     super(props);
     this.state = {
-      ...this.defaultState(),
-      data: {}
+      ...this.state
     };
   }
-
-  getPermissionList = async () => {
-    const data = await getPermissionList({});
-  };
 
   /**
    * 用于将从接口获取到的初始化数据，转换成form需要的格式
@@ -97,21 +92,13 @@ class Index extends FormPage {
             label: "权限ID",
             name: "id",
             itemProps: {},
-            // type: "input",
-            // labelCol: { span: 5 },
-            // wrapperCol: { span: 10 },
 
             render: (props) => {
               const { value } = props;
 
               return <div>{value}</div>;
             },
-            rules: [
-              // {
-              //   required: true,
-              //   message: "Please input your username1"
-              // }
-            ]
+            rules: []
           },
           {
             label: "权限名称",
@@ -121,8 +108,7 @@ class Index extends FormPage {
               showCount: true,
               maxLength: 20
             },
-            // labelCol: { span: 5 },
-            // wrapperCol: { span: 10 },
+
             rules: [
               {
                 required: true,
@@ -139,8 +125,7 @@ class Index extends FormPage {
               showCount: true,
               maxLength: 100
             },
-            // labelCol: { span: 5 },
-            // wrapperCol: { span: 10 },
+
             rules: [
               {
                 required: true,
@@ -157,8 +142,7 @@ class Index extends FormPage {
               showCount: true,
               maxLength: 100
             },
-            // labelCol: { span: 5 },
-            // wrapperCol: { span: 10 },
+
             render: (props) => {
               const { value, onChange } = props;
               return (
@@ -182,12 +166,7 @@ class Index extends FormPage {
                 />
               );
             },
-            rules: [
-              // {
-              //   required: true,
-              //   message: "请输入权限名称"
-              // }
-            ]
+            rules: []
           },
 
           {
@@ -198,8 +177,7 @@ class Index extends FormPage {
               showCount: true,
               maxLength: 200
             },
-            // labelCol: { span: 5 },
-            // wrapperCol: { span: 10 },
+
             rules: [
               {
                 required: true,
@@ -212,17 +190,6 @@ class Index extends FormPage {
     ];
   };
 
-  // // 底部按钮
-  // getFooter = () => {
-  //   return (
-  //     <div className="button-box">
-  //       <Button type="primary" onClick={() => {}}>
-  //         确认
-  //       </Button>
-  //       <Button>返回</Button>
-  //     </div>
-  //   );
-  // };
   componentDidMount() {}
   render() {
     return (
@@ -244,17 +211,8 @@ export default mapRedux()(
       },
       {
         label: "详情"
-        // href: "http://localhost:3000/index",
-        // path: "/",
-        // component: ""
       }
-      // {
-      //   label: "菜单3",
-      //   // href: "http://localhost:3000/index",
-      //   // path: "/",
-      //   component: "",
-      // },
-    ]
-    // title: "主页"
+    ],
+    title: "权限管理/详情"
   })(addRouterApi(Index))
 );

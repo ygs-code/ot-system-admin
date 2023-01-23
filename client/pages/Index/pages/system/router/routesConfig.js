@@ -72,22 +72,6 @@ export default [
         ]
       },
       {
-        path: "/user-set-role",
-        name: "userSetRole",
-        entry: "/pages/Index/pages/system/pages/UserSetRole/index.js",
-        level: 2,
-        children: [
-          {
-            path: "/details/:action/:id?",
-            name: "userSetRoleDetails",
-            entry:
-              "/pages/Index/pages/system/pages/UserSetRole/details/index.js",
-            level: 2,
-            children: []
-          }
-        ]
-      },
-      {
         path: "/role-permission",
         name: "rolePermission",
         entry: "/pages/Index/pages/system/pages/RolePermission/index.js",

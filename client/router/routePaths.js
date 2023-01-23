@@ -8,8 +8,6 @@ export default {
   permissionManagement: "/system/permission-management",
   userRoleDetails: "/system/user-role/details/:action/:id?",
   userRole: "/system/user-role",
-  userSetRoleDetails: "/system/user-set-role/details/:action/:id?",
-  userSetRole: "/system/user-set-role",
   rolePermissionDetails: "/system/role-permission/details/:action/:id?",
   rolePermission: "/system/role-permission",
   system: "/system",

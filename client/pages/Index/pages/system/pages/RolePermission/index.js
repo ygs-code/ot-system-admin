@@ -1,4 +1,3 @@
-import { Button } from "antd";
 import { getRoleList, getRolePermissionList } from "client/assets/js/request";
 import setBreadcrumbAndTitle from "client/component/setBreadcrumbAndTitle";
 import TableButton from "client/component/TableButton";
@@ -36,10 +35,6 @@ class Index extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      tableData: {
-        list: []
-      },
-      dataSource: [],
       tabsValue: "0"
     };
   }
@@ -62,28 +57,11 @@ class Index extends Component {
           name: "name",
           type: "input",
           span: 1
-          // labelCol: { span: 5 },
-          // wrapperCol: { span: 10 },
-          // rules: [
-          //   {
-          //     required: true,
-          //     message: "Please input your username1",
-          //   },
-          // ],
         },
         {
           label: "角色ID",
           name: "id",
           type: "input"
-          // span: 2
-          // labelCol: { span: 5 },
-          // wrapperCol: { span: 10 }
-          // rules: [
-          //   {
-          //     required: true,
-          //     message: "Please input your username2",
-          //   },
-          // ],
         }
       ],
 
@@ -92,15 +70,6 @@ class Index extends Component {
           label: "角色&权限ID",
           name: "id",
           type: "input"
-          // span: 2
-          // labelCol: { span: 5 },
-          // wrapperCol: { span: 10 }
-          // rules: [
-          //   {
-          //     required: true,
-          //     message: "Please input your username2",
-          //   },
-          // ],
         },
 
         {
@@ -108,14 +77,6 @@ class Index extends Component {
           name: "roleId",
           type: "input",
           span: 1
-          // labelCol: { span: 5 },
-          // wrapperCol: { span: 10 },
-          // rules: [
-          //   {
-          //     required: true,
-          //     message: "Please input your username1",
-          //   },
-          // ],
         },
 
         {
@@ -123,14 +84,6 @@ class Index extends Component {
           name: "permissionId",
           type: "input",
           span: 1
-          // labelCol: { span: 5 },
-          // wrapperCol: { span: 10 },
-          // rules: [
-          //   {
-          //     required: true,
-          //     message: "Please input your username1",
-          //   },
-          // ],
         }
       ]
     ][tabsValue];
@@ -164,16 +117,7 @@ class Index extends Component {
           dataIndex: "description",
           key: "description"
         },
-        // {
-        //   title: "创建时间",
-        //   dataIndex: "createTime",
-        //   key: "createTime"
-        // },
-        // {
-        //   title: "更新时间",
-        //   dataIndex: "updateTime",
-        //   key: "updateTime"
-        // },
+
         {
           title: "操作",
           dataIndex: "actions",
@@ -260,7 +204,6 @@ class Index extends Component {
   componentDidMount() {}
   render() {
     const { tabsValue } = this.state;
-    const { pushRoute, routePaths: { userRoleDetails } = {} } = this.props;
 
     return (
       <div className="table-page">
@@ -294,9 +237,6 @@ class Index extends Component {
           initialValues: {
             type: ""
           }
-          // style: {
-          //   padding: "10px 0",
-          // },
         })}
         {this.renderTable({
           rowKey: "id"

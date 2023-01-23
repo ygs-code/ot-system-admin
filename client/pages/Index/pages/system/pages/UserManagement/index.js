@@ -1,8 +1,4 @@
-import {
-  // Layout,
-  //  Menu,
-  Input
-} from "antd";
+import { Input } from "antd";
 import { getUserList } from "client/assets/js/request";
 import setBreadcrumbAndTitle from "client/component/setBreadcrumbAndTitle";
 import TableButton from "client/component/TableButton";
@@ -15,21 +11,7 @@ import React, { Component } from "react";
   breadcrumb: [
     {
       label: "用户管理"
-      // href: "http://localhost:3000/index",
-      // path: "xxxx",
     }
-    // {
-    //   label: "菜单2",
-    //   // href: "http://localhost:3000/index",
-    //   path: "/",
-    //   component: ""
-    // }
-    // {
-    //   label: "菜单3",
-    //   // href: "http://localhost:3000/index",
-    //   // path: "/",
-    //   component: "",
-    // },
   ],
   title: "用户管理"
 })
@@ -38,12 +20,7 @@ import React, { Component } from "react";
 class Index extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      tableData: {
-        list: [{ title: "你好" }]
-      },
-      dataSource: []
-    };
+    this.state = {};
   }
 
   // // 获取默认搜索参数
@@ -61,45 +38,20 @@ class Index extends Component {
         name: "name",
         type: "input",
         span: 1
-        // labelCol: { span: 5 },
-        // wrapperCol: { span: 10 },
-        // rules: [
-        //   {
-        //     required: true,
-        //     message: "Please input your username1",
-        //   },
-        // ],
       },
       {
         label: "用户ID",
         name: "id",
         type: "input"
-        // span: 2
-        // labelCol: { span: 5 },
-        // wrapperCol: { span: 10 }
-        // rules: [
-        //   {
-        //     required: true,
-        //     message: "Please input your username2",
-        //   },
-        // ],
       },
       {
         label: "用户Email",
         name: "email",
         type: "input",
-        // span: 3,
-        // labelCol: { span: 3 },
-        // wrapperCol: { span: 25 },
+
         render: (props) => {
           return <Input {...props}></Input>;
         }
-        // rules: [
-        //   {
-        //     required: true,
-        //     message: "Please input your username3",
-        //   },
-        // ],
       },
       {
         label: "用户手机",
@@ -108,12 +60,6 @@ class Index extends Component {
         render: (props) => {
           return <Input {...props}></Input>;
         }
-        // rules: [
-        //   {
-        //     required: true,
-        //     message: "Please input your username3",
-        //   },
-        // ],
       },
       {
         label: "用户类型",
@@ -137,8 +83,6 @@ class Index extends Component {
         },
         itemProps: {},
         options: {}
-        // labelCol: { span: 5 },
-        // wrapperCol: { span: 10 },
       }
     ];
   };
@@ -172,6 +116,27 @@ class Index extends Component {
         title: "手机",
         dataIndex: "phone",
         key: "phone"
+      },
+      {
+        title: "用户类型",
+        dataIndex: "type",
+        key: "type",
+        render: (text) => {
+          return (
+            [
+              {
+                label: "管理员",
+                value: 1
+              },
+              {
+                label: "会员",
+                value: 2
+              }
+            ].find((item) => {
+              return item.value === text;
+            }) || {}
+          ).label;
+        }
       },
 
       {
@@ -242,8 +207,6 @@ class Index extends Component {
    * 定义表格的数据加载功能
    */
   tableDataLoader = async (searchParams = {}) => {
-    // console.log("searchParams==", searchParams);
-    // debugger;
     const { data } = await getUserList(searchParams);
 
     return data;
@@ -261,9 +224,6 @@ class Index extends Component {
           initialValues: {
             type: ""
           }
-          // style: {
-          //   padding: "10px 0",
-          // },
         })}
         {this.renderTable({
           rowKey: "id"

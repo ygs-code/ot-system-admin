@@ -15,21 +15,7 @@ import React, { Component } from "react";
   breadcrumb: [
     {
       label: "角色管理"
-      // href: "http://localhost:3000/index",
-      // path: "xxxx",
     }
-    // {
-    //   label: "菜单2",
-    //   // href: "http://localhost:3000/index",
-    //   path: "/",
-    //   component: ""
-    // }
-    // {
-    //   label: "菜单3",
-    //   // href: "http://localhost:3000/index",
-    //   // path: "/",
-    //   component: "",
-    // },
   ],
   title: "角色管理"
 })
@@ -38,12 +24,7 @@ import React, { Component } from "react";
 class Index extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      tableData: {
-        list: []
-      },
-      dataSource: []
-    };
+    this.state = {};
   }
 
   // // 获取默认搜索参数
@@ -61,28 +42,11 @@ class Index extends Component {
         name: "name",
         type: "input",
         span: 1
-        // labelCol: { span: 5 },
-        // wrapperCol: { span: 10 },
-        // rules: [
-        //   {
-        //     required: true,
-        //     message: "Please input your username1",
-        //   },
-        // ],
       },
       {
         label: "角色ID",
         name: "id",
         type: "input"
-        // span: 2
-        // labelCol: { span: 5 },
-        // wrapperCol: { span: 10 }
-        // rules: [
-        //   {
-        //     required: true,
-        //     message: "Please input your username2",
-        //   },
-        // ],
       }
     ];
   }
@@ -217,9 +181,6 @@ class Index extends Component {
           initialValues: {
             type: ""
           }
-          // style: {
-          //   padding: "10px 0",
-          // },
         })}
         {this.renderTable({
           rowKey: "id"

@@ -1,7 +1,7 @@
 import "./index.less";
 
 import { ExclamationCircleOutlined } from "@ant-design/icons";
-import { Button, Modal, Popconfirm } from "antd";
+import { Button, Modal } from "antd";
 import { tablePage } from "client/component/TablePage";
 import { addRouterApi } from "client/router";
 import React, { Component } from "react";
@@ -60,19 +60,11 @@ class TablePage extends Component {
 
   getTableProps = () => {
     const { tableProps = {}, getTableProps = () => ({}) } = this.props;
-    // const { onSelect = () => {} } = tableProps;
-    // const { onSelect: $onSelect = () => {} } = getTableProps();
+
     return {
       ...tableProps,
       ...getTableProps(),
       isShowSelect: true
-      // onSelect: (selectedRowKeys,selectedRows ) => {
-      //   onSelect(selectedRowKeys,selectedRows );
-      //   $onSelect(selectedRowKeys,selectedRows );
-      //   this.setState({
-      //     valueChanged: true
-      //   });
-      // }
     };
   };
 
@@ -86,9 +78,6 @@ class TablePage extends Component {
           initialValues: {
             type: ""
           }
-          // style: {
-          //   padding: "10px 0",
-          // },
         })}
 
         {this.renderTable({
@@ -218,11 +207,10 @@ class Index extends Component {
       modalProps = {},
       buttonText = "请选择",
       tableProps = {},
-      value = [],
       request,
       openButton = true
     } = this.props;
-    const { isModalOpen, valueChanged, loading, selectedRowKeys } = this.state;
+    const { isModalOpen, loading, selectedRowKeys, selectedRows } = this.state;
 
     return (
       <div className="table-picker">
@@ -271,6 +259,7 @@ class Index extends Component {
                   ...tableProps,
                   onSelect: this.onSelect,
                   rowSelection: {
+                    selectedRows,
                     selectedRowKeys,
                     defaultSelectedRowKeys: selectedRowKeys
                   }

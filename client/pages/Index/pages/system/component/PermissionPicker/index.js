@@ -6,7 +6,7 @@ import {
 } from "client/assets/js/request";
 import TreePicker from "client/component/TreePicker";
 import { findTreeData } from "client/utils";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 
 const Picker = (props) => {
   const transformTreeData = (data, treeData = []) => {
@@ -14,8 +14,7 @@ const Picker = (props) => {
       return treeData;
     }
     let addIds = [];
-
-    for (let [index, item] of data.entries()) {
+    for (let item of data) {
       const { parentId, id } = item;
       if (parentId === null) {
         addIds.push(id);
@@ -37,8 +36,6 @@ const Picker = (props) => {
 
   return (
     <TreePicker
-      //   readOnly
-      //   openButton={false}
       {...props}
       isSelectLast={false}
       isSelectLastHasParent
@@ -57,20 +54,6 @@ const Picker = (props) => {
         data = transformTreeData(data.data.list);
         return data;
       }}
-      modalProps={{
-        title: "权限查看"
-        //   open: authOpen,
-        //   onCancel: async () => {
-        //     // this.setState({
-        //     //   authOpen: false
-        //     // });
-        //   },
-        //   onOk: async () => {
-        //     // this.setState({
-        //     //   authOpen: false
-        //     // });
-        //   }
-      }}
     />
   );
 };
@@ -79,21 +62,20 @@ export default (props) => {
   const { roleId, onChange } = props;
 
   useEffect(() => {
-    getRolePermissionList({
-      roleId,
-      pageNum: 1,
-      pageSize: 10000
-    }).then((data) => {
-      const { data: { list = [] } = {} } = data;
-
-      onChange({
-        checkedKeys: list.map((item) => {
-          return item.id;
-        })
+    roleId &&
+      getRolePermissionList({
+        roleId,
+        pageNum: 1,
+        pageSize: 10000
+      }).then((data) => {
+        const { data: { list = [] } = {} } = data;
+        onChange({
+          checkedKeys: list.map((item) => {
+            return item.permissionId;
+          })
+        });
       });
-    });
-  }, []);
+  }, [roleId]);
 
-  console.log("props=", props);
   return <Picker {...props} />;
 };

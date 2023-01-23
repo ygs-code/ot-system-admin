@@ -43,13 +43,15 @@ const Index = (props) => {
   const {
     onChange: rowSelectionOnSelect = () => {},
     onChange: rowSelectionOnSelectAll = () => {},
-    selectedRowKeys: rowSelectionSelectedRowKeys = []
+    selectedRowKeys: rowSelectionSelectedRowKeys = [],
+    selectedRows: rowSelectionSelectedRows = []
   } = rowSelection;
 
   let [selectedRows, setSelectedRows] = useState([]);
   let [selectedRowKeys, setSelectedRowKeys] = useState([]);
 
   useEffect(() => {
+    setSelectedRows(rowSelectionSelectedRows);
     setSelectedRowKeys(rowSelectionSelectedRowKeys);
   }, []);
 
@@ -64,7 +66,7 @@ const Index = (props) => {
             selectedRows.push(changeRow);
             selectedRowKeys.push(changeRow[rowKey]);
           } else {
-            let index = selectedRows.findIndex((item) => {
+            let index = selectedRows.findIndex(() => {
               return changeRow[rowKey] === selectedRows[rowKey];
             });
             selectedRows.splice(index, 1);
@@ -107,8 +109,8 @@ const Index = (props) => {
     : {};
 
   $rowSelection =
-    Object.keys(rowSelection).length == 0 &&
-    Object.keys($rowSelection).length == 0
+    Object.keys(rowSelection).length === 0 &&
+    Object.keys($rowSelection).length === 0
       ? null
       : {
           ...rowSelection,

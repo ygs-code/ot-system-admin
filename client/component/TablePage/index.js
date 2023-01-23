@@ -268,14 +268,10 @@ const tablePage = (Component) => {
 
     componentDidMount(...ags) {
       super.componentDidMount(...ags);
-      // this.$timer = setTimeout(() => {
-      //   this.loadTableData();
-      // }, 0);
     }
 
     componentWillUnmount(...ags) {
       super.componentDidMount(...ags);
-      // window.clearTimeout(this.$timer);
     }
 
     onResetForm = () => {

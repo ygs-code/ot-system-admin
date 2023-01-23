@@ -45,14 +45,6 @@ class Index extends Component {
         name: "username1",
         type: "input",
         span: 1
-        // labelCol: { span: 5 },
-        // wrapperCol: { span: 10 },
-        // rules: [
-        //   {
-        //     required: true,
-        //     message: "Please input your username1",
-        //   },
-        // ],
       },
       {
         label: "Username2",
@@ -188,9 +180,6 @@ class Index extends Component {
       <div className="table-page">
         {this.renderSearch({
           shrinkLength: 2
-          // style: {
-          //   padding: "10px 0",
-          // },
         })}
         {this.renderTable({})}
       </div>

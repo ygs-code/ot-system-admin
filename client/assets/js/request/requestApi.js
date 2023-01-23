@@ -6,7 +6,7 @@
  * @Description: In User Settings Edit
  * @FilePath: /Blogs/BlogsAdmin/src/common/js/request/requestApi.js
  */
-import { gql, GraphqlClient } from "./request";
+import { GraphqlClient } from "./request";
 
 // 查询
 export const query = (operationName, schema, parameter = {}, options = {}) => {
@@ -504,7 +504,7 @@ export const editUserRole = (parameter = {}) => {
   return mutation(
     "editUserRole",
     `
-      mutation ($parameter: EditInfoInput!) {
+      mutation ($parameter: EditUserRoleInput!) {
         editUserRole(parameter: $parameter) {
           code
           message

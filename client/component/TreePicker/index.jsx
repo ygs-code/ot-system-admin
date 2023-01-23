@@ -41,7 +41,7 @@ const TreeContent = (props) => {
     isSelectLast,
     isSelectLastHasParent
   } = props;
- 
+
   const [valueChanged, setValueChanged] = useState(false);
   const [checkedKeys, setCheckedKeys] = useState([]);
   const [selectedTreeData, setSelectedTreeData] = useState([]);
@@ -99,7 +99,7 @@ const TreeContent = (props) => {
     });
   };
 
-  const mapKey = (data, callback = () => { }) => {
+  const mapKey = (data, callback = () => {}) => {
     return data.map((item) => {
       callback(item);
       return {
@@ -130,12 +130,12 @@ const TreeContent = (props) => {
     const treeData =
       value !== ""
         ? filterTreeData(
-          deepCopy(cacheTreeData, []),
-          (item) => {
-            return new Function("item", "value", searchCode)(item, value);
-          },
-          nextLevelKey
-        )
+            deepCopy(cacheTreeData, []),
+            (item) => {
+              return new Function("item", "value", searchCode)(item, value);
+            },
+            nextLevelKey
+          )
         : deepCopy(cacheTreeData, []);
 
     let treeDataKeys = [];
@@ -160,11 +160,11 @@ const TreeContent = (props) => {
       // 增加
       $checkedKeys = checked
         ? [
-          ...$checkedKeys.filter((item) => {
-            return !checkedKeys.includes(item);
-          }),
-          ...checkedKeys
-        ]
+            ...$checkedKeys.filter((item) => {
+              return !checkedKeys.includes(item);
+            }),
+            ...checkedKeys
+          ]
         : $checkedKeys;
     } else {
       // 删除
@@ -175,7 +175,6 @@ const TreeContent = (props) => {
 
     if (isSelectLastHasParent) {
       let $$checkedKeys = [...$checkedKeys];
-
       for (let item of $checkedKeys) {
         const treePath = findTreePath({
           treeData: cacheTreeData,
@@ -349,7 +348,6 @@ const TreeContent = (props) => {
     const { checkedKeys = [], checkedChildrenKeys = [] } = value;
 
     if (listData.length > 1) {
-      
       onCheck(
         checkedKeys.length > checkedChildrenKeys.length
           ? checkedKeys
@@ -376,8 +374,8 @@ const TreeContent = (props) => {
             <span className="tree-picker-color">
               {isSelectLast
                 ? listData.filter((item) => {
-                  return !(item[nextLevelKey] && item[nextLevelKey].length);
-                }).length
+                    return !(item[nextLevelKey] && item[nextLevelKey].length);
+                  }).length
                 : listData.length}
             </span>{" "}
             {getTotalTitle()[1]}
@@ -483,12 +481,12 @@ const TreeContent = (props) => {
                   actions={
                     !readOnly
                       ? [
-                        <CloseCircleOutlined
-                          key={item[valueKey]}
-                          type="close-circle"
-                          onClick={() => onDelete(item)}
-                        />
-                      ]
+                          <CloseCircleOutlined
+                            key={item[valueKey]}
+                            type="close-circle"
+                            onClick={() => onDelete(item)}
+                          />
+                        ]
                       : []
                   }
                   key={item[valueKey]}>
@@ -505,7 +503,7 @@ const TreeContent = (props) => {
 
 TreeContent.defaultProps = {
   readOnly: false,
-  onChange: () => { },
+  onChange: () => {},
   defaultExpandAll: false,
   totalTitle: "一共有{n}条数据",
   selectedTitle: "已选{n}条数据",
@@ -515,7 +513,7 @@ TreeContent.defaultProps = {
   searchKeys: [],
   nextLevelKey: "children",
   searchProps: {},
-  promiseRequest: () => { },
+  promiseRequest: () => {},
   requestParameter: {},
   dataMapper: (data) => data,
   value: {},
@@ -537,9 +535,9 @@ class Index extends Component {
     };
   }
 
-  componentDidMount() { }
+  componentDidMount() {}
   showModal = async () => {
-    const { modalProps: { showModal = () => { } } = {} } = this.props;
+    const { modalProps: { showModal = () => {} } = {} } = this.props;
     this.setState(() => ({
       loading: true
     }));
@@ -550,7 +548,7 @@ class Index extends Component {
     });
   };
   onOk = async () => {
-    const { modalProps: { onOk = () => { } } = {}, onChange = () => { } } =
+    const { modalProps: { onOk = () => {} } = {}, onChange = () => {} } =
       this.props;
     const { value = {} } = this.state;
     this.setState(() => ({
@@ -575,7 +573,7 @@ class Index extends Component {
     });
   };
   onCancel = async () => {
-    const { modalProps: { onCancel = () => { } } = {} } = this.props;
+    const { modalProps: { onCancel = () => {} } = {} } = this.props;
     const { value, cacheValue } = this.state;
 
     const { valueChanged } = value;
@@ -617,11 +615,9 @@ class Index extends Component {
       } = {}
     } = preProps;
 
-    const { value = {} } =
-      this.props;
+    const { value = {} } = this.props;
 
-    const { checkedChildrenKeys = [], checkedKeys = [] } =
-      value
+    const { checkedChildrenKeys = [], checkedKeys = [] } = value;
 
     if (
       prePropsCheckedChildrenKeys.length !== checkedChildrenKeys.length ||
@@ -629,7 +625,7 @@ class Index extends Component {
     ) {
       this.setState({
         value
-      })
+      });
     }
   }
 
@@ -648,7 +644,7 @@ class Index extends Component {
       value: { checkedChildrenKeys = [], checkedKeys = [] } = {},
       loading
     } = this.state;
-   
+
     return (
       <div className="tree-picker">
         {openButton ? (

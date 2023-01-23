@@ -12,39 +12,18 @@ import { Button } from "antd";
 import Form from "client/component/Form";
 import React, { PureComponent } from "react";
 
-/*
-
-
-export default (props) => {
-  const formRef = useRef(null);
-  let {
-    fields = [],
-    formProps = {},
-    onReady = () => {},
-    footer = () => null
-  } = props;
-
-  const ready = (form) => {
-    formRef.current = form;
-    onReady(form);
-  };
-  let footerNode = footer(formRef);
-  return (
-    <div className="form-page-component">
-      <div className="form-box">
-        <Form {...props} onReady={ready}></Form>
-      </div>
-      {footerNode ? <div className="footer">{footerNode}</div> : null}
-    </div>
-  );
-};
-*/
 export default class extends PureComponent {
-  defaultState = () => {
-    return {
+  constructor(props) {
+    super(props);
+    this.state = {
       loading: false
     };
-  };
+  }
+  // defaultState = () => {
+  //   return {
+  //     loading: false
+  //   };
+  // };
 
   /**
    * 用于将form的字段值转换为接口需要的格式
@@ -65,7 +44,7 @@ export default class extends PureComponent {
   onValidaForm = async () => {
     const { validateFields } = this.form;
 
-    const values = await validateFields()
+    await validateFields()
       .then(async (values) => {
         this.setState(() => {
           return {

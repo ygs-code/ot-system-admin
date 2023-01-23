@@ -1,8 +1,4 @@
-import {
-  // Layout,
-  //  Menu,
-  Button
-} from "antd";
+import { Button } from "antd";
 import { getPermissionList } from "client/assets/js/request";
 import setBreadcrumbAndTitle from "client/component/setBreadcrumbAndTitle";
 import TableButton from "client/component/TableButton";
@@ -15,21 +11,7 @@ import React, { Component } from "react";
   breadcrumb: [
     {
       label: "权限管理"
-      // href: "http://localhost:3000/index",
-      // path: "xxxx",
     }
-    // {
-    //   label: "菜单2",
-    //   // href: "http://localhost:3000/index",
-    //   path: "/",
-    //   component: ""
-    // }
-    // {
-    //   label: "菜单3",
-    //   // href: "http://localhost:3000/index",
-    //   // path: "/",
-    //   component: "",
-    // },
   ],
   title: "权限管理"
 })
@@ -38,12 +20,7 @@ import React, { Component } from "react";
 class Index extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      tableData: {
-        list: []
-      },
-      dataSource: []
-    };
+    this.state = {};
   }
 
   // // 获取默认搜索参数
@@ -224,9 +201,6 @@ class Index extends Component {
           initialValues: {
             type: ""
           }
-          // style: {
-          //   padding: "10px 0",
-          // },
         })}
         {this.renderTable({
           rowKey: "id",

@@ -30,7 +30,8 @@ const Index = (props) => {
     // isShowSelect,
     // rowKey,
     onChange = () => {},
-    onSelect = () => {}
+    onSelect = () => {},
+    readOnly
   } = props;
   const {
     rowSelection = {},
@@ -66,9 +67,10 @@ const Index = (props) => {
             selectedRows.push(changeRow);
             selectedRowKeys.push(changeRow[rowKey]);
           } else {
-            let index = selectedRows.findIndex(() => {
-              return changeRow[rowKey] === selectedRows[rowKey];
+            let index = selectedRows.findIndex((item) => {
+              return changeRow[rowKey] === item[rowKey];
             });
+
             selectedRows.splice(index, 1);
             selectedRowKeys.splice(index, 1);
           }
@@ -83,28 +85,26 @@ const Index = (props) => {
           }
           if (selected) {
             selectedRows = selectedRows.concat(changeRows);
-            selectedRowKeys = selectedRowKeys.concat(
-              changeRows.map((item) => {
-                return item[rowKey];
-              })
-            );
           } else {
-            let flag;
-            for (let index = selectedRows.length - 1; index >= 0; index--) {
-              flag = changeRows.some((item) => {
-                return selectedRowKeys.includes(item[rowKey]);
+            selectedRows = selectedRows.filter((item) => {
+              return !changeRows.some(($item) => {
+                return item[rowKey] === $item[rowKey];
               });
-              if (flag) {
-                selectedRows.splice(index, 1);
-                selectedRowKeys.splice(index, 1);
-              }
-            }
+            });
           }
+          selectedRowKeys = selectedRows.map((item) => {
+            return item[rowKey];
+          });
           setSelectedRows([...selectedRows]);
           setSelectedRowKeys([...selectedRowKeys]);
           rowSelectionOnSelectAll(selected, $selectedRows, changeRows);
           onSelect(selectedRows, selectedRowKeys);
-        }
+        },
+        getCheckboxProps: (record) => ({
+          disabled: readOnly,
+          // Column configuration not to be checked
+          name: record.name
+        })
       }
     : {};
 

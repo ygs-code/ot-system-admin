@@ -82,6 +82,12 @@ class Index extends FormPage {
     }, 500);
   };
   getFields = () => {
+    const {
+      match: {
+        params: { action }
+      }
+    } = this.props;
+    const readOnly = action === "view";
     // 权限名称	权限ID	权限parentID	权限key	描述
     return [
       {
@@ -105,6 +111,7 @@ class Index extends FormPage {
             name: "name",
             type: "input",
             props: {
+              readOnly,
               showCount: true,
               maxLength: 20
             },
@@ -122,6 +129,7 @@ class Index extends FormPage {
             name: "authKey",
             type: "input",
             props: {
+              readOnly,
               showCount: true,
               maxLength: 100
             },
@@ -139,6 +147,7 @@ class Index extends FormPage {
             name: "parentId",
             type: "input",
             props: {
+              readOnly,
               showCount: true,
               maxLength: 100
             },
@@ -147,6 +156,7 @@ class Index extends FormPage {
               const { value, onChange } = props;
               return (
                 <LazySelect
+                  readOnly={readOnly}
                   value={value}
                   onChange={onChange}
                   defaultOptions={[
@@ -174,6 +184,7 @@ class Index extends FormPage {
             name: "description",
             type: "textArea",
             props: {
+              readOnly,
               showCount: true,
               maxLength: 200
             },

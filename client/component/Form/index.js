@@ -42,7 +42,7 @@ const ItemChild = (props) => {
     onChange = () => {},
     value
   } = props;
-  type = type.toLowerCase();
+  type = type ? type.toLowerCase() : type;
 
   const { readOnly, disabled } = formProps;
 

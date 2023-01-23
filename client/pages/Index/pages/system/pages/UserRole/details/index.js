@@ -3,6 +3,7 @@ import "./index.less";
 import { message } from "antd";
 import {
   editUserRole,
+  getPermissionList,
   getRoleList,
   getUserInfo,
   getUserRoleList
@@ -11,6 +12,7 @@ import FormPage from "client/component/FormPage";
 import setBreadcrumbAndTitle from "client/component/setBreadcrumbAndTitle";
 import TableButton from "client/component/TableButton";
 import TablePicker from "client/component/TablePicker";
+import { TreeContent } from "client/component/TreePicker";
 import PermissionPicker from "client/pages/Index/pages/system/component/PermissionPicker";
 import { mapRedux } from "client/redux";
 import { addRouterApi, routePaths } from "client/router";
@@ -27,32 +29,6 @@ class Index extends FormPage {
       permissionValue: {}
     };
   }
-
-  transformTreeData = (data, treeData = []) => {
-    if (!data.length) {
-      return treeData;
-    }
-    let addIds = [];
-
-    for (let item of data) {
-      const { parentId, id } = item;
-      if (parentId === null) {
-        addIds.push(id);
-        treeData.push(item);
-      } else {
-        const data = findTreeData(treeData, parentId, "id", "children");
-        if (data) {
-          const { children = [] } = data;
-          data.children = [...children, item];
-          addIds.push(id);
-        }
-      }
-    }
-    data = data.filter((item) => {
-      return !addIds.includes(item.id);
-    });
-    return this.transformTreeData(data, treeData);
-  };
 
   /**
    * 用于将从接口获取到的初始化数据，转换成form需要的格式
@@ -120,7 +96,38 @@ class Index extends FormPage {
       back();
     }, 500);
   };
+  transformTreeData = (data, treeData = []) => {
+    if (!data.length) {
+      return treeData;
+    }
+    let addIds = [];
+    for (let item of data) {
+      const { parentId, id } = item;
+      if (parentId === null) {
+        addIds.push(id);
+        treeData.push(item);
+      } else {
+        const data = findTreeData(treeData, parentId, "id", "children");
+        if (data) {
+          const { children = [] } = data;
+          data.children = [...children, item];
+          addIds.push(id);
+        }
+      }
+    }
+    data = data.filter((item) => {
+      return !addIds.includes(item.id);
+    });
+    return this.transformTreeData(data, treeData);
+  };
   getFields = () => {
+    const {
+      match: {
+        params: { action }
+      }
+    } = this.props;
+
+    const readOnly = action === "view";
     return [
       {
         type: "section",
@@ -224,12 +231,13 @@ class Index extends FormPage {
 
               return (
                 <TablePicker
-                  buttonText="选择角色"
+                  readOnly={readOnly}
+                  buttonText={readOnly ? "查看角色" : "选择角色"}
                   value={value}
                   onChange={onChange}
                   request={getRoleList}
                   modalProps={{
-                    title: "设置角色"
+                    title: readOnly ? "查看角色" : "设置角色"
                   }}
                   tableProps={{
                     rowKey: "id",
@@ -305,6 +313,45 @@ class Index extends FormPage {
               //   message: "请设置角色"
               // }
             ]
+          },
+          {
+            label: "总共拥有权限",
+            name: "roles",
+
+            render: () => {
+              return (
+                <div className="tree-picker-content user-role-details-tree-content">
+                  <TreeContent
+                    searchProps={{
+                      placeholder: "搜索权限名称/ID"
+                    }}
+                    isSelectLast={false}
+                    readOnly={true}
+                    isSelectLastHasParent
+                    requestParameter={{
+                      pageNum: 1,
+                      pageSize: 10000
+                    }}
+                    promiseRequest={getPermissionList}
+                    searchKeys={["name", "id"]}
+                    totalTitle={"一共有{n}条数据"}
+                    selectedTitle={"已选{n}条数据"}
+                    valueKey="id"
+                    titleKey="name"
+                    nextLevelKey="children"
+                    dataMapper={(data) => {
+                      data = this.transformTreeData(data.data.list);
+                      return data;
+                    }}></TreeContent>
+                </div>
+              );
+            },
+            rules: [
+              // {
+              //   required: true,
+              //   message: "请设置角色"
+              // }
+            ]
           }
         ]
       }
@@ -330,7 +377,7 @@ class Index extends FormPage {
   render() {
     const { authOpen, roleId, permissionValue } = this.state;
     return (
-      <div className="form-page user-set-role-details">
+      <div className="form-page user-role-details">
         <PermissionPicker
           readOnly={true}
           value={permissionValue}

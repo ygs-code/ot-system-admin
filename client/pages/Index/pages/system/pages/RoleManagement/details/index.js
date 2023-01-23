@@ -75,6 +75,13 @@ class Index extends FormPage {
     }, 500);
   };
   getFields = () => {
+    const {
+      match: {
+        params: { action }
+      }
+    } = this.props;
+
+    const readOnly = action === "view";
     return [
       {
         type: "section",
@@ -97,6 +104,7 @@ class Index extends FormPage {
             name: "name",
             type: "input",
             props: {
+              readOnly,
               showCount: true,
               maxLength: 20
             },
@@ -114,6 +122,7 @@ class Index extends FormPage {
             name: "description",
             type: "textArea",
             props: {
+              readOnly,
               showCount: true,
               maxLength: 200
             },

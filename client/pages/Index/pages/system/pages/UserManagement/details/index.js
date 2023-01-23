@@ -56,6 +56,14 @@ class Index extends FormPage {
     }, 500);
   };
   getFields = () => {
+    const {
+      match: {
+        params: { action }
+      }
+    } = this.props;
+
+    const readOnly = action === "view";
+
     return [
       {
         type: "section",
@@ -78,7 +86,8 @@ class Index extends FormPage {
             type: "input",
             props: {
               showCount: true,
-              maxLength: 20
+              maxLength: 20,
+              readOnly
             },
 
             rules: [
@@ -94,7 +103,8 @@ class Index extends FormPage {
             type: "input",
             props: {
               showCount: true,
-              maxLength: 100
+              maxLength: 100,
+              readOnly
             },
 
             rules: [
@@ -110,7 +120,8 @@ class Index extends FormPage {
             type: "input",
             props: {
               showCount: true,
-              maxLength: 11
+              maxLength: 11,
+              readOnly
             },
 
             rules: [
@@ -125,6 +136,7 @@ class Index extends FormPage {
             name: "type",
             type: "select",
             props: {
+              readOnly,
               options: [
                 {
                   label: "管理员",
@@ -137,7 +149,6 @@ class Index extends FormPage {
               ]
             },
             itemProps: {},
-            options: {},
 
             rules: [
               {

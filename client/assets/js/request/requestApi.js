@@ -96,6 +96,21 @@ export const editUser = (parameter = {}) => {
   );
 };
 
+// 删除用户
+export const removeUser = (id) => {
+  return mutation(
+    "removeUser",
+    `
+      mutation  {
+        removeUser(id: ${id}) {
+          code
+          message
+        }
+      }
+    `
+  );
+};
+
 // 登录
 export const login = (parameter) => {
   const { password, name, verificationCode } = parameter;
@@ -226,10 +241,6 @@ export const getUserInfo = (parameter = {}) => {
 
 // 获取角色列表
 export const getRoleList = (parameter = {}) => {
-  // const { type = "" } = parameter;
-
-  // const { type, pageName = 1, pageSize = 10 } = parameter;
-
   return query(
     "getRoleList",
     `
@@ -326,6 +337,21 @@ export const editRole = (parameter = {}) => {
   );
 };
 
+//  编辑角色
+export const removeRole = (id) => {
+  return mutation(
+    "removeRole",
+    `
+      mutation  {
+        removeRole(id: ${id}) {
+          code
+          message
+        }
+      }
+    `
+  );
+};
+
 // 获取权限列表
 export const getPermissionList = (parameter = {}) => {
   // const { type = "" } = parameter;
@@ -396,7 +422,7 @@ export const getPermissionInfo = (parameter = {}) => {
   );
 };
 
-//  编辑权限
+//  创建权限
 export const createPermission = (parameter = {}) => {
   return mutation(
     "createPermission",
@@ -411,6 +437,21 @@ export const createPermission = (parameter = {}) => {
     {
       parameter
     }
+  );
+};
+
+//  删除权限
+export const removePermission = (id) => {
+  return mutation(
+    "removePermission",
+    `
+      mutation   {
+        removePermission(id: ${id}) {
+          code
+          message
+        }
+      }
+    `
   );
 };
 

@@ -201,6 +201,7 @@ const tablePage = (Component) => {
     };
     loadTableData = async (searchParams = {}) => {
       const { getFieldsValue } = this.searchForm;
+      let newSearchParams = {};
 
       if (this.getDefaultSearchParams) {
         searchParams = {
@@ -237,7 +238,19 @@ const tablePage = (Component) => {
         return;
       }
 
-      const data = await this.tableDataLoader(searchParams);
+      //
+      for (let key in searchParams) {
+        if (searchParams.hasOwnProperty(key)) {
+          if (
+            searchParams[key] === null ||
+            (searchParams[key] !== undefined &&
+              searchParams[key].toString().trim() !== "")
+          ) {
+            newSearchParams[key] = searchParams[key];
+          }
+        }
+      }
+      const data = await this.tableDataLoader(newSearchParams);
       errprMessage = this.checkTabelData(data);
       if (errprMessage) {
         console.error(errprMessage);
@@ -313,6 +326,7 @@ const tablePage = (Component) => {
     renderTable = (props = {}) => {
       const { tableData } = this.state;
       let { tableProps = {}, paginationProps = {} } = props;
+      let { readOnly } = this.props;
 
       tableProps = {
         ...tableProps,
@@ -324,6 +338,7 @@ const tablePage = (Component) => {
 
       return (
         <Table
+          readOnly={readOnly}
           tableProps={tableProps}
           // {...tableProps}
           columns={this.getColumns ? this.getColumns() : []}

@@ -1,5 +1,5 @@
-import { Input } from "antd";
-import { getUserList } from "client/assets/js/request";
+import { Input, message } from "antd";
+import { getUserList, removeUser } from "client/assets/js/request";
 import setBreadcrumbAndTitle from "client/component/setBreadcrumbAndTitle";
 import TableButton from "client/component/TableButton";
 import { tablePage } from "client/component/TablePage";
@@ -161,8 +161,6 @@ class Index extends Component {
             <TableButton
               render={[
                 {
-                  // showPopconfirm: true, // 是否需要弹窗提示
-                  // confirmInfo: "你确定要发布该标签吗？", //弹窗信息
                   label: "编辑", // 按钮文字
                   status: true, //权限控制
                   props: {
@@ -174,6 +172,34 @@ class Index extends Component {
                           id
                         } // 地址传参
                       });
+                    }
+                  }
+                },
+                {
+                  label: "查看", // 按钮文字
+                  status: true, //权限控制
+                  props: {
+                    onClick: () => {
+                      pushRoute({
+                        path: userManagementDetails,
+                        params: {
+                          action: "view",
+                          id
+                        } // 地址传参
+                      });
+                    }
+                  }
+                },
+                {
+                  showPopconfirm: true, // 是否需要弹窗提示
+                  // confirmInfo: "你确定要发布该标签吗？", //弹窗信息
+                  label: "删除", // 按钮文字
+                  status: true, //权限控制
+                  props: {
+                    onClick: async () => {
+                      const { message: mgs } = await removeUser(id);
+                      message.success(mgs);
+                      this.loadTableData();
                     }
                   }
                 },

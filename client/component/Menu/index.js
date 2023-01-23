@@ -121,7 +121,7 @@ export default memo((props) => {
                 title: "用户管理",
                 url: routePaths.userManagement, // 路由地址
                 // iconComponent: <HomeOutlined/>,
-                key: "5",
+                key: "3",
                 children: [
                   // 子菜单
                 ]
@@ -130,7 +130,7 @@ export default memo((props) => {
                 title: "角色管理",
                 url: routePaths.roleManagement, // 路由地址
                 // iconComponent: <HomeOutlined/>,
-                key: "3",
+                key: "4",
                 children: [
                   // 子菜单
                 ]
@@ -140,27 +140,25 @@ export default memo((props) => {
                 title: "权限管理",
                 url: routePaths.permissionManagement, // 路由地址
                 // iconComponent: <HomeOutlined/>,
-                key: "4",
+                key: "5",
                 children: [
                   // 子菜单
                 ]
               },
-
-              {
-                title: "用户&角色",
-                url: routePaths.userRole, // 路由地址
-                // iconComponent: <HomeOutlined/>,
-                key: "4",
-                children: [
-                  // 子菜单
-                ]
-              },
-
               {
                 title: "角色&权限",
                 url: routePaths.rolePermission, // 路由地址
                 // iconComponent: <HomeOutlined/>,
                 key: "6",
+                children: [
+                  // 子菜单
+                ]
+              },
+              {
+                title: "用户&角色",
+                url: routePaths.userRole, // 路由地址
+                // iconComponent: <HomeOutlined/>,
+                key: "7",
                 children: [
                   // 子菜单
                 ]

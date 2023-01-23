@@ -9,6 +9,7 @@ import { findTreeData } from "client/utils";
 import React, { useEffect } from "react";
 
 const Picker = (props) => {
+  const { searchProps = {} } = props;
   const transformTreeData = (data, treeData = []) => {
     if (!data.length) {
       return treeData;
@@ -37,6 +38,10 @@ const Picker = (props) => {
   return (
     <TreePicker
       {...props}
+      searchProps={{
+        placeholder: "搜索权限名称/ID",
+        ...searchProps
+      }}
       isSelectLast={false}
       isSelectLastHasParent
       requestParameter={{

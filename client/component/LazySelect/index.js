@@ -11,7 +11,8 @@ const Index = (props) => {
     onChange,
     defaultOptions,
     fieldNames = {},
-    dataMap
+    dataMap,
+    readOnly
   } = props;
   const { value: valueKey = "id" } = fieldNames;
   const [loading, setLoading] = useState(true);
@@ -73,6 +74,7 @@ const Index = (props) => {
   }, [open, hasNextPage]);
   return (
     <Select
+      disabled={readOnly}
       value={value}
       open={open}
       //   labelInValue

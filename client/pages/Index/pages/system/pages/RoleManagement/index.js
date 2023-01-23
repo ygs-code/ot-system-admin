@@ -1,9 +1,5 @@
-import {
-  // Layout,
-  //  Menu,
-  Button
-} from "antd";
-import { getRoleList } from "client/assets/js/request";
+import { Button, message } from "antd";
+import { getRoleList, removeRole } from "client/assets/js/request";
 import setBreadcrumbAndTitle from "client/component/setBreadcrumbAndTitle";
 import TableButton from "client/component/TableButton";
 import { tablePage } from "client/component/TablePage";
@@ -121,16 +117,28 @@ class Index extends Component {
                   label: "查看", // 按钮文字
                   status: true, //权限控制
                   props: {
-                    onClick: () => {}
+                    onClick: () => {
+                      pushRoute({
+                        path: roleManagementDetails,
+                        params: {
+                          action: "view",
+                          id
+                        } // 地址传参
+                      });
+                    }
                   }
                 },
                 {
-                  // showPopconfirm: true, // 是否需要弹窗提示
+                  showPopconfirm: true, // 是否需要弹窗提示
                   // confirmInfo: "你确定要发布该标签吗？", //弹窗信息
                   label: "删除", // 按钮文字
                   status: true, //权限控制
                   props: {
-                    onClick: () => {}
+                    onClick: async () => {
+                      const { message: mgs } = await removeRole(id);
+                      message.success(mgs);
+                      this.loadTableData();
+                    }
                   }
                 }
               ]}

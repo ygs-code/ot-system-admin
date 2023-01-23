@@ -208,7 +208,8 @@ class Index extends Component {
       buttonText = "请选择",
       tableProps = {},
       request,
-      openButton = true
+      openButton = true,
+      readOnly
     } = this.props;
     const { isModalOpen, loading, selectedRowKeys, selectedRows } = this.state;
 
@@ -242,18 +243,22 @@ class Index extends Component {
             <Button key="back" loading={loading} onClick={this.onCancel}>
               关闭
             </Button>,
-            <Button
-              key="submit"
-              type="primary"
-              loading={loading}
-              onClick={this.onOk}>
-              确定
-            </Button>
+
+            readOnly ? null : (
+              <Button
+                key="submit"
+                type="primary"
+                loading={loading}
+                onClick={this.onOk}>
+                确定
+              </Button>
+            )
           ]}>
           <div className="table-picker-content">
             <div className="table-picker-content-table">
               <TablePage
                 request={request}
+                readOnly={readOnly}
                 {...tableProps}
                 tableProps={{
                   ...tableProps,

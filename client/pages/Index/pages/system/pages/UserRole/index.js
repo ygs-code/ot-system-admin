@@ -92,8 +92,7 @@ class Index extends Component {
               }
             ]
           },
-          itemProps: {},
-          options: {}
+          itemProps: {}
         }
       ],
       [
@@ -130,7 +129,6 @@ class Index extends Component {
     const { tabsValue } = this.state;
     const { pushRoute, routePaths: { userRoleDetails } = {} } = this.props;
 
-    console.log("this.props=", this.props);
     return [
       [
         {
@@ -197,9 +195,7 @@ class Index extends Component {
               <TableButton
                 render={[
                   {
-                    // showPopconfirm: true, // 是否需要弹窗提示
-                    // confirmInfo: "你确定要发布该标签吗？", //弹窗信息
-                    label: "编辑", // 按钮文字
+                    label: "新增编辑角色", // 按钮文字
                     status: true, //权限控制
                     props: {
                       onClick: () => {
@@ -214,23 +210,27 @@ class Index extends Component {
                     }
                   },
                   {
-                    // showPopconfirm: true, // 是否需要弹窗提示
-                    // confirmInfo: "你确定要发布该标签吗？", //弹窗信息
-                    label: "查看拥有角色", // 按钮文字
+                    label: "查看拥有角色权限", // 按钮文字
                     status: true, //权限控制
                     props: {
-                      onClick: () => {}
-                    }
-                  },
-                  {
-                    // showPopconfirm: true, // 是否需要弹窗提示
-                    // confirmInfo: "你确定要发布该标签吗？", //弹窗信息
-                    label: "查看拥有权限", // 按钮文字
-                    status: true, //权限控制
-                    props: {
-                      onClick: () => {}
+                      onClick: () => {
+                        pushRoute({
+                          path: userRoleDetails,
+                          params: {
+                            action: "view",
+                            id
+                          } // 地址传参
+                        });
+                      }
                     }
                   }
+                  // {
+                  //   label: "查看拥有权限", // 按钮文字
+                  //   status: true, //权限控制
+                  //   props: {
+                  //     onClick: () => {}
+                  //   }
+                  // }
                 ]}
               />
             );

@@ -82,14 +82,23 @@ export default class extends PureComponent {
   };
   // 底部按钮
   getFooter = () => {
-    const { history = {} } = this.props;
+    const {
+      match: {
+        params: { action }
+      },
+      history = {}
+    } = this.props;
+
     const { loading } = this.state;
 
+    const readOnly = action === "view";
     return (
       <div className="button-box">
-        <Button type="primary" loading={loading} onClick={this.onValidaForm}>
-          确认
-        </Button>
+        {!readOnly ? (
+          <Button type="primary" loading={loading} onClick={this.onValidaForm}>
+            确认
+          </Button>
+        ) : null}
         <Button
           loading={loading}
           onClick={() => {

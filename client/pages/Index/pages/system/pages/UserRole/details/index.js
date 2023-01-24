@@ -5,6 +5,7 @@ import {
   editUserRole,
   getPermissionList,
   getRoleList,
+  getRolePermissionList,
   getUserInfo,
   getUserRoleList
 } from "client/assets/js/request";
@@ -30,25 +31,63 @@ class Index extends FormPage {
     };
   }
 
+  getRolePermissions = async (roles) => {
+    const {
+      form: { setFieldsValue }
+    } = this;
+    let permissions = [];
+    let p = [];
+    for (let item of roles) {
+      p.push(await this.getRolePermission(item.id));
+    }
+    permissions = await Promise.all(p).then((data) => {
+      for (let item of data) {
+        for (let $item of item) {
+          const { id } = $item;
+          if (!permissions.includes(id)) {
+            permissions.push(id);
+          }
+        }
+      }
+      return permissions;
+    });
+
+    setFieldsValue({
+      permissions: {
+        checkedKeys: permissions
+      }
+    });
+  };
+  getRolePermission = async (roleId) => {
+    const { data: { list = [] } = {} } = await getRolePermissionList({
+      roleId,
+      pageNum: 1,
+      pageSize: 10000
+    });
+
+    return list;
+  };
+
   /**
    * 用于将从接口获取到的初始化数据，转换成form需要的格式
    * 这个函数需要在getInitData中手动调用，因此函数名不限于mapInitData
    */
   mapInitData = async (initData) => {
-    const { id, name, email, phone, type, roles } = initData;
-
+    let { id, name, email, phone, type, roles } = initData;
+    roles = roles.map((item) => {
+      const { roleId: id } = item;
+      return {
+        id
+      };
+    });
+    this.getRolePermissions(roles);
     return {
       id,
       name,
       email,
       phone,
       type,
-      roles: roles.map((item) => {
-        const { roleId: id } = item;
-        return {
-          id
-        };
-      })
+      roles
     };
   };
   // 初始化值
@@ -234,7 +273,10 @@ class Index extends FormPage {
                   readOnly={readOnly}
                   buttonText={readOnly ? "查看角色" : "选择角色"}
                   value={value}
-                  onChange={onChange}
+                  onChange={(v) => {
+                    onChange(v);
+                    this.getRolePermissions(v);
+                  }}
                   request={getRoleList}
                   modalProps={{
                     title: readOnly ? "查看角色" : "设置角色"
@@ -316,12 +358,15 @@ class Index extends FormPage {
           },
           {
             label: "总共拥有权限",
-            name: "roles",
+            name: "permissions",
 
-            render: () => {
+            render: (props) => {
+              const { value } = props;
+              console.log("value=========");
               return (
                 <div className="tree-picker-content user-role-details-tree-content">
                   <TreeContent
+                    value={value}
                     searchProps={{
                       placeholder: "搜索权限名称/ID"
                     }}
@@ -376,6 +421,7 @@ class Index extends FormPage {
   componentDidMount() {}
   render() {
     const { authOpen, roleId, permissionValue } = this.state;
+    console.log("this.props========", this.props);
     return (
       <div className="form-page user-role-details">
         <PermissionPicker

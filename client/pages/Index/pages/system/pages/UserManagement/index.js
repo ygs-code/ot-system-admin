@@ -94,8 +94,10 @@ class Index extends Component {
 
   // 定义表头字段
   getColumns = () => {
-    const { pushRoute, routePaths: { userManagementDetails } = {} } =
-      this.props;
+    const {
+      pushRoute,
+      routePaths: { userManagementDetails, userRoleDetails } = {}
+    } = this.props;
     return [
       {
         title: "用户ID",
@@ -204,21 +206,19 @@ class Index extends Component {
                   }
                 },
                 {
-                  // showPopconfirm: true, // 是否需要弹窗提示
-                  // confirmInfo: "你确定要发布该标签吗？", //弹窗信息
-                  label: "查看拥有角色", // 按钮文字
+                  label: "查看拥有角色权限", // 按钮文字
                   status: true, //权限控制
                   props: {
-                    onClick: () => {}
-                  }
-                },
-                {
-                  // showPopconfirm: true, // 是否需要弹窗提示
-                  // confirmInfo: "你确定要发布该标签吗？", //弹窗信息
-                  label: "查看拥有权限", // 按钮文字
-                  status: true, //权限控制
-                  props: {
-                    onClick: () => {}
+                    onClick: () => {
+                      pushRoute({
+                        path: userRoleDetails,
+
+                        params: {
+                          action: "view",
+                          id
+                        } // 地址传参
+                      });
+                    }
                   }
                 }
               ]}

@@ -145,6 +145,23 @@ class Index extends Component {
                         });
                       }
                     }
+                  },
+                  {
+                    // showPopconfirm: true, // 是否需要弹窗提示
+                    // confirmInfo: "你确定要发布该标签吗？", //弹窗信息
+                    label: "查看", // 按钮文字
+                    status: true, //权限控制
+                    props: {
+                      onClick: () => {
+                        pushRoute({
+                          path: rolePermissionDetails,
+                          params: {
+                            action: "view",
+                            id
+                          } // 地址传参
+                        });
+                      }
+                    }
                   }
                 ]}
               />

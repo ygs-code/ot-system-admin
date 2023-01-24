@@ -74,9 +74,12 @@ class Index extends FormPage {
   getFields = () => {
     const {
       match: {
-        params: { id }
+        params: { action, id }
       }
     } = this.props;
+
+    const readOnly = action === "view";
+
     return [
       {
         type: "section",
@@ -139,6 +142,7 @@ class Index extends FormPage {
               const { onChange, value } = props;
               return (
                 <PermissionPicker
+                  readOnly={readOnly}
                   value={value}
                   roleId={id}
                   onChange={onChange}

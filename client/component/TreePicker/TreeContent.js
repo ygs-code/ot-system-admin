@@ -30,12 +30,16 @@ const TreeContent = (props) => {
     promiseRequest,
     requestParameter,
     dataMapper,
-    value,
+    value = {},
     isSelectLast,
     isSelectLastHasParent
   } = props;
-  console.log("props======", props);
+
   //   const [valueChanged, setValueChanged] = useState(false);
+  const {
+    checkedKeys: propsCheckedKeys = [],
+    checkedChildrenKeys: propsCheckedChildrenKeys = []
+  } = value;
   const [checkedKeys, setCheckedKeys] = useState([]);
   const [selectedTreeData, setSelectedTreeData] = useState([]);
   const [checkedChildrenKeys, setCheckedChildrenKeys] = useState([]);
@@ -216,6 +220,38 @@ const TreeContent = (props) => {
     });
   };
 
+  const onChangeValueCheck = ($checkedKeys) => {
+    let selectedTreeData = listData.filter((item) => {
+      return $checkedKeys.includes(item[valueKey]);
+    });
+
+    let selectedChildrenTreeData = listData.filter((item) => {
+      return (
+        !(item[nextLevelKey] && item[nextLevelKey].length) &&
+        $checkedKeys.includes(item[valueKey])
+      );
+    });
+
+    let checkedChildrenKeys = selectedChildrenTreeData.map((item) => {
+      return item[valueKey];
+    });
+    setCheckedKeys($checkedKeys);
+    setSelectedTreeData(selectedTreeData);
+    setCheckedChildrenKeys(checkedChildrenKeys);
+    setSelectedChildrenTreeData(selectedChildrenTreeData);
+
+    onChange({
+      checkedKeys: $checkedKeys,
+      selectedTreeData,
+      checkedChildrenKeys,
+      selectedChildrenTreeData,
+      valueChanged: false,
+      cacheTreeData,
+      treeData,
+      listData
+    });
+  };
+
   const onDelete = (item) => {
     if (item[nextLevelKey] && item[nextLevelKey].length) {
       return message.warning("当前级不是最后一级，所以删除子级才能删除该级。");
@@ -342,14 +378,19 @@ const TreeContent = (props) => {
     const { checkedKeys = [], checkedChildrenKeys = [] } = value;
 
     if (listData.length > 1) {
-      onCheck(
+      // onCheck(
+      //   checkedKeys.length > checkedChildrenKeys.length
+      //     ? checkedKeys
+      //     : checkedChildrenKeys,
+      //   {
+      //     checked: true
+      //   },
+      //   false
+      // );
+      onChangeValueCheck(
         checkedKeys.length > checkedChildrenKeys.length
           ? checkedKeys
-          : checkedChildrenKeys,
-        {
-          checked: true
-        },
-        false
+          : checkedChildrenKeys
       );
       onExpand(
         checkedKeys.length > checkedChildrenKeys.length
@@ -357,7 +398,11 @@ const TreeContent = (props) => {
           : checkedChildrenKeys
       );
     }
-  }, [listData.length > 1, value]);
+  }, [
+    listData.length > 1,
+    propsCheckedKeys.length,
+    propsCheckedChildrenKeys.length
+  ]);
 
   return (
     <div className="tree-content">

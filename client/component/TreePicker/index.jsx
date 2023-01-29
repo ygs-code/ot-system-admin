@@ -2,19 +2,10 @@ import "./index.less";
 
 import {
   ExclamationCircleOutlined,
-  DeleteOutlined,
-  CloseCircleOutlined
 } from "@ant-design/icons";
-import { Button, Modal, Tree, Input, Tooltip, List, message } from "antd";
-import VirtualList from "rc-virtual-list";
-import {
-  findTreeData,
-  findTreePath,
-  deepCopy,
-  recursionTreeData,
-  filterTreeData
-} from "client/utils";
-import React, { Component, useState, useEffect } from "react";
+import { Button, Modal,  Input,  } from "antd";
+
+import React, { Component, } from "react";
 import  TreeContent from "./TreeContent";
  
 

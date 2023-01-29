@@ -55,6 +55,7 @@ class Index extends FormPage {
     setFieldsValue({
       permissions: {
         checkedKeys: permissions
+        // checkedChildrenKeys: permissions
       }
     });
   };
@@ -361,12 +362,13 @@ class Index extends FormPage {
             name: "permissions",
 
             render: (props) => {
-              const { value } = props;
-              console.log("value=========");
+              const { value = [], onChange } = props;
+
               return (
                 <div className="tree-picker-content user-role-details-tree-content">
                   <TreeContent
                     value={value}
+                    onChange={onChange}
                     searchProps={{
                       placeholder: "搜索权限名称/ID"
                     }}
@@ -421,7 +423,7 @@ class Index extends FormPage {
   componentDidMount() {}
   render() {
     const { authOpen, roleId, permissionValue } = this.state;
-    console.log("this.props========", this.props);
+
     return (
       <div className="form-page user-role-details">
         <PermissionPicker

@@ -18,7 +18,6 @@ import {
   // ProjectOutlined
 } from "@ant-design/icons";
 import {
-  Icon,
   Menu
   //  Select
 } from "antd";

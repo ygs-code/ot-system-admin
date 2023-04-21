@@ -14,4 +14,5 @@ RUN echo '复制成功'
  
 #对外暴露的端口
 EXPOSE 80
+RUN echo 'admin镜像build打包成功'
 

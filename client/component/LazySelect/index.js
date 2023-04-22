@@ -1,6 +1,6 @@
 import { Divider, Select, Space, Spin } from "antd";
+import { stabilization } from "client/utils";
 import React, { useCallback, useEffect, useState } from "react";
-import { stabilization } from "utils";
 
 const Index = (props) => {
   const {

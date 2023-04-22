@@ -4,7 +4,7 @@
     "description": "",
     "main": "index.js",
     "scripts": {
-        "lint-style": "stylelint \"client/**/*.(less|css)\" --syntax less",
+         "lint-style": "stylelint \"client/**/*.(less|css)\" --syntax less",
         "copyFile": "node ./webpack/utils/copyFile.js",
         "webpack-plugin-copy-file": "node  ./webpack/definePlugin/webpack-plugin-copy-file/index.js",
         "//注释10": "eslint校验",
@@ -143,7 +143,7 @@
         "reactstrap": "^9.1.2",
         "stream": "^0.0.2",
         "style-loader": "^0.19.1",
-        "stylelint": "^10.0.1",
+        "stylelint": "13.2.0",
         "stylelint-scss": "^3.9.2",
         "stylelint-config-recess-order": "^3.0.0",
         "stylelint-config-standard": "^18.3.0",

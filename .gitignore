@@ -17,4 +17,5 @@ client/router/routesComponent.js
 dist/
 
 *.lock
+yarn-error.log
 

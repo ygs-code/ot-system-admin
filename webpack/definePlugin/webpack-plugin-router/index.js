@@ -4,6 +4,13 @@ const _ = require("lodash");
 const { readFile } = require("../../utils");
 const dataDiff = require("./diff");
 const chalk = require("chalk");
+
+let {
+  NODE_ENV, // 环境参数
+  target, // 环境参数
+  htmlWebpackPluginOptions = ""
+} = process.env; // 环境参数
+
 // https://juejin.cn/post/6844903991508205576
 class WebpackPluginRouter {
   constructor(options) {
@@ -25,7 +32,7 @@ class WebpackPluginRouter {
     }
   }
 
-  firstToUpper(str) {
+  firstToUpper(str = "") {
     return str.toLowerCase().replace(/( |^)[a-z]/g, (L) => L.toUpperCase());
   }
 
@@ -67,7 +74,6 @@ class WebpackPluginRouter {
         }
         code.compilationErrors.push(errorMessage);
       }
-
 
       if (
         cachePaths.has(path) &&
@@ -329,9 +335,14 @@ export default routesComponentConfig;
 
   apply(compiler) {
     // webpack  处理webpack选项的条目配置后调用。 只编译一次
-    // this.hook(compiler, "entryOption", () => {
-    // this.compilerFile(compiler);
-    // });
+
+    if (NODE_ENV === "production") {
+      compiler.hooks.emit.tapAsync("entryOption", (compilation, callback) => {
+        this.compilerFile(compilation);
+        callback()
+      });
+      return false;
+    }
     this.hook(compiler, "watchRun", (compilation) => {
       this.writeFile(compilation);
     });

@@ -27,6 +27,16 @@ MAINTAINER yao guan shou
 #对外暴露的端口
 # EXPOSE 3001
 
+#更新Alpine的软件源为国内（清华大学）的站点，因为从默认官源拉取实在太慢了。。。
+RUN echo "https://mirror.tuna.tsinghua.edu.cn/alpine/v3.4/main/" > /etc/apk/repositories
+RUN apk update \
+    && apk upgrade \
+    && apk add --no-cache bash \
+    bash-doc \
+    bash-completion \
+    && rm -rf /var/ca
+
+
 # 将dist文件中的内容复制到 /usr/share/nginx/html/ 这个目录下面
 RUN echo '复制静态文件到nginx html目录中'
 # 拷贝 装依赖阶段 生成的 node_modules 文件夹到工作目录下
@@ -34,6 +44,6 @@ COPY --from=BUILD_IMAGE  /ot-system-admin/dist/client  /usr/share/nginx/html/
 # COPY  dist/client  /usr/share/nginx/html/
 
 # 覆盖默认配置
-COPY nginx.conf   /etc/nginx/conf.d/default.conf
+COPY nginx/nginx.conf   /etc/nginx/conf.d/default.conf
 RUN echo 'admin镜像build打包成功'
 

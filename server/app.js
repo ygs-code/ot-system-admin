@@ -17,7 +17,7 @@ let {
   target, // 环境参数
   htmlWebpackPluginOptions,
   ADMIN_PORT,
-  ADMIN_IP
+  ADMIN_ADDRESS
 } = process.env; // 环境参数
 
 //    是否是生产环境
@@ -45,7 +45,7 @@ class App {
     const server = this.app.listen(ADMIN_PORT, function () {
       var port = server.address().port;
       console.log(
-        `\n==> 🌎  node服务器启动成功，监听端口：${port}. 请打开浏览器 http://${ADMIN_IP}:${port}/ \n`
+        `\n==> 🌎  node服务器启动成功，监听端口：${port}. 请打开浏览器 http://${ADMIN_ADDRESS}:${port}/ \n`
       );
     });
   }

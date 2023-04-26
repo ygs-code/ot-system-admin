@@ -14,7 +14,7 @@ let {
 const isDevelopment = NODE_ENV == "development";
 
 module.exports = {
-  mode:  "development",
+  mode: NODE_ENV,
   watch: false,
   module: {
     rules: [

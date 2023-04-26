@@ -24,6 +24,9 @@ let {
   htmlWebpackPluginOptions = ""
 } = process.env; // 环境参数
 
+htmlWebpackPluginOptions = stringToObject(htmlWebpackPluginOptions);
+const { publicPath } = htmlWebpackPluginOptions;
+
 const isSsr = target == "ssr";
 //    是否是生产环境
 const isEnvProduction = NODE_ENV === "production";
@@ -71,7 +74,7 @@ module.exports = {
     filename: `static/js/[name].[hash:8].js`,
     chunkFilename: `static/js/[name].[hash:8].chunk.js`,
     path: path.join(process.cwd(), "./dist/client"),
-    publicPath: "/",
+    publicPath,
     // libraryTarget: isServer?'commonjs2':'umd',
     chunkLoadTimeout: 120000,
     // 「devtool 中模块」的文件名模板 调试webpack的配置问题
@@ -378,7 +381,7 @@ module.exports = {
       fix: true //自动修复
     }),
 
-     // 清理文件
+    // 清理文件
     new CleanWebpackPlugin(),
 
     // 使用此插件有助于缓解OSX上的开发人员不遵循严格的路径区分大小写的情况，
@@ -474,7 +477,7 @@ module.exports = {
       : [
           // // // html静态页面
           new HtmlWebpackPlugin({
-            ...stringToObject(htmlWebpackPluginOptions),
+            ...htmlWebpackPluginOptions,
             minify: true,
             // title: 'Custom template using Handlebars',
             // 生成出来的html文件名

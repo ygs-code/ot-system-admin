@@ -26,6 +26,7 @@ let {
 
 htmlWebpackPluginOptions = stringToObject(htmlWebpackPluginOptions);
 const { publicPath } = htmlWebpackPluginOptions;
+console.log('publicPath=======',publicPath)
 
 const isSsr = target == "ssr";
 //    是否是生产环境
@@ -439,6 +440,7 @@ module.exports = {
     }),
 
     new WebpackPluginRouter({
+      publicPath,
       entry: path.join(process.cwd(), "/client"),
       //延迟监听时间
       aggregateTimeout: 30,

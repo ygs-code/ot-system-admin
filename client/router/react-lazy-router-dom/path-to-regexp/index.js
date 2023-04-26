@@ -470,7 +470,7 @@ function pathToRegexp(path, keys, options) {
 
 export default pathToRegexp;
 
-export { parse, compile, tokensToFunction, tokensToRegExp };
+export { compile, parse, tokensToFunction, tokensToRegExp };
 
 /**
  * Expose `pathToRegexp`.

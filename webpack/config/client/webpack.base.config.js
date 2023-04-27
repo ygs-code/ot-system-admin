@@ -25,10 +25,9 @@ let {
 } = process.env; // 环境参数
 
 htmlWebpackPluginOptions = stringToObject(htmlWebpackPluginOptions);
-const { publicPath } = htmlWebpackPluginOptions;
-console.log('publicPath=======',publicPath)
+const { publicPath = "/" } = htmlWebpackPluginOptions;
 
-const isSsr = target == "ssr";
+const isSsr = target === "ssr";
 //    是否是生产环境
 const isEnvProduction = NODE_ENV === "production";
 //   是否是测试开发环境
@@ -75,6 +74,7 @@ module.exports = {
     filename: `static/js/[name].[hash:8].js`,
     chunkFilename: `static/js/[name].[hash:8].chunk.js`,
     path: path.join(process.cwd(), "./dist/client"),
+    // publicPath: "/",
     publicPath,
     // libraryTarget: isServer?'commonjs2':'umd',
     chunkLoadTimeout: 120000,

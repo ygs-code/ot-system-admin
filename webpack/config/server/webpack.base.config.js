@@ -28,7 +28,7 @@ let {
 } = process.env; // 环境参数
 
 htmlWebpackPluginOptions = stringToObject(htmlWebpackPluginOptions);
-const { publicPath } = htmlWebpackPluginOptions;
+const { publicPath = "/" } = htmlWebpackPluginOptions;
 
 //    是否是生产环境
 const isEnvProduction = NODE_ENV === "production";
@@ -63,6 +63,7 @@ module.exports = {
   output: {
     filename: "[name].js",
     path: path.join(process.cwd(), "./dist/server"),
+    // publicPath: "/",
     publicPath,
     chunkFilename: "[name].chunk.js",
     // libraryTarget: isServer?'commonjs2':'umd',

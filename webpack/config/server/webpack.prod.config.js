@@ -6,10 +6,7 @@ const ProgressBarPlugin = require("progress-bar-webpack-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const rootPath = process.cwd();
-let {
-  NODE_ENV, // 环境参数
-  target // 环境参数
-} = process.env; // 环境参数
+ 
 
 module.exports = {
   entry: {

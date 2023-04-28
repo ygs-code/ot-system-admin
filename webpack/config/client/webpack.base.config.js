@@ -20,14 +20,15 @@ const { stringToObject, alias } = require("../../utils");
 
 let {
   NODE_ENV, // 环境参数
-  target, // 环境参数
-  htmlWebpackPluginOptions = ""
+  RENDER, // 环境参数
+  htmlWebpackPluginOptions = "",
+  PUBLICPATH
 } = process.env; // 环境参数
 
 htmlWebpackPluginOptions = stringToObject(htmlWebpackPluginOptions);
-const { publicPath = "/" } = htmlWebpackPluginOptions;
+const { publicPath = "/" } = PUBLICPATH;
 
-const isSsr = target === "ssr";
+const isSsr = RENDER === "ssr";
 //    是否是生产环境
 const isEnvProduction = NODE_ENV === "production";
 //   是否是测试开发环境
@@ -455,8 +456,12 @@ module.exports = {
       process: {
         env: {
           NODE_ENV, // 环境参数
-          target, // 环境参数
-          htmlWebpackPluginOptions
+          RENDER, // 环境参数
+          PUBLICPATH,
+          htmlWebpackPluginOptions: {
+            ...htmlWebpackPluginOptions,
+            publicPath
+          }
         }
       }
     }),

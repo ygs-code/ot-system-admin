@@ -23,7 +23,7 @@ const ESLintPlugin = require("eslint-webpack-plugin");
 const { stringToObject, alias } = require("../../utils");
 let {
   NODE_ENV, // 环境参数
-  target, // 环境参数
+  RENDER, // 环境参数
   htmlWebpackPluginOptions = ""
 } = process.env; // 环境参数
 

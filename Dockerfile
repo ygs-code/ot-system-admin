@@ -1,6 +1,25 @@
 FROM node:14-alpine AS BUILD_IMAGE
 #声明作者
 MAINTAINER yao guan shou
+
+
+
+ARG ADMIN_ADDRESS 
+ARG ADMIN_PORT 
+ARG ADMIN_PUBLICPATH 
+ARG ADMIN_NODE_ENV 
+ARG ADMIN_RENDER 
+
+ENV ADDRESS = ${ADMIN_ADDRESS}
+ENV PORT = ${ADMIN_PORT}
+ENV PUBLICPATH = ${ADMIN_PUBLICPATH}
+ENV NODE_ENV = ${ADMIN_NODE_ENV}
+ENV RENDER = ${ADMIN_RENDER}
+
+
+
+
+
 # RUN apk update && apk add bash
 RUN mkdir ot-system-admin
 # 复制package.json文件

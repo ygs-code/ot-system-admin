@@ -17,7 +17,6 @@ import ejs from "ejs";
 const absolutePath = resolve("./");
 let {
   NODE_ENV, // 环境参数
-  // target, // 环境参数
   htmlWebpackPluginOptions
 } = process.env; // 环境参数
 
@@ -164,7 +163,7 @@ class ClientRouter {
           }
         }
       });
-      // console.log('renderedHtml ====',renderedHtml)
+      
       ctx.body = renderedHtml;
     }
     next();
@@ -298,7 +297,7 @@ class ClientRouter {
       styles,
       initState
     });
-    // console.log('renderedHtml===',renderedHtml)
+    
     return renderedHtml;
   }
 }

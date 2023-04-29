@@ -6,7 +6,7 @@ import { setExpirationTime } from '../config';
 
 class Service {
     static list(page) {
-        console.log('page=', page);
+       
         const dataList = {
             list: [
                 {

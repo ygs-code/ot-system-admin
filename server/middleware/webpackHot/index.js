@@ -16,11 +16,11 @@ import { compiler, config } from "@/webpack";
 
 let {
   NODE_ENV, // 环境参数
-  target, // 环境参数
+  RENDER, // 环境参数
   port
 } = process.env; // 环境参数
 
-const isSsr = target === "ssr";
+const isSsr = RENDER === "ssr";
 //    是否是生产环境
 const isEnvProduction = NODE_ENV === "production";
 //   是否是测试开发环境

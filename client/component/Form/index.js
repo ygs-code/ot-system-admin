@@ -182,12 +182,12 @@ const BaseForm = (props) => {
 
   // initialValues
   const onFinish = (values) => {
-    console.log("Success:", values);
+   
     onConfirm(values);
   };
 
   const onFinishFailed = (errorInfo) => {
-    console.log("Failed:", errorInfo);
+   
   };
   useEffect(() => {
     onReady(form);
@@ -320,12 +320,12 @@ const SearchForm = (props) => {
   const [expand, setExpand] = useState(false);
 
   const onFinish = (values) => {
-    console.log("Success:", values);
+  
     onConfirm(values);
   };
 
   const onFinishFailed = (errorInfo) => {
-    console.log("Failed:", errorInfo);
+   
   };
 
   const onFill = () => {

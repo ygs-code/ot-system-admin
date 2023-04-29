@@ -42,7 +42,7 @@ const Index = (props) => {
   };
 
   const onFinishFailed = (errorInfo) => {
-    console.log("Failed:", errorInfo);
+   
   };
 
   useEffect(() => {}, []);

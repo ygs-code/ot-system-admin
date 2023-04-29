@@ -78,7 +78,7 @@ Index.getInitPropsState = async (props = {}) => {
       return data;
     })
     .catch((err) => {
-      console.log("Error: ", err.message);
+      
     });
 };
 

@@ -83,8 +83,7 @@ class WebpackPluginRouter {
         cachePaths.has(path) &&
         !(name[0] === "~" || cachePaths.get(path).name[0] === "~")
       ) {
-        console.log("cachePaths===", cachePaths);
-        console.log("cachePaths.get(path)===", cachePaths.get(path));
+ 
         const { routesConfigPath: cacheRoutesConfigPath } =
           cachePaths.get(path);
         errorMessage = `[webpack-plugin-router]
@@ -365,9 +364,7 @@ export default routesComponentConfig;
     // });
     // this.hook(compiler, "done", (stats) => {
     //     if (stats.compilation.errors && stats.compilation.errors.length) {
-    //         console.log(
-    //             " stats.compilation.errors===",
-    //             chalk.red(stats.compilation.errors)
+ 
     //         );
     //         // process.exit(1);
     //     }

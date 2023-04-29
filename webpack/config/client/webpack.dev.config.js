@@ -8,10 +8,9 @@ const StylelintPlugin = require("stylelint-webpack-plugin");
 const rootPath = process.cwd();
 let {
   NODE_ENV, // 环境参数
-  target // 环境参数
 } = process.env; // 环境参数
 
-const isSsr = target == "ssr";
+
 //    是否是生产环境
 const isEnvProduction = NODE_ENV === "production";
 //   是否是测试开发环境

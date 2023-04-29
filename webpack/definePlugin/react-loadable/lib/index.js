@@ -235,7 +235,7 @@ function createLoadableComponent(loadFn, options) {
         this._loadModule();
       };
       // LoadableComponent.prototype.componentWillMount = function componentWillMount() {
-      //   console.log('componentWillMount=================')
+ 
       //   this._mounted = true
       //   this._loadModule()
       // }

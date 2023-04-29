@@ -16,10 +16,10 @@ import App from "./App/index.js";
 
 // 如果是开发环境 先拷贝 服务器文件到 dist
 let {
-  target // 环境参数
+  RENDER // 环境参数
 } = process.env; // 环境参数
 
-const isSsr = target === "ssr";
+const isSsr = RENDER === "ssr";
 
 const renderApp = () => {
   const history = getBrowserHistory();

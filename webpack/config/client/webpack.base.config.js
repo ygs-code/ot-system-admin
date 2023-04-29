@@ -26,7 +26,7 @@ let {
 } = process.env; // 环境参数
 
 htmlWebpackPluginOptions = stringToObject(htmlWebpackPluginOptions);
-const { publicPath = "/" } = PUBLICPATH;
+const publicPath = PUBLICPATH;
 
 const isSsr = RENDER === "ssr";
 //    是否是生产环境
@@ -474,7 +474,6 @@ module.exports = {
     // // 注入全局变量
     // new webpack.EnvironmentPlugin({
     //   NODE_ENV, // 环境参数  除非有定义 process.env.NODE_ENV，否则就使用 NODE_ENV
-    //   target, // 环境参数
     //   // htmlWebpackPluginOptions: stringToObject(htmlWebpackPluginOptions),
     //   // EnvironmentPluginDEBUG: false
     // }),

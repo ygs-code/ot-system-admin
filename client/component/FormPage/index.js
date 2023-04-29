@@ -69,7 +69,7 @@ export default class extends PureComponent {
   //    提交请求到接口
   onSubmitForm = async (formData) => {
     const data = await this.mapSubmitData(formData);
-    console.log("formData=", data);
+    
   };
 
   // 初始化表单

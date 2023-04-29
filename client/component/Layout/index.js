@@ -77,7 +77,7 @@ const Index = memo((props) => {
           mobile={phone}
           collapsed={collapsed}
           onClick={(type) => {
-            console.log("type=", type);
+           
           }}
           onChangeCollapsed={() => {
             toggle();

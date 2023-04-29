@@ -36,7 +36,7 @@ const Index = memo((props) => {
         data[minLiIndex].push(item);
         setData([...data]);
       } catch (error) {
-        console.log(error);
+     
       }
     },
     [data]

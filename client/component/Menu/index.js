@@ -67,6 +67,7 @@ export default memo((props) => {
       url
     });
   }, []);
+  console.log("routePaths=======", routePaths.document);
 
   const menuData = useMemo(() => {
     return [
@@ -136,15 +137,16 @@ export default memo((props) => {
         key: "1",
         children: [
           {
+            url: routePaths.document, // 路由地址
             title: "文档",
             key: "1-0"
-          },
-          {
-            title: "思维导图",
-            url: "http:xxxxx", // 路由地址
-            iconComponent: <MindMap />,
-            key: "1-1"
           }
+          // {
+          //   title: "思维导图",
+          //   url: "http:xxxxx", // 路由地址
+          //   iconComponent: <MindMap />,
+          //   key: "1-1"
+          // }
         ]
       }
     ];
@@ -193,7 +195,7 @@ export default memo((props) => {
     });
   }, []);
 
-  //   const onChange = useCallback((value) => {});
+  // const onChange = useCallback((value) => {});
 
   // const onBlur = useCallback(() => {});
 

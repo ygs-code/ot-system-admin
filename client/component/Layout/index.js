@@ -76,9 +76,7 @@ const Index = memo((props) => {
           areaCode={name}
           mobile={phone}
           collapsed={collapsed}
-          onClick={(type) => {
-           
-          }}
+          onClick={(type) => {}}
           onChangeCollapsed={() => {
             toggle();
           }}

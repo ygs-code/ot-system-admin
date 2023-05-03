@@ -22,7 +22,10 @@ let {
   NODE_ENV, // 环境参数
   RENDER, // 环境参数
   htmlWebpackPluginOptions = "",
-  PUBLICPATH
+  PUBLICPATH,
+  ADDRESS,
+  CLIENT_PORT,
+  CLIENT_PUBLICPATH
 } = process.env; // 环境参数
 
 htmlWebpackPluginOptions = stringToObject(htmlWebpackPluginOptions);
@@ -458,6 +461,9 @@ module.exports = {
           NODE_ENV, // 环境参数
           RENDER, // 环境参数
           PUBLICPATH,
+          ADDRESS,
+          CLIENT_PORT,
+          CLIENT_PUBLICPATH,
           htmlWebpackPluginOptions: {
             ...htmlWebpackPluginOptions,
             publicPath

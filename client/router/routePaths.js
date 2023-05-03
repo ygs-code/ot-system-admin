@@ -1,4 +1,7 @@
 export default {
+  documentDetails: "/office/document/details/:action/:id?",
+  document: "/office/document",
+  office: "/office",
   userManagementDetails: "/system/user-management/details/:action/:id?",
   userManagement: "/system/user-management",
   roleManagementDetails: "/system/role-management/details/:action/:id?",

@@ -116,7 +116,7 @@ export const login = (parameter) => {
   const { password, name, verificationCode } = parameter;
   return query(
     "login",
-    ` query{
+    ` mutation{
         login(
           password:"${password}",
           name:"${name}",
@@ -611,5 +611,63 @@ export const editRolePermission = (parameter = {}) => {
     {
       parameter
     }
+  );
+};
+
+// 获取文档列表
+export const getDocumentList = (parameter = {}) => {
+  // const { type = "" } = parameter;
+
+  // const { type, pageName = 1, pageSize = 10 } = parameter;
+
+  return query(
+    "getDocumentList",
+    `
+    query($parameter: ListInfoInput!){
+      getDocumentList(parameter: $parameter) {
+          code
+          data {
+            hasNextPage
+            pageNum
+            pageSize
+            pages
+            total
+            list{
+              id
+              title
+              v
+              updateBy
+              createBy
+              content
+              type
+              createTime
+              updateTime
+            }
+          }
+          message
+        } 
+    }
+  `,
+    {
+      parameter
+    },
+    {
+      filterData: true
+    }
+  );
+};
+
+// 删除文档
+export const removeDocument = (id) => {
+  return mutation(
+    "removeDocument",
+    `
+      mutation  {
+        removeDocument(id: ${id}) {
+          code
+          message
+        }
+      }
+    `
   );
 };

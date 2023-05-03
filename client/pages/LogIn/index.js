@@ -41,9 +41,7 @@ const Index = (props) => {
     }, 1500);
   };
 
-  const onFinishFailed = (errorInfo) => {
-   
-  };
+  const onFinishFailed = (errorInfo) => {};
 
   useEffect(() => {}, []);
 

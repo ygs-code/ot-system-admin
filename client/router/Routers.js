@@ -6,6 +6,7 @@
  * @FilePath: /react-ssr-lazy-loading/client/router/Routers.js
  * @Description:
  */
+import NoPages from "client/component/404";
 import Loading from "client/component/Loading";
 import { toComponent } from "client/router";
 import {
@@ -16,13 +17,13 @@ import {
 import PropTypes from "prop-types";
 import React from "react";
 
-const NoPages = () => {
-  return (
-    <div style={{ padding: "1rem" }}>
-      <p>There s nothing here!</p>
-    </div>
-  );
-};
+// const NoPages = () => {
+//   return (
+//     <div style={{ padding: "1rem" }}>
+//       <p>There s nothing here!</p>
+//     </div>
+//   );
+// };
 const Routers = (props) => {
   const { history, routesComponent = [], level } = props;
 

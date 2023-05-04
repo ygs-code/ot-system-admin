@@ -20,6 +20,23 @@ webpack/**/*
 **/webpack/**/*
 
 
+bin
+bin/*
+bin/**/*
+**/bin
+**/bin/**/*
+**/bin/**/*
+
+
+modules
+modules/*
+modules/**/*
+**/modules
+**/modules/**/*
+**/modules/**/*
+
+
+
 @babel
 @babel/*
 @babel/**/*

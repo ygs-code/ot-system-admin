@@ -376,7 +376,7 @@ module.exports = {
     //   // stylelintPath:'',
     //   extensions: ["dist/server/static/css/*.css"] // 排除目录检查
     // }),
-    // eslint 插件
+    // eslint 插件 
     new ESLintPlugin({
       emitError: true, //发现的错误将始终被触发，将禁用设置为false。
       emitWarning: true, //如果将disable设置为false，则发现的警告将始终被发出。

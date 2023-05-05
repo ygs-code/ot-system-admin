@@ -1,4 +1,3 @@
 import d from "./d";
 
-
-export default d
+export default d;

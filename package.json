@@ -1,5 +1,5 @@
 {
-  "name": "webpack-demo1",
+  "name": "ot-system-admin",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -26,7 +26,7 @@
     "copyFile": "node ./webpack/utils/copyFile.js",
     "webpack-plugin-copy-file": "node  ./webpack/definePlugin/webpack-plugin-copy-file/index.js",
     "//注释10": "eslint校验",
-    "eslint": "eslint ./client/**/*.{js,jsx}",
+    "eslint": "eslint ./client/**/*.{js,jsx} --fix",
     "watchFile": "node  ./webpack/utils/watchFile.js",
     "test": "node  -r @babel/register    ./client/assets/js/request/test.js",
     "bin": "cross-env NODE_ENV=development       RENDER=ssr   node   -r @babel/register    ./bin/index.js",

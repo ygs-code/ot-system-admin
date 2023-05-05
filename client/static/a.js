@@ -1,5 +1,3 @@
-
 import b from "./b";
 
-
-b()
+b();

@@ -1,13 +1,15 @@
-import React, { Component } from "react";
-import ReactDOM from "react-dom";
-import PropTypes from "prop-types";
 import className from "classnames";
+import codemirror from "codemirror";
 import debounce from "lodash.debounce";
 import isEqual from "lodash.isequal";
-import codemirror from "codemirror";
+import PropTypes from "prop-types";
+import React, { Component } from "react";
+import ReactDOM from "react-dom";
 
 function normalizeLineEndings(str) {
-  if (!str) return str;
+  if (!str) {
+    return str;
+  }
   return str.replace(/\r\n|\r/g, "\n");
 }
 
@@ -15,11 +17,11 @@ class CodeMirror extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isFocused: false,
+      isFocused: false
     };
   }
   static defaultProps = {
-    preserveScrollPosition: false,
+    preserveScrollPosition: false
   };
   static propTypes = {
     autoFocus: PropTypes.bool,
@@ -34,7 +36,7 @@ class CodeMirror extends Component {
     options: PropTypes.object,
     path: PropTypes.string,
     value: PropTypes.string,
-    preserveScrollPosition: PropTypes.bool,
+    preserveScrollPosition: PropTypes.bool
   };
 
   componentDidMount() {
@@ -101,7 +103,7 @@ class CodeMirror extends Component {
   };
   focusChanged = (focused) => {
     this.setState({
-      isFocused: focused,
+      isFocused: focused
     });
     this.props.onFocusChange && this.props.onFocusChange(focused);
   };

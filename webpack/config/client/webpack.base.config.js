@@ -339,10 +339,20 @@ module.exports = {
         //     },
         // },
       },
+
       {
-        test: /\.(svg|woff2?|ttf|eot|jpe?g|png|gif)(\?.*)?$/i,
+        test: /\.(svg|woff2?|woff|ttf|eot|otf|jpe?g|png|gif)(\?.*)?$/i,
         // exclude: /node_modules/,
-        use: cacheLoader("url-loader")
+        use: [
+          {
+            loader: "url-loader",
+            options: {
+              limit: 1024,
+              name: "static/img/[sha512:hash:base64:7].[ext]"
+            }
+          }
+        ]
+        // cacheLoader("url-loader")
         //  {
         //     loader: 'url-loader',
         //     options: {
@@ -351,6 +361,19 @@ module.exports = {
         //     },
         // },
       }
+
+      // {
+      //   test: /\.(svg|woff2?|ttf|eot|jpe?g|png|gif)(\?.*)?$/i,
+      //   // exclude: /node_modules/,
+      //   use: cacheLoader("url-loader")
+      //   //  {
+      //   //     loader: 'url-loader',
+      //   //     options: {
+      //   //         limit: 1024,
+      //   //         name: 'img/[sha512:hash:base64:7].[ext]',
+      //   //     },
+      //   // },
+      // }
     ]
   },
   plugins: [
@@ -425,23 +448,23 @@ module.exports = {
       threadPool: happyThreadPool
     }),
 
-    new HappyPack({
-      id: "url-loader",
-      //添加loader
-      use: [
-        {
-          loader: "url-loader",
-          options: {
-            limit: 1024,
-            name: "img/[sha512:hash:base64:7].[ext]"
-          }
-        }
-      ],
-      // 输出执行日志
-      // verbose: true,
-      // 使用共享线程池
-      threadPool: happyThreadPool
-    }),
+    // new HappyPack({
+    //   id: "url-loader",
+    //   //添加loader
+    //   use: [
+    //     {
+    //       loader: "url-loader",
+    //       options: {
+    //         limit: 1024,
+    //         name: "static/img/[sha512:hash:base64:7].[ext]"
+    //       }
+    //     }
+    //   ],
+    //   // 输出执行日志
+    //   // verbose: true,
+    //   // 使用共享线程池
+    //   threadPool: happyThreadPool
+    // }),
 
     new WebpackPluginRouter({
       publicPath,

@@ -7,9 +7,12 @@ import Tabs from "client/component/Tabs";
 import { addRouterApi } from "client/router";
 import React, { Component } from "react";
 
+/*eslint no-undef: "error"*/
+/*eslint-env process*/
 const {
   env: { NODE_ENV, PUBLICPATH, RENDER, CLIENT_PORT, CLIENT_PUBLICPATH } = {}
 } = process;
+
 // 权限控制
 @setBreadcrumbAndTitle({
   //设置面包屑和标题
@@ -90,11 +93,6 @@ class Index extends Component {
         render: (text, row) => {
           const { id } = row;
 
-          console.log("this.props========", this.props);
-          console.log("window.location========", window.location);
-          const { protocol, hostname } = window.location;
-          console.log("process======", process);
-
           // const { env: { NODE_ENV, PUBLICPATH, RENDER } = {} } = process;
 
           // process: {
@@ -122,8 +120,7 @@ class Index extends Component {
                     onClick: () => {
                       // /office/document/details/:action/:type/:id?
 
-                      console.log("NODE_ENV===", NODE_ENV);
-
+                      const { origin, protocol, hostname } = window.location;
                       window.open(
                         NODE_ENV == "development"
                           ? `${protocol}//${hostname}:${CLIENT_PORT}/office/document/details/edit/document/${id}`
@@ -139,6 +136,7 @@ class Index extends Component {
                   status: true, //权限控制
                   props: {
                     onClick: () => {
+                      const { origin, protocol, hostname } = window.location;
                       window.open(
                         NODE_ENV == "development"
                           ? `${protocol}//${hostname}:${CLIENT_PORT}/office/document/details/view/document/${id}`

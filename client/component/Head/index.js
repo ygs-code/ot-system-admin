@@ -6,11 +6,13 @@
  * @FilePath: /react-ssr-lazy-loading/client/component/Head/index.js
  * @Description:
  */
-import React, { useEffect } from "react";
-import PropTypes from "prop-types";
-import { mapRedux } from "client/redux";
 import "./index.less";
+
 import { getWeather } from "client/assets/js/request/requestApi";
+import { mapRedux } from "client/redux";
+import PropTypes from "prop-types";
+import React, { useEffect } from "react";
+
 const Index = (props) => {
   const { state: { head: { weather = {} } = {} } = {} } = props;
   useEffect(() => {
@@ -77,9 +79,7 @@ Index.getInitPropsState = async (props = {}) => {
       });
       return data;
     })
-    .catch((err) => {
-      
-    });
+    .catch((err) => {});
 };
 
 Index.propTypes = {

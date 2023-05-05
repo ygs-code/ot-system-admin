@@ -97,16 +97,18 @@ const Index = memo((props) => {
 });
 
 // 装饰器
-export const layout = (Component) => {
-  return class extends React.Component {
-    render() {
-      return (
-        <Index {...this.props}>
-          <Component />
-        </Index>
-      );
-    }
+// 装饰器
+export const layout = (props = {}) => {
+  return (Component) => {
+    return class extends React.Component {
+      render() {
+        return (
+          <Index {...this.props} {...props}>
+            <Component {...this.props} {...props} />
+          </Index>
+        );
+      }
+    };
   };
 };
-
 export default mapRedux()(addRouterApi(Index));

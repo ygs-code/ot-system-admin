@@ -2,6 +2,15 @@ FROM node:14-alpine AS BUILD_IMAGE
 #声明作者
 MAINTAINER yao guan shou
 
+# RUN apk update && apk add bash
+RUN mkdir ot-system-admin
+# 复制package.json文件
+COPY  package.json  /ot-system-admin
+WORKDIR /ot-system-admin
+# RUN echo 'dist , node_modules目录下所有文件,以及清理缓存'
+RUN echo '删除dist,node_modules目录下所有文件,以及清理缓存' & rm -rf ./node_modules & rm -rf  ./dist & rm -rf package-lock.json & rm -rf yarn.lock & npm cache clean --force 
+RUN echo '安装node_modules依赖包' & npm install --production 
+
 ARG ADMIN_ADDRESS 
 ARG ADMIN_PORT 
 ARG ADMIN_PUBLICPATH 
@@ -25,16 +34,6 @@ ENV RENDER=${ADMIN_RENDER}
 
 ENV ENTRY_SERVER_NAME=${ENTRY_SERVER_NAME}
 
-
-# RUN apk update && apk add bash
-RUN mkdir ot-system-admin
-# 复制package.json文件
-COPY  package.json  /ot-system-admin
-WORKDIR /ot-system-admin
-# RUN echo 'dist , node_modules目录下所有文件,以及清理缓存'
-RUN echo '删除dist,node_modules目录下所有文件,以及清理缓存' & rm -rf ./node_modules & rm -rf  ./dist & rm -rf package-lock.json & rm -rf yarn.lock & npm cache clean --force 
-RUN echo '安装node_modules依赖包' & npm install --production 
-# ARG date; 获取命令行参数
 #清理缓存
 ADD "https://www.random.org/cgi-bin/randbyte?nbytes=10&format=h" skipcache
 #移动当前目录下面的文件到client目录下

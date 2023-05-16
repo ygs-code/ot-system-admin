@@ -42,7 +42,7 @@ COPY  .  /ot-system-admin
 #进入到ot-system-admin目录下面，类似cd
 WORKDIR /ot-system-admin
 # RUN echo 'webpack打包编译生产代码'
-RUN echo '编译打包admin' &  npm run build:client:prod
+RUN echo '编译打包admin' & sudo  npm run build:client:prod
 
 # # # 设置基础镜像
 FROM nginx:alpine

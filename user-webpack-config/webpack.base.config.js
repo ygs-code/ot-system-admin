@@ -45,7 +45,7 @@ module.exports = {
   resolve: {
     // 路径配置
     alias: {
-      // '@': path.join(process.cwd(), '/src'),
+      // '@': path.join(process.cwd(), '/client'),
     }
   },
   module: {

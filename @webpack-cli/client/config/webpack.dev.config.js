@@ -331,8 +331,8 @@ module.exports = {
       inline: true
     },
     watchFiles: [
-      path.join(process.cwd(), "/src/**/*"),
-      path.join(process.cwd(), "/src/*"),
+      path.join(process.cwd(), "/client/**/*"),
+      path.join(process.cwd(), "/client/*"),
       path.join(process.cwd(), "/public/**/*"),
       path.join(process.cwd(), "/public/*")
     ],

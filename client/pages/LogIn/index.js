@@ -1,5 +1,7 @@
 import "client/assets/css/base.less";
+// import "./index.scss";
 import "./index.less";
+// import "./index.css";
 
 import { Button, Form, Input, message } from "antd";
 import { login } from "client/assets/js/request/index";
@@ -47,7 +49,7 @@ const Index = (props) => {
 
   return (
     <div className="center log-in">
-      <h3>《OT协同办公系统》 </h3>
+      <h3 className=" pt-100">《OT协同办公系统》 </h3>
 
       <Form
         {...layout}

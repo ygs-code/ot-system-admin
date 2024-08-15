@@ -1,6 +1,6 @@
 import "./index.less";
 
-import { message } from "antd";
+import {message} from "antd";
 import {
   editUserRole,
   getPermissionList,
@@ -13,11 +13,11 @@ import FormPage from "client/component/FormPage";
 import setBreadcrumbAndTitle from "client/component/setBreadcrumbAndTitle";
 import TableButton from "client/component/TableButton";
 import TablePicker from "client/component/TablePicker";
-import { TreeContent } from "client/component/TreePicker";
+import {TreeContent} from "client/component/TreePicker";
 import PermissionPicker from "client/pages/Index/pages/system/component/PermissionPicker";
-import { mapRedux } from "client/redux";
-import { addRouterApi, routePaths } from "client/router";
-import { findTreeData } from "client/utils";
+import {mapRedux} from "client/redux";
+import {addRouterApi, routePaths} from "client/router";
+import {findTreeData} from "client/utils";
 import React from "react";
 
 class Index extends FormPage {
@@ -33,7 +33,7 @@ class Index extends FormPage {
 
   getRolePermissions = async (roles) => {
     const {
-      form: { setFieldsValue }
+      form: {setFieldsValue}
     } = this;
     let permissions = [];
     let p = [];
@@ -43,7 +43,7 @@ class Index extends FormPage {
     permissions = await Promise.all(p).then((data) => {
       for (let item of data) {
         for (let $item of item) {
-          const { id } = $item;
+          const {id} = $item;
           if (!permissions.includes(id)) {
             permissions.push(id);
           }
@@ -60,7 +60,7 @@ class Index extends FormPage {
     });
   };
   getRolePermission = async (roleId) => {
-    const { data: { list = [] } = {} } = await getRolePermissionList({
+    const {data: {list = []} = {}} = await getRolePermissionList({
       roleId,
       pageNum: 1,
       pageSize: 10000
@@ -74,9 +74,9 @@ class Index extends FormPage {
    * 这个函数需要在getInitData中手动调用，因此函数名不限于mapInitData
    */
   mapInitData = async (initData) => {
-    let { id, name, email, phone, type, roles } = initData;
+    let {id, name, email, phone, type, roles} = initData;
     roles = roles.map((item) => {
-      const { roleId: id } = item;
+      const {roleId: id} = item;
       return {
         id
       };
@@ -95,11 +95,11 @@ class Index extends FormPage {
   getInitialValues = async () => {
     const {
       match: {
-        params: { id }
+        params: {id}
       }
     } = this.props;
 
-    const { data: { user = {} } = {} } = await getUserInfo({
+    const {data: {user = {}} = {}} = await getUserInfo({
       id
     });
 
@@ -115,7 +115,7 @@ class Index extends FormPage {
    * 用于将form的字段值转换为接口需要的格式
    */
   mapSubmitData = (formData) => {
-    const { id: userId, roles } = formData;
+    const {id: userId, roles} = formData;
 
     return {
       userId,
@@ -127,10 +127,10 @@ class Index extends FormPage {
   // 提交请求到接口
   onSubmitForm = async (formData) => {
     const {
-      history: { back }
+      history: {back}
     } = this.props;
     const values = await this.mapSubmitData(formData);
-    const { message: mgs } = await editUserRole({ ...values });
+    const {message: mgs} = await editUserRole({...values});
     message.success(mgs);
     setTimeout(() => {
       back();
@@ -142,14 +142,14 @@ class Index extends FormPage {
     }
     let addIds = [];
     for (let item of data) {
-      const { parentId, id } = item;
+      const {parentId, id} = item;
       if (parentId === null) {
         addIds.push(id);
         treeData.push(item);
       } else {
         const data = findTreeData(treeData, parentId, "id", "children");
         if (data) {
-          const { children = [] } = data;
+          const {children = []} = data;
           data.children = [...children, item];
           addIds.push(id);
         }
@@ -163,7 +163,7 @@ class Index extends FormPage {
   getFields = () => {
     const {
       match: {
-        params: { action }
+        params: {action}
       }
     } = this.props;
 
@@ -178,7 +178,7 @@ class Index extends FormPage {
             name: "id",
 
             render: (props) => {
-              const { value } = props;
+              const {value} = props;
 
               return <div>{value}</div>;
             },
@@ -267,7 +267,7 @@ class Index extends FormPage {
             name: "roles",
 
             render: (props) => {
-              const { value, onChange } = props;
+              const {value, onChange} = props;
 
               return (
                 <TablePicker
@@ -323,7 +323,7 @@ class Index extends FormPage {
                           key: "actions",
                           width: 180,
                           render: (text, row) => {
-                            const { id } = row;
+                            const {id} = row;
 
                             return (
                               <TableButton
@@ -362,7 +362,7 @@ class Index extends FormPage {
             name: "permissions",
 
             render: (props) => {
-              const { value = [], onChange } = props;
+              const {value = [], onChange} = props;
 
               return (
                 <div className="tree-picker-content user-role-details-tree-content">
@@ -408,11 +408,11 @@ class Index extends FormPage {
   getUserRoleList = async () => {
     const {
       match: {
-        params: { id: userId }
+        params: {id: userId}
       }
     } = this.props;
     const {
-      data: { list = [] }
+      data: {list = []}
     } = await getUserRoleList({
       userId,
       pageNum: 1,
@@ -422,7 +422,7 @@ class Index extends FormPage {
   };
   componentDidMount() {}
   render() {
-    const { authOpen, roleId, permissionValue } = this.state;
+    const {authOpen, roleId, permissionValue} = this.state;
 
     return (
       <div className="form-page user-role-details">

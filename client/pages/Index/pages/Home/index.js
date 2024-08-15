@@ -1,7 +1,8 @@
 import "./index.less";
 
 import setBreadcrumbAndTitle from "client/component/setBreadcrumbAndTitle";
-import React, { memo } from "react";
+import React, {memo} from "react";
+
 // 权限控制
 export default setBreadcrumbAndTitle({
   //设置面包屑和标题

@@ -8,7 +8,7 @@
  */
 import "./index.less";
 
-import { DownOutlined, UpOutlined } from "@ant-design/icons";
+import {DownOutlined, UpOutlined} from "@ant-design/icons";
 import {
   Button,
   Checkbox,
@@ -23,7 +23,7 @@ import {
   TimePicker,
   Transfer
 } from "antd";
-import { CheckDataType } from "client/utils";
+import {CheckDataType} from "client/utils";
 import React, {
   Children,
   cloneElement,
@@ -32,7 +32,7 @@ import React, {
   useState
 } from "react";
 
-const { Password, TextArea } = Input;
+const {Password, TextArea} = Input;
 const ItemChild = (props) => {
   let {
     type = "",
@@ -44,7 +44,7 @@ const ItemChild = (props) => {
   } = props;
   type = type ? type.toLowerCase() : type;
 
-  const { readOnly, disabled } = formProps;
+  const {readOnly, disabled} = formProps;
 
   const mapTpye = {
     textarea: (
@@ -399,7 +399,7 @@ const SearchForm = (props) => {
         <div className={`buttons`}>
           {shrinkLength >= fields.length ? null : (
             <a
-              style={{ fontSize: 12 }}
+              style={{fontSize: 12}}
               onClick={() => {
                 setExpand(!expand);
               }}>
@@ -436,4 +436,4 @@ const SearchForm = (props) => {
 };
 // BaseForm.SearchForm=SearchForm
 export default BaseForm;
-export { SearchForm };
+export {SearchForm};

@@ -8,11 +8,11 @@
  */
 import "./styles.less";
 
-import { Popconfirm } from "antd";
-import React, { useCallback } from "react";
+import {Popconfirm} from "antd";
+import React, {useCallback} from "react";
 
 export default React.forwardRef((props, ref) => {
-  const { render } = props;
+  const {render} = props;
   return (
     <ul className="table-button">
       {render

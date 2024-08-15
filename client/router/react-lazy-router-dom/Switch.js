@@ -9,8 +9,8 @@ import React, {
 // import { isContextConsumer, isValidElementType } from "react-is";
 import invariant from "tiny-invariant";
 
-import { matchPath } from "./matchPath";
-import { __RouterContext as RouterContext } from "./Router";
+import {matchPath} from "./matchPath";
+import {__RouterContext as RouterContext} from "./Router";
 
 var createNamedContext = function createNamedContext(name) {
   var context = createContext();
@@ -108,7 +108,7 @@ class Switch extends Component {
     };
   }
   componentDidMount() {
-    let { loading: Loading } = this.context;
+    let {loading: Loading} = this.context;
     if (Loading) {
       this.setState({
         AsynComponent: Loading
@@ -165,10 +165,10 @@ class Switch extends Component {
   };
 
   getComponent = () => {
-    const { AsynComponent, locationKey, match } = this.state;
-    let { children } = this.props;
-    let { history = {}, location = {}, routesComponent = [] } = this.context;
-    let { key } = location;
+    const {AsynComponent, locationKey, match} = this.state;
+    let {children} = this.props;
+    let {history = {}, location = {}, routesComponent = []} = this.context;
+    let {key} = location;
 
     if (!Object.keys(this.context).length) {
       throw new Error(
@@ -285,4 +285,4 @@ Switch.propTypes = {
   ]).isRequired
 };
 
-export { isValidElementType, MatchContext, Switch };
+export {isValidElementType, MatchContext, Switch};

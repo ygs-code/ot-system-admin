@@ -7,10 +7,10 @@
  * @Description:
  */
 import store from "client/redux/Store";
-import { getBrowserHistory } from "client/router/history";
+import {getBrowserHistory} from "client/router/history";
 import routesComponent from "client/router/routesComponent";
 import React from "react";
-import { createRoot, hydrateRoot } from "react-dom/client";
+import {createRoot, hydrateRoot} from "react-dom/client";
 
 import App from "./App/index.js";
 

@@ -1,11 +1,11 @@
 import "./index.less";
 
-import { message } from "antd";
-import { editUser, getUserInfo } from "client/assets/js/request";
+import {message} from "antd";
+import {editUser, getUserInfo} from "client/assets/js/request";
 import FormPage from "client/component/FormPage";
 import setBreadcrumbAndTitle from "client/component/setBreadcrumbAndTitle";
-import { mapRedux } from "client/redux";
-import { addRouterApi, routePaths } from "client/router";
+import {mapRedux} from "client/redux";
+import {addRouterApi, routePaths} from "client/router";
 import React from "react";
 
 class Index extends FormPage {
@@ -26,11 +26,11 @@ class Index extends FormPage {
   getInitialValues = async () => {
     const {
       match: {
-        params: { id }
+        params: {id}
       }
     } = this.props;
 
-    const { data: { user = {} } = {} } = await getUserInfo({
+    const {data: {user = {}} = {}} = await getUserInfo({
       id
     });
 
@@ -46,10 +46,10 @@ class Index extends FormPage {
   // 提交请求到接口
   onSubmitForm = async (formData) => {
     const {
-      history: { back }
+      history: {back}
     } = this.props;
     const values = await this.mapSubmitData(formData);
-    const { message: mgs } = await editUser({ ...values });
+    const {message: mgs} = await editUser({...values});
     message.success(mgs);
     setTimeout(() => {
       back();
@@ -58,7 +58,7 @@ class Index extends FormPage {
   getFields = () => {
     const {
       match: {
-        params: { action }
+        params: {action}
       }
     } = this.props;
 
@@ -74,7 +74,7 @@ class Index extends FormPage {
             name: "id",
 
             render: (props) => {
-              const { value } = props;
+              const {value} = props;
 
               return <div>{value}</div>;
             },

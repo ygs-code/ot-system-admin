@@ -28,6 +28,6 @@ const preloadReady = (onSuccess = () => {}, onError = () => {}) => {
     });
 };
 
-export { preloadReady };
-export { lazy };
+export {preloadReady};
+export {lazy};
 export default lazy;

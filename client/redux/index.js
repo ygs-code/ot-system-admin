@@ -1,6 +1,6 @@
-import { init } from "@rematch/core";
-import { CheckDataType } from "client/utils";
-import { connect } from "react-redux";
+import {init} from "@rematch/core";
+import {CheckDataType} from "client/utils";
+import {connect} from "react-redux";
 
 // import * as models from "./models";
 
@@ -63,7 +63,7 @@ const getPropsState = (global, modelKey, dataKey = "initState") => {
   return initState;
 };
 
-export { getPropsState, mapRedux };
+export {getPropsState, mapRedux};
 
 // export const createStore = (global) => {
 //   const newModels = {};

@@ -3,35 +3,35 @@ import "client/assets/css/base.less";
 import "./index.less";
 // import "./index.css";
 
-import { Button, Form, Input, message } from "antd";
-import { login } from "client/assets/js/request/index";
+import {Button, Form, Input, message} from "antd";
+import {login} from "client/assets/js/request/index";
 import VerificationCode from "client/component/VerificationCode";
-import { mapRedux } from "client/redux";
-import { addRouterApi } from "client/router";
-import { checkEmail, checkPassword, checkPhone, checkUser } from "client/utils";
-import React, { useEffect } from "react";
+import {mapRedux} from "client/redux";
+import {addRouterApi} from "client/router";
+import {checkEmail, checkPassword, checkPhone, checkUser} from "client/utils";
+import React, {useEffect} from "react";
 
 const layout = {
-  labelCol: { span: 8 },
-  wrapperCol: { span: 16 }
+  labelCol: {span: 8},
+  wrapperCol: {span: 16}
 };
 const tailLayout = {
-  wrapperCol: { offset: 8, span: 16 }
+  wrapperCol: {offset: 8, span: 16}
 };
 
 const Index = (props) => {
-  const { pushRoute, routePaths } = props;
+  const {pushRoute, routePaths} = props;
 
   const onFinish = async (values) => {
     const {
       dispatch: {
-        user: { setUserInfo }
+        user: {setUserInfo}
       }
     } = props;
 
-    const { data } = await login(values);
+    const {data} = await login(values);
 
-    const { token } = data;
+    const {token} = data;
 
     localStorage.setItem("token", token);
 
@@ -54,7 +54,7 @@ const Index = (props) => {
       <Form
         {...layout}
         name="basic"
-        initialValues={{ remember: true }}
+        initialValues={{remember: true}}
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}>
         <Form.Item

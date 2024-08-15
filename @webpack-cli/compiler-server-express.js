@@ -7,7 +7,7 @@ const webpackDevMiddleware = require("webpack-dev-middleware");
 const webpackHotServerMiddleware = require("webpack-hot-server-middleware");
 const portfinder = require("portfinder");
 // const webpackHotMiddleware = require('./client/webpack-hot-middleware')
-const connectHistoryApiFallback = require("./connect-history-api-fallback/lib/index1");
+const connectHistoryApiFallback = require("connect-history-api-fallback");
 
 import historyApiFallback from "koa-history-api-fallback";
 
@@ -118,48 +118,52 @@ class App {
     //   $BrowserReloadErrorOverlayWepbackPlugin = new BrowserReloadErrorOverlayWepbackPlugin()
     // }
 
-    const compiler = webpack(this.config, (err, stats) => {
-      console.log();
+    const compiler = webpack(
+      this.config
+      //   (err, stats) => {
+      //   console.log();
 
-      // this.isEnvDevelopment &&
-      //   $BrowserReloadErrorOverlayWepbackPlugin.watch(err, stats)
-      if (err) {
-        console.log("编译错误 Errors:" + chalk.red(err.stack || err));
-        if (err.details) {
-          console.log("编译错误 Errors:" + chalk.red(err.details));
-        }
-        return;
-      }
-      if (stats.hasErrors()) {
-        console.log(
-          "编译错误 Errors:" +
-            chalk.red(
-              stats.toString({
-                colors: true,
-                chunks: false // Makes the build much quieter
-              }) + "\n\n"
-            )
-        );
-      }
-
-      // else if (stats.hasWarnings()) {
-      //   console.log(
-      //     "Warnings:" +
-      //       chalk.yellow(
-      //         stats.toString({
-      //           colors: true,
-      //         }) + "\n\n"
-      //       )
-      //   );
-      // }
-      // else {
-      //     process.stdout.write(
-      //         stats.toString({
+      //   // this.isEnvDevelopment &&
+      //   //   $BrowserReloadErrorOverlayWepbackPlugin.watch(err, stats)
+      //   if (err) {
+      //     console.log("编译错误 Errors:" + chalk.red(err.stack || err));
+      //     if (err.details) {
+      //       console.log("编译错误 Errors:" + chalk.red(err.details));
+      //     }
+      //     return;
+      //   }
+      //   if (stats.hasErrors()) {
+      //     console.log(
+      //       "编译错误 Errors:" +
+      //         chalk.red(
+      //           stats.toString({
       //             colors: true,
-      //         }) + '\n\n'
+      //             chunks: false // Makes the build much quieter
+      //           }) + "\n\n"
+      //         )
       //     );
+      //   }
+
+      //   // else if (stats.hasWarnings()) {
+      //   //   console.log(
+      //   //     "Warnings:" +
+      //   //       chalk.yellow(
+      //   //         stats.toString({
+      //   //           colors: true,
+      //   //         }) + "\n\n"
+      //   //       )
+      //   //   );
+      //   // }
+      //   // else {
+      //   //     process.stdout.write(
+      //   //         stats.toString({
+      //   //             colors: true,
+      //   //         }) + '\n\n'
+      //   //     );
+      //   // }
+
       // }
-    });
+    );
 
     // this.isEnvDevelopment &&
     //   $BrowserReloadErrorOverlayWepbackPlugin.injection(compiler)

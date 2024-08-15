@@ -1,18 +1,18 @@
 import "./index.less";
 
-import { ExclamationCircleOutlined } from "@ant-design/icons";
-import { Button, Input, Modal } from "antd";
-import React, { Component } from "react";
+import {ExclamationCircleOutlined} from "@ant-design/icons";
+import {Button, Input, Modal} from "antd";
+import React, {Component} from "react";
 
 import TreeContent from "./TreeContent";
 
-const { Search } = Input;
-const { confirm } = Modal;
+const {Search} = Input;
+const {confirm} = Modal;
 
 class Index extends Component {
   constructor(props) {
     super(props);
-    const { value = {} } = this.props;
+    const {value = {}} = this.props;
 
     this.state = {
       loading: false,
@@ -25,7 +25,7 @@ class Index extends Component {
 
   componentDidMount() {}
   showModal = async () => {
-    const { modalProps: { showModal = () => {} } = {} } = this.props;
+    const {modalProps: {showModal = () => {}} = {}} = this.props;
     this.setState(() => ({
       loading: true
     }));
@@ -36,9 +36,9 @@ class Index extends Component {
     });
   };
   onOk = async () => {
-    const { modalProps: { onOk = () => {} } = {}, onChange = () => {} } =
+    const {modalProps: {onOk = () => {}} = {}, onChange = () => {}} =
       this.props;
-    const { value = {} } = this.state;
+    const {value = {}} = this.state;
     this.setState(() => ({
       loading: true
     }));
@@ -61,10 +61,10 @@ class Index extends Component {
     });
   };
   onCancel = async () => {
-    const { modalProps: { onCancel = () => {} } = {} } = this.props;
-    const { value, cacheValue } = this.state;
+    const {modalProps: {onCancel = () => {}} = {}} = this.props;
+    const {value, cacheValue} = this.state;
 
-    const { valueChanged } = value;
+    const {valueChanged} = value;
 
     valueChanged &&
       (await new Promise((resolve, reject) => {
@@ -103,9 +103,9 @@ class Index extends Component {
       } = {}
     } = preProps;
 
-    const { value = {} } = this.props;
+    const {value = {}} = this.props;
 
-    const { checkedChildrenKeys = [], checkedKeys = [] } = value;
+    const {checkedChildrenKeys = [], checkedKeys = []} = value;
 
     if (
       prePropsCheckedChildrenKeys.length !== checkedChildrenKeys.length ||
@@ -127,7 +127,7 @@ class Index extends Component {
     } = this.props;
     const {
       isModalOpen,
-      value: { checkedChildrenKeys = [], checkedKeys = [] } = {},
+      value: {checkedChildrenKeys = [], checkedKeys = []} = {},
       loading
     } = this.state;
 
@@ -199,5 +199,5 @@ class Index extends Component {
   }
 }
 
-export { TreeContent };
+export {TreeContent};
 export default Index;

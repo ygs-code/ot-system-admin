@@ -7,8 +7,8 @@ import {
 } from "antd";
 import Header from "client/component/Header";
 import Menu from "client/component/Menu";
-import { mapRedux } from "client/redux";
-import { addRouterApi } from "client/router";
+import {mapRedux} from "client/redux";
+import {addRouterApi} from "client/router";
 import React, {
   Children,
   cloneElement,
@@ -18,14 +18,14 @@ import React, {
   useState
 } from "react";
 // import token from "@/common/js/request/token";
-const { Sider } = Layout;
+const {Sider} = Layout;
 
 // 权限跳转登录页面可以在这控制
 const Index = memo((props) => {
   const {
     state: {
-      breadcrumb: { items = [] } = {},
-      user: { userInfo: { user: { name, phone } = {} } = {} } = {}
+      breadcrumb: {items = []} = {},
+      user: {userInfo: {user: {name, phone} = {}} = {}} = {}
     } = {},
     children
   } = props;

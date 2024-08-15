@@ -1,19 +1,19 @@
 import "./index.less";
 
-import { ExclamationCircleOutlined } from "@ant-design/icons";
-import { Button, Modal } from "antd";
-import { tablePage } from "client/component/TablePage";
-import { addRouterApi } from "client/router";
-import React, { Component } from "react";
+import {ExclamationCircleOutlined} from "@ant-design/icons";
+import {Button, Modal} from "antd";
+import {tablePage} from "client/component/TablePage";
+import {addRouterApi} from "client/router";
+import React, {Component} from "react";
 
-const { confirm } = Modal;
+const {confirm} = Modal;
 @addRouterApi
 @tablePage
 class TablePage extends Component {
   constructor(props) {
     super(props);
 
-    const { tableProps: { rowSelection: { selectedRowKeys = [] } = {} } = {} } =
+    const {tableProps: {rowSelection: {selectedRowKeys = []} = {}} = {}} =
       this.props;
 
     this.state = {
@@ -23,20 +23,20 @@ class TablePage extends Component {
 
   // 定义搜索栏字段
   getSearchFields() {
-    const { searchFields = [], getSearchFields = () => ({}) } = this.props;
+    const {searchFields = [], getSearchFields = () => ({})} = this.props;
 
     return searchFields.length ? searchFields : getSearchFields(this);
   }
 
   // 定义Tab字段
   getTabFilterItems = () => {
-    const { tabFilterItems = [], getTabFilterItems = () => ({}) } = this.props;
+    const {tabFilterItems = [], getTabFilterItems = () => ({})} = this.props;
     return tabFilterItems.length ? tabFilterItems : getTabFilterItems(this);
   };
 
   // 定义表头字段
   getColumns = () => {
-    const { columns = [], getColumns = () => ({}) } = this.props;
+    const {columns = [], getColumns = () => ({})} = this.props;
     return columns.length ? columns : getColumns(this);
   };
 
@@ -44,8 +44,8 @@ class TablePage extends Component {
    * 定义表格的数据加载功能
    */
   tableDataLoader = async (searchParams = {}) => {
-    const { request = () => {} } = this.props;
-    const { data } = await request(searchParams);
+    const {request = () => {}} = this.props;
+    const {data} = await request(searchParams);
 
     return {
       ...data,
@@ -59,7 +59,7 @@ class TablePage extends Component {
   };
 
   getTableProps = () => {
-    const { tableProps = {}, getTableProps = () => ({}) } = this.props;
+    const {tableProps = {}, getTableProps = () => ({})} = this.props;
 
     return {
       ...tableProps,
@@ -70,7 +70,7 @@ class TablePage extends Component {
 
   componentDidMount() {}
   render() {
-    const { tableProps: { rowKey } = {} } = this.props;
+    const {tableProps: {rowKey} = {}} = this.props;
     return (
       <div className="table-page">
         {this.renderSearch({
@@ -91,8 +91,8 @@ class TablePage extends Component {
 class Index extends Component {
   constructor(props) {
     super(props);
-    const { value = [], tableProps = {} } = this.props;
-    const { rowKey } = tableProps;
+    const {value = [], tableProps = {}} = this.props;
+    const {rowKey} = tableProps;
     let selectedRows = value;
     let selectedRowKeys = value.map((item) => {
       return item[rowKey];
@@ -112,7 +112,7 @@ class Index extends Component {
 
   componentDidMount() {}
   showModal = async () => {
-    const { modalProps: { showModal = () => {} } = {} } = this.props;
+    const {modalProps: {showModal = () => {}} = {}} = this.props;
     this.setState(() => ({
       loading: true
     }));
@@ -123,7 +123,7 @@ class Index extends Component {
     });
   };
   onOk = async () => {
-    const { modalProps: { onOk = () => {} } = {}, onChange = () => {} } =
+    const {modalProps: {onOk = () => {}} = {}, onChange = () => {}} =
       this.props;
     const {
       cacheSelectedRows,
@@ -152,7 +152,7 @@ class Index extends Component {
     onChange(selectedRows, selectedRowKeys);
   };
   onCancel = async () => {
-    const { modalProps: { onCancel = () => {} } = {} } = this.props;
+    const {modalProps: {onCancel = () => {}} = {}} = this.props;
     const {
       valueChanged,
       cacheSelectedRows,
@@ -191,9 +191,9 @@ class Index extends Component {
     });
   };
   onSelect = (selectedRows, selectedRowKeys) => {
-    const { tableProps = {} } = this.props;
+    const {tableProps = {}} = this.props;
 
-    const { onSelect = () => {} } = tableProps;
+    const {onSelect = () => {}} = tableProps;
     this.setState({
       valueChanged: true,
       selectedRows,
@@ -211,7 +211,7 @@ class Index extends Component {
       openButton = true,
       readOnly
     } = this.props;
-    const { isModalOpen, loading, selectedRowKeys, selectedRows } = this.state;
+    const {isModalOpen, loading, selectedRowKeys, selectedRows} = this.state;
 
     return (
       <div className="table-picker">
@@ -278,5 +278,5 @@ class Index extends Component {
   }
 }
 
-export { TablePage };
+export {TablePage};
 export default Index;

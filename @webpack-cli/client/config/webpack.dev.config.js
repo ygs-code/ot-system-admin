@@ -88,7 +88,8 @@ module.exports = {
     // // // 并且重启webpack的时候也会删除cache缓存
     strictModuleExceptionHandling: false
   },
-  watch: true,
+  // 是否监听文件 这个参数已经被废弃掉，设置他会有警告
+  // watch: true,
   watchOptions: {
     //延迟监听时间
     aggregateTimeout: 300,
@@ -182,9 +183,8 @@ module.exports = {
                     {
                       // Options
                     }
-                  ],
+                  ]
                   // "tailwindcss",
-              
                 ]
               }
             }
@@ -218,9 +218,8 @@ module.exports = {
                     {
                       // Options
                     }
-                  ],
+                  ]
                   // "tailwindcss",
-       
                 ]
               }
             }
@@ -258,9 +257,8 @@ module.exports = {
                     {
                       // Options
                     }
-                  ],
+                  ]
                   // "tailwindcss",
-             
                 ]
               }
             }
@@ -339,6 +337,7 @@ module.exports = {
     liveReload: true, // 编译之后是否自动刷新浏览器
     static: {
       directory: path.join(process.cwd(), "/dist"),
+
       watch: true
     },
     index: path.resolve(process.cwd(), "/dist/index.html"), // dist/index 主页面

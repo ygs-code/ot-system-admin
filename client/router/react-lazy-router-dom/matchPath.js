@@ -48,7 +48,7 @@ export const matchPath = (pathname, options = {}) => {
       return matched;
     }
 
-    var { regexp, keys } = compilePath(path, {
+    var {regexp, keys} = compilePath(path, {
       end: exact,
       strict: strict,
       sensitive: sensitive

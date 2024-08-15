@@ -1,10 +1,10 @@
-import { Button, message } from "antd";
-import { getPermissionList, removePermission } from "client/assets/js/request";
+import {Button, message} from "antd";
+import {getPermissionList, removePermission} from "client/assets/js/request";
 import setBreadcrumbAndTitle from "client/component/setBreadcrumbAndTitle";
 import TableButton from "client/component/TableButton";
-import { tablePage } from "client/component/TablePage";
-import { addRouterApi } from "client/router";
-import React, { Component } from "react";
+import {tablePage} from "client/component/TablePage";
+import {addRouterApi} from "client/router";
+import React, {Component} from "react";
 // 权限控制
 @setBreadcrumbAndTitle({
   //设置面包屑和标题
@@ -64,7 +64,7 @@ class Index extends Component {
 
   // 定义表头字段
   getColumns = () => {
-    const { pushRoute, routePaths: { permissionManagementDetails } = {} } =
+    const {pushRoute, routePaths: {permissionManagementDetails} = {}} =
       this.props;
     return [
       {
@@ -113,7 +113,7 @@ class Index extends Component {
         width: 300,
         fixed: "right",
         render: (text, row) => {
-          const { id } = row;
+          const {id} = row;
 
           return (
             <TableButton
@@ -159,7 +159,7 @@ class Index extends Component {
                   status: true, //权限控制
                   props: {
                     onClick: async () => {
-                      const { message: mgs } = await removePermission(id);
+                      const {message: mgs} = await removePermission(id);
                       message.success(mgs);
                       this.loadTableData();
                     }
@@ -177,7 +177,7 @@ class Index extends Component {
    * 定义表格的数据加载功能
    */
   tableDataLoader = async (searchParams = {}) => {
-    const { data } = await getPermissionList(searchParams);
+    const {data} = await getPermissionList(searchParams);
 
     return data;
   };
@@ -187,7 +187,7 @@ class Index extends Component {
   };
   componentDidMount() {}
   render() {
-    const { pushRoute, routePaths: { permissionManagementDetails } = {} } =
+    const {pushRoute, routePaths: {permissionManagementDetails} = {}} =
       this.props;
     return (
       <div className="table-page">

@@ -1,12 +1,12 @@
 import "./index.less";
 
-import { message } from "antd";
-import { editRolePermission, getRoleInfo } from "client/assets/js/request";
+import {message} from "antd";
+import {editRolePermission, getRoleInfo} from "client/assets/js/request";
 import FormPage from "client/component/FormPage";
 import setBreadcrumbAndTitle from "client/component/setBreadcrumbAndTitle";
 import PermissionPicker from "client/pages/Index/pages/system/component/PermissionPicker";
-import { mapRedux } from "client/redux";
-import { addRouterApi, routePaths } from "client/router";
+import {mapRedux} from "client/redux";
+import {addRouterApi, routePaths} from "client/router";
 import React from "react";
 
 class Index extends FormPage {
@@ -28,11 +28,11 @@ class Index extends FormPage {
   getInitialValues = async () => {
     const {
       match: {
-        params: { id }
+        params: {id}
       }
     } = this.props;
 
-    const { data: { description, name } = {} } = await getRoleInfo({
+    const {data: {description, name} = {}} = await getRoleInfo({
       id
     });
 
@@ -52,15 +52,15 @@ class Index extends FormPage {
   // 提交请求到接口
   onSubmitForm = async (formData) => {
     const {
-      history: { back }
+      history: {back}
     } = this.props;
 
     const {
       id: roleId,
-      permissionIds: { checkedKeys: permissionIds = [] } = {}
+      permissionIds: {checkedKeys: permissionIds = []} = {}
     } = await this.mapSubmitData(formData);
 
-    const { message: mgs } = await editRolePermission({
+    const {message: mgs} = await editRolePermission({
       roleId,
       permissionIds
     });
@@ -74,7 +74,7 @@ class Index extends FormPage {
   getFields = () => {
     const {
       match: {
-        params: { action, id }
+        params: {action, id}
       }
     } = this.props;
 
@@ -91,7 +91,7 @@ class Index extends FormPage {
             itemProps: {},
 
             render: (props) => {
-              const { value } = props;
+              const {value} = props;
 
               return <div>{value}</div>;
             },
@@ -139,7 +139,7 @@ class Index extends FormPage {
             itemProps: {},
 
             render: (props) => {
-              const { onChange, value } = props;
+              const {onChange, value} = props;
               return (
                 <PermissionPicker
                   readOnly={readOnly}

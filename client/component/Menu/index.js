@@ -30,7 +30,7 @@ import React, {
   useState
 } from "react";
 
-const { SubMenu } = Menu;
+const {SubMenu} = Menu;
 // const { Option } = Select;
 // const { Header, Sider, Content } = Layout;
 const MindMap = memo(
@@ -54,7 +54,7 @@ const MindMap = memo(
 
 export default memo((props) => {
   const {
-    match: { path, params: { id } = {} } = {},
+    match: {path, params: {id} = {}} = {},
     routePaths = {},
     pushRoute
   } = props;
@@ -165,7 +165,7 @@ export default memo((props) => {
   const getItems = useCallback((menuData, index = null) => {
     return menuData.map((item, _index) => {
       const menuKey = index === null ? _index : `${index}_${_index}`;
-      const { title, iconComponent = null, children = [], url } = item;
+      const {title, iconComponent = null, children = [], url} = item;
       return {
         url,
         label: title,
@@ -217,7 +217,7 @@ export default memo((props) => {
         const {
           key: selectedKeys,
           keyPath,
-          item: { props: { url } = {} } = {}
+          item: {props: {url} = {}} = {}
         } = value;
 
         sessionStorage.setItem("adminMenuSelectedKeys", selectedKeys);

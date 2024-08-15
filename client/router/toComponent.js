@@ -1,7 +1,7 @@
-import { Children, cloneElement, memo } from "react";
+import {Children, cloneElement, memo} from "react";
 
 const ToComponent = memo((props) => {
-  const { children } = props;
+  const {children} = props;
   return children
     ? Children.map(children, (child) => {
         return cloneElement(child, props);
@@ -12,6 +12,6 @@ const ToComponent = memo((props) => {
 const toComponent = (Component) => {
   return memo(Component);
 };
-export { ToComponent };
+export {ToComponent};
 
 export default toComponent;

@@ -1,10 +1,10 @@
-import { getRoleList, getRolePermissionList } from "client/assets/js/request";
+import {getRoleList, getRolePermissionList} from "client/assets/js/request";
 import setBreadcrumbAndTitle from "client/component/setBreadcrumbAndTitle";
 import TableButton from "client/component/TableButton";
-import { tablePage } from "client/component/TablePage";
+import {tablePage} from "client/component/TablePage";
 import Tabs from "client/component/Tabs";
-import { addRouterApi } from "client/router";
-import React, { Component } from "react";
+import {addRouterApi} from "client/router";
+import React, {Component} from "react";
 // 权限控制
 @setBreadcrumbAndTitle({
   //设置面包屑和标题
@@ -48,7 +48,7 @@ class Index extends Component {
 
   // 定义搜索栏字段
   getSearchFields() {
-    const { tabsValue } = this.state;
+    const {tabsValue} = this.state;
 
     return [
       [
@@ -96,9 +96,9 @@ class Index extends Component {
 
   // 定义表头字段
   getColumns = () => {
-    const { pushRoute, routePaths: { rolePermissionDetails } = {} } =
+    const {pushRoute, routePaths: {rolePermissionDetails} = {}} =
       this.props;
-    const { tabsValue } = this.state;
+    const {tabsValue} = this.state;
 
     return [
       [
@@ -124,7 +124,7 @@ class Index extends Component {
           key: "actions",
           width: 300,
           render: (text, row) => {
-            const { id } = row;
+            const {id} = row;
 
             return (
               <TableButton
@@ -204,13 +204,13 @@ class Index extends Component {
    * 定义表格的数据加载功能
    */
   tableDataLoader = async (searchParams = {}) => {
-    const { tabsValue } = this.state;
+    const {tabsValue} = this.state;
     const mapRequest = {
       0: getRoleList,
       1: getRolePermissionList
     };
 
-    const { data } = await mapRequest[tabsValue](searchParams);
+    const {data} = await mapRequest[tabsValue](searchParams);
 
     return data;
   };
@@ -220,7 +220,7 @@ class Index extends Component {
   };
   componentDidMount() {}
   render() {
-    const { tabsValue } = this.state;
+    const {tabsValue} = this.state;
 
     return (
       <div className="table-page">

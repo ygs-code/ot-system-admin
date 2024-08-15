@@ -7,11 +7,11 @@ import {
   RightOutlined,
   UserOutlined
 } from "@ant-design/icons";
-import { Avatar, Dropdown, Layout } from "antd";
+import {Avatar, Dropdown, Layout} from "antd";
 import Breadcrumb from "client/component/Breadcrumb";
-import React, { memo } from "react";
+import React, {memo} from "react";
 
-const { Header } = Layout;
+const {Header} = Layout;
 
 export default memo((props) => {
   const {
@@ -84,7 +84,7 @@ export default memo((props) => {
   ];
 
   return (
-    <Header className="site-layout-background" style={{ padding: 0 }}>
+    <Header className="site-layout-background" style={{padding: 0}}>
       {collapsed ? (
         <MenuUnfoldOutlined className="trigger" onClick={onChangeCollapsed} />
       ) : (
@@ -127,7 +127,7 @@ export default memo((props) => {
             );
           }}
           trigger={["click"]}
-          menu={{ items }}
+          menu={{items}}
           placement="bottomRight"
           arrow={true}>
           <div className="dropdown-link" onClick={(e) => e.preventDefault()}>

@@ -19,21 +19,21 @@ class Token {
   }
   publishQueue(token) {
     this.queue.forEach((item) => {
-      const { resolve } = item;
+      const {resolve} = item;
       resolve(token);
     });
     this.queue = [];
   }
   clearQueue() {
     this.queue.forEach((item) => {
-      const { reject } = item;
+      const {reject} = item;
       reject(null);
     });
     this.queue = [];
   }
   get(config) {
     const token = localStorage.getItem("token");
-    const { parameter: { operationName } = {} } = config || {};
+    const {parameter: {operationName} = {}} = config || {};
     if (!config && token) {
       return token;
     }
@@ -45,10 +45,10 @@ class Token {
         return resolve("");
       }
       resolve("");
-      this.subscribeQueue({ resolve, reject });
+      this.subscribeQueue({resolve, reject});
     });
   }
 }
 
-export { Token };
+export {Token};
 export default new Token();

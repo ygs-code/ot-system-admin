@@ -1,16 +1,16 @@
-import { message } from "antd";
-import { getDocumentList, removeDocument } from "client/assets/js/request";
+import {message} from "antd";
+import {getDocumentList, removeDocument} from "client/assets/js/request";
 import setBreadcrumbAndTitle from "client/component/setBreadcrumbAndTitle";
 import TableButton from "client/component/TableButton";
-import { tablePage } from "client/component/TablePage";
+import {tablePage} from "client/component/TablePage";
 import Tabs from "client/component/Tabs";
-import { addRouterApi } from "client/router";
-import React, { Component } from "react";
+import {addRouterApi} from "client/router";
+import React, {Component} from "react";
 
 /*eslint no-undef: "error"*/
 /*eslint-env process*/
 const {
-  env: { NODE_ENV, PUBLICPATH, RENDER, CLIENT_PORT, CLIENT_PUBLICPATH } = {}
+  env: {NODE_ENV, PUBLICPATH, RENDER, CLIENT_PORT, CLIENT_PUBLICPATH} = {}
 } = process;
 
 // 权限控制
@@ -42,7 +42,7 @@ class Index extends Component {
 
   // 定义搜索栏字段
   getSearchFields() {
-    const { tabsValue } = this.state;
+    const {tabsValue} = this.state;
     return [
       [
         {
@@ -70,8 +70,8 @@ class Index extends Component {
 
   // 定义表头字段
   getColumns = () => {
-    const { tabsValue } = this.state;
-    const { pushRoute, routePaths: { userRoleDetails } = {} } = this.props;
+    const {tabsValue} = this.state;
+    const {pushRoute, routePaths: {userRoleDetails} = {}} = this.props;
     return [
       {
         title: "文档标题",
@@ -91,7 +91,7 @@ class Index extends Component {
         width: 300,
         fixed: "right",
         render: (text, row) => {
-          const { id } = row;
+          const {id} = row;
 
           // const { env: { NODE_ENV, PUBLICPATH, RENDER } = {} } = process;
 
@@ -120,7 +120,7 @@ class Index extends Component {
                     onClick: () => {
                       // /office/document/details/:action/:type/:id?
 
-                      const { origin, protocol, hostname } = window.location;
+                      const {origin, protocol, hostname} = window.location;
                       window.open(
                         NODE_ENV == "development"
                           ? `${protocol}//${hostname}:${CLIENT_PORT}/office/document/details/edit/document/${id}`
@@ -136,7 +136,7 @@ class Index extends Component {
                   status: true, //权限控制
                   props: {
                     onClick: () => {
-                      const { origin, protocol, hostname } = window.location;
+                      const {origin, protocol, hostname} = window.location;
                       window.open(
                         NODE_ENV == "development"
                           ? `${protocol}//${hostname}:${CLIENT_PORT}/office/document/details/view/document/${id}`
@@ -152,7 +152,7 @@ class Index extends Component {
                   status: true, //权限控制
                   props: {
                     onClick: async () => {
-                      const { message: mgs } = await removeDocument(id);
+                      const {message: mgs} = await removeDocument(id);
                       message.success(mgs);
 
                       this.loadTableData();
@@ -171,14 +171,14 @@ class Index extends Component {
    * 定义表格的数据加载功能
    */
   tableDataLoader = async (searchParams = {}) => {
-    const { tabsValue } = this.state;
+    const {tabsValue} = this.state;
 
     const mapRequest = {
       0: getDocumentList,
       1: getDocumentList
     };
 
-    const { data } = await mapRequest[tabsValue](searchParams);
+    const {data} = await mapRequest[tabsValue](searchParams);
 
     return data;
   };
@@ -188,7 +188,7 @@ class Index extends Component {
   };
   componentDidMount() {}
   render() {
-    const { tabsValue } = this.state;
+    const {tabsValue} = this.state;
     return (
       <div className="table-page">
         <Tabs

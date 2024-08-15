@@ -19,7 +19,7 @@ import React, {
 import "./index.less";
 import img from "../../assets/image/react.jpg";
 import home from "../../assets/image/home.svg";
-
+ 
 // 2234;
 // 权限跳转登录页面可以在这控制
 const Index = () => {

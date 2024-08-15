@@ -6,7 +6,7 @@
  * @Description: In User Settings Edit
  * @FilePath: /Blogs/BlogsAdmin/src/common/js/request/requestApi.js
  */
-import { GraphqlClient } from "./request";
+import {GraphqlClient} from "./request";
 
 // 查询
 export const query = (operationName, schema, parameter = {}, options = {}) => {
@@ -113,7 +113,7 @@ export const removeUser = (id) => {
 
 // 登录
 export const login = (parameter) => {
-  const { password, name, verificationCode } = parameter;
+  const {password, name, verificationCode} = parameter;
   return query(
     "login",
     ` mutation{
@@ -199,7 +199,7 @@ export const getUserList = (parameter = {}) => {
 
 // 查询用户
 export const getUserInfo = (parameter = {}) => {
-  const { id = "" } = parameter;
+  const {id = ""} = parameter;
   return query(
     "getUserInfo",
     `
@@ -276,7 +276,7 @@ export const getRoleList = (parameter = {}) => {
 
 // 查询角色
 export const getRoleInfo = (parameter = {}) => {
-  const { id = "" } = parameter;
+  const {id = ""} = parameter;
   return query(
     "getRoleInfo",
     `
@@ -395,7 +395,7 @@ export const getPermissionList = (parameter = {}) => {
 
 // 查询权限
 export const getPermissionInfo = (parameter = {}) => {
-  const { id = "" } = parameter;
+  const {id = ""} = parameter;
   return query(
     "getPermissionInfo",
     `
@@ -515,7 +515,7 @@ export const getUserRoleList = (parameter = {}) => {
 // 获取用户_权限详情
 
 export const getUserRoleInfo = (parameter = {}) => {
-  const { id = "" } = parameter;
+  const {id = ""} = parameter;
   return query(
     "getUserRoleInfo",
     `

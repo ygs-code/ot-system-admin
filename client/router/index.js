@@ -6,5 +6,5 @@ import toComponent from "./toComponent";
 export * from "./history";
 export * from "./historyPush";
 
-export { addRouterApi, routePaths, toComponent };
+export {addRouterApi, routePaths, toComponent};
 export default Routers;

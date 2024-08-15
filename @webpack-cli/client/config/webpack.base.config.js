@@ -106,7 +106,7 @@ module.exports = {
     // strictModuleExceptionHandling: true,
   },
 
-  // 是否监听文件
+  // 是否监听文件 这个参数已经被废弃掉，设置他会有警告
   // watch: false,
 
   resolve: {

@@ -6,15 +6,15 @@
  * @Description: In User Settings Edit
  * @FilePath: /error-sytem/client/src/common/component/Breadcrumb/index.js
  */
-import { mapRedux } from "client/redux";
-import React, { memo, useEffect } from "react";
+import {mapRedux} from "client/redux";
+import React, {memo, useEffect} from "react";
 
 const Index = (options) => {
-  const { title, breadcrumb } = options;
+  const {title, breadcrumb} = options;
   return (C) => {
     return mapRedux()(
       memo((props) => {
-        const { dispatch: { breadcrumb: { setBreadcrumb } = {} } = {} } = props;
+        const {dispatch: {breadcrumb: {setBreadcrumb} = {}} = {}} = props;
 
         useEffect(() => {
           if (title) {

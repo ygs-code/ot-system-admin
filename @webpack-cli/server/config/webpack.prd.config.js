@@ -13,7 +13,8 @@ const os = require("os");
 const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer");
 module.exports = {
   mode: "production",
-  watch: false,
+    // 是否监听文件 这个参数已经被废弃掉，设置他会有警告
+  // watch: false,
   optimization: {
     // 压缩
     minimize: true,

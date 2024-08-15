@@ -6,11 +6,11 @@
  * @FilePath: /react-loading-ssr/client/router/addRouterApi.js
  * @Description:
  */
-import { withRouter } from "client/router/react-lazy-router-dom";
+import {withRouter} from "client/router/react-lazy-router-dom";
 import hoistStatics from "hoist-non-react-statics";
 import React from "react";
 
-import { historyPush } from "./historyPush";
+import {historyPush} from "./historyPush";
 import routePaths from "./routePaths";
 
 const addRouterApi = (Component) => {
@@ -27,8 +27,8 @@ const addRouterApi = (Component) => {
           path: parameter
         };
       }
-      const { name, url, path } = parameter;
-      const { history } = this.props;
+      const {name, url, path} = parameter;
+      const {history} = this.props;
       historyPush({
         history,
         ...parameter,
@@ -64,8 +64,8 @@ class AddRouterApi extends React.Component {
         path: parameter
       };
     }
-    const { name, url, path } = parameter;
-    const { history } = this.props;
+    const {name, url, path} = parameter;
+    const {history} = this.props;
 
     historyPush({
       history,
@@ -75,7 +75,7 @@ class AddRouterApi extends React.Component {
   };
 
   render() {
-    const { children } = this.props;
+    const {children} = this.props;
     return (
       <>
         {children({
@@ -88,6 +88,6 @@ class AddRouterApi extends React.Component {
   }
 }
 
-export { AddRouterApi };
+export {AddRouterApi};
 
 export default addRouterApi;

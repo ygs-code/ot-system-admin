@@ -1,23 +1,23 @@
 import "client/assets/css/base.less";
 import "./index.less";
 
-import { Button, Form, Input, message } from "antd";
-import { createUser } from "client/assets/js/request/index";
+import {Button, Form, Input, message} from "antd";
+import {createUser} from "client/assets/js/request/index";
 import VerificationCode from "client/component/VerificationCode";
-import { addRouterApi, toComponent } from "client/router";
-import { checkEmail, checkPassword, checkPhone, checkUser } from "client/utils";
+import {addRouterApi, toComponent} from "client/router";
+import {checkEmail, checkPassword, checkPhone, checkUser} from "client/utils";
 import React from "react";
 
 const layout = {
-  labelCol: { span: 8 },
-  wrapperCol: { span: 16 }
+  labelCol: {span: 8},
+  wrapperCol: {span: 16}
 };
 const tailLayout = {
-  wrapperCol: { offset: 8, span: 16 }
+  wrapperCol: {offset: 8, span: 16}
 };
 
 const Index = (props) => {
-  const { pushRoute, routePaths } = props;
+  const {pushRoute, routePaths} = props;
   const onFinish = async (values) => {
     await createUser({
       type: 1,
@@ -37,7 +37,7 @@ const Index = (props) => {
       <Form
         {...layout}
         name="basic"
-        initialValues={{ remember: true }}
+        initialValues={{remember: true}}
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}>
         <Form.Item
@@ -133,7 +133,7 @@ const Index = (props) => {
               required: true,
               message: "请输入密码!"
             },
-            ({ getFieldValue }) => ({
+            ({getFieldValue}) => ({
               validator(rule, value) {
                 if (!checkPassword(value)) {
                   return Promise.reject(

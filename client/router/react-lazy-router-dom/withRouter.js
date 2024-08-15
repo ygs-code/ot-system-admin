@@ -1,8 +1,8 @@
 import hoistStatics from "hoist-non-react-statics";
-import React, { Component, createElement } from "react";
+import React, {Component, createElement} from "react";
 import invariant from "tiny-invariant";
 
-import { MatchContext } from "./Switch";
+import {MatchContext} from "./Switch";
 
 export const withRouter = (Target) => {
   const displayName = "withRouter(" + (Target.displayName || Target.name) + ")";

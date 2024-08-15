@@ -50,7 +50,9 @@ module.exports = {
     // 并且重启webpack的时候也会删除cache缓存
     strictModuleExceptionHandling: true
   },
-  watch: false,
+
+  // 是否监听文件 这个参数已经被废弃掉，设置他会有警告
+  // watch: false,
 
   // 打包文件大小监听
   performance: {
@@ -186,8 +188,8 @@ module.exports = {
                     {
                       // Options
                     }
-                  ],
-                //   "tailwindcss"
+                  ]
+                  //   "tailwindcss"
                 ]
               }
             }
@@ -218,8 +220,8 @@ module.exports = {
                     {
                       // Options
                     }
-                  ],
-                //   'tailwindcss'
+                  ]
+                  //   'tailwindcss'
                 ]
               }
             }
@@ -255,8 +257,8 @@ module.exports = {
                     {
                       // Options
                     }
-                  ],
-                //   'tailwindcss'
+                  ]
+                  //   'tailwindcss'
                 ]
               }
             }

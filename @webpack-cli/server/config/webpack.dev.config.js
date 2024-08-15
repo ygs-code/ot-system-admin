@@ -26,12 +26,12 @@ module.exports = {
     // 占位符只能是 [id] 和 [hash]，默认值是：
     hotUpdateChunkFilename: '[id].[hash].hot-update.js',
   },
-  watch: true,
+  // watch: true,
   watchOptions: {
     //延迟监听时间
     aggregateTimeout: 300,
-    //忽略监听文件夹
-    ignored: '/node_modules/',
+    // //忽略监听文件夹
+    // ignored: '/node_modules/',
   },
   //启用编译缓存日志输出
   infrastructureLogging: {

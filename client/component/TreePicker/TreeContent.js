@@ -1,7 +1,7 @@
 import "./index.less";
 
-import { CloseCircleOutlined, DeleteOutlined } from "@ant-design/icons";
-import { Input, List, message, Tooltip, Tree } from "antd";
+import {CloseCircleOutlined, DeleteOutlined} from "@ant-design/icons";
+import {Input, List, message, Tooltip, Tree} from "antd";
 import {
   deepCopy,
   filterTreeData,
@@ -10,9 +10,9 @@ import {
   recursionTreeData
 } from "client/utils";
 import VirtualList from "rc-virtual-list";
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from "react";
 
-const { Search } = Input;
+const {Search} = Input;
 
 const TreeContent = (props) => {
   const {
@@ -150,7 +150,7 @@ const TreeContent = (props) => {
   };
 
   const onCheck = ($checkedKeys, e, valueChanged = true) => {
-    const { checked, selected } = e || {};
+    const {checked, selected} = e || {};
 
     // 这里需要根据选中的状态保留key
     if (checked || selected) {
@@ -375,7 +375,7 @@ const TreeContent = (props) => {
   }, []);
 
   useEffect(() => {
-    const { checkedKeys = [], checkedChildrenKeys = [] } = value;
+    const {checkedKeys = [], checkedChildrenKeys = []} = value;
 
     if (listData.length > 1) {
       // onCheck(
@@ -433,14 +433,14 @@ const TreeContent = (props) => {
 
           <div className="search">
             <Search
-              style={{ marginBottom: 8 }}
+              style={{marginBottom: 8}}
               placeholder="搜索"
               name="keyword"
               {...searchProps}
-              onSearch={({ target }) => {
+              onSearch={({target}) => {
                 onSearch(target.value);
               }}
-              onChange={({ target }) => {
+              onChange={({target}) => {
                 onSearch(target.value);
               }}
             />
@@ -457,7 +457,7 @@ const TreeContent = (props) => {
             expandedKeys={expandedKeys}
             defaultExpandedKeys={expandedKeys}
             onCheck={(checkedKeys, e) => {
-              const { event } = e || {};
+              const {event} = e || {};
               if (event !== "check") {
                 return;
               }
@@ -467,7 +467,7 @@ const TreeContent = (props) => {
             checkedKeys={checkedChildrenKeys}
             treeData={loop(treeData)}
             onSelect={(selectedKeys, e) => {
-              const { selected, event } = e || {};
+              const {selected, event} = e || {};
               if (event !== "select" || !selected) {
                 return;
               }

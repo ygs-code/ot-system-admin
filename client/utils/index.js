@@ -10,7 +10,7 @@
 //     deepCopy
 // } from './deepCopy'
 // import {SubscribePublished} from './SubscribePublished';
-import { CheckDataType } from "./CheckDataType";
+import {CheckDataType} from "./CheckDataType";
 import {
   deepCopy,
   diffData,
@@ -19,9 +19,9 @@ import {
   findTreePath,
   recursionTreeData
 } from "./ergodic";
-import { getBaseInitState } from "./getBaseInitState";
+import {getBaseInitState} from "./getBaseInitState";
 // import {FloatingBall} from './FloatingBall';
-import { getStyle } from "./getCssAttr";
+import {getStyle} from "./getCssAttr";
 import {
   checkPassword,
   checkPhone,

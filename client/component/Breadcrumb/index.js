@@ -8,13 +8,13 @@
  */
 import "./index.less";
 
-import { Breadcrumb } from "antd";
-import { addRouterApi } from "client/router";
+import {Breadcrumb} from "antd";
+import {addRouterApi} from "client/router";
 import React from "react";
 
-const { Item } = Breadcrumb;
+const {Item} = Breadcrumb;
 export default addRouterApi((props) => {
-  const { data = [], pushRoute } = props;
+  const {data = [], pushRoute} = props;
   return (
     <Breadcrumb className="breadcrumb">
       {data.map((item, index) => {

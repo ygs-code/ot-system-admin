@@ -6,7 +6,7 @@
  * @FilePath: /react-ssr-lazy-loading/client/redux/models/home.js
  * @Description:
  */
-import { getPropsState } from "../index";
+import {getPropsState} from "../index";
 
 export default (global) => ({
   state: {

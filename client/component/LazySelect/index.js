@@ -1,6 +1,6 @@
-import { Divider, Select, Space, Spin } from "antd";
-import { stabilization } from "client/utils";
-import React, { useCallback, useEffect, useState } from "react";
+import {Divider, Select, Space, Spin} from "antd";
+import {stabilization} from "client/utils";
+import React, {useCallback, useEffect, useState} from "react";
 
 const Index = (props) => {
   const {
@@ -14,18 +14,18 @@ const Index = (props) => {
     dataMap,
     readOnly
   } = props;
-  const { value: valueKey = "id" } = fieldNames;
+  const {value: valueKey = "id"} = fieldNames;
   const [loading, setLoading] = useState(true);
   const [open, setOpen] = useState(false);
   const [data, setData] = useState({});
   const [searchValue, setSearchValue] = useState("");
 
-  const { list = [], pageNum = 0, pageSize = 10, hasNextPage = true } = data;
+  const {list = [], pageNum = 0, pageSize = 10, hasNextPage = true} = data;
 
   const getData = useCallback(
     async (parameter = {}, defaultOptions = []) => {
       setLoading(true);
-      const { data } = await loadData({
+      const {data} = await loadData({
         pageNum: pageNum + 1,
         pageSize,
         [searchKey]: searchValue,

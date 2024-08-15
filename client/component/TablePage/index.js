@@ -9,7 +9,7 @@
 
 import "./index.less";
 
-import { SearchForm } from "client/component/Form";
+import {SearchForm} from "client/component/Form";
 import Table from "client/component/Table";
 import React from "react"; // , { memo, PureComponent }
 
@@ -111,7 +111,7 @@ const tablePage = (Component) => {
     // };
     constructor(props) {
       super(props);
-      const { selectedRows = [], selectedRowKeys = [] } = this.state;
+      const {selectedRows = [], selectedRowKeys = []} = this.state;
       this.state = {
         ...this.state,
         searchParams: {
@@ -192,7 +192,7 @@ const tablePage = (Component) => {
       ];
 
       for (let item of checkFunction) {
-        const { name, message } = item;
+        const {name, message} = item;
         if (!this[name]) {
           return message;
         }
@@ -200,7 +200,7 @@ const tablePage = (Component) => {
       return null;
     };
     loadTableData = async (searchParams = {}) => {
-      const { getFieldsValue } = this.searchForm;
+      const {getFieldsValue} = this.searchForm;
       let newSearchParams = {};
 
       if (this.getDefaultSearchParams) {
@@ -257,7 +257,7 @@ const tablePage = (Component) => {
         debugger;
         return;
       }
-      this.setState({ tableData: data });
+      this.setState({tableData: data});
       return data;
     };
 
@@ -288,7 +288,7 @@ const tablePage = (Component) => {
     }
 
     onResetForm = () => {
-      const { resetFields } = this.searchForm;
+      const {resetFields} = this.searchForm;
       resetFields();
       this.setState(() => ({
         searchParams: {
@@ -298,7 +298,7 @@ const tablePage = (Component) => {
       }));
     };
     renderSearch = (props = {}) => {
-      const { shrinkLength = 5 } = props;
+      const {shrinkLength = 5} = props;
       return (
         <SearchForm
           {...props}
@@ -324,9 +324,9 @@ const tablePage = (Component) => {
       });
     };
     renderTable = (props = {}) => {
-      const { tableData } = this.state;
-      let { tableProps = {}, paginationProps = {} } = props;
-      let { readOnly } = this.props;
+      const {tableData} = this.state;
+      let {tableProps = {}, paginationProps = {}} = props;
+      let {readOnly} = this.props;
 
       tableProps = {
         ...tableProps,
@@ -334,7 +334,7 @@ const tablePage = (Component) => {
         ...(this.getTableProps ? this.getTableProps() : {})
       };
 
-      const { onSelect = () => {} } = tableProps;
+      const {onSelect = () => {}} = tableProps;
 
       return (
         <Table
@@ -368,4 +368,4 @@ const tablePage = (Component) => {
 
 // export default TablePage;
 
-export { tablePage };
+export {tablePage};

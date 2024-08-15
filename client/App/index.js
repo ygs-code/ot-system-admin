@@ -12,12 +12,12 @@ import "./index.css";
 import "client/assets/css/base.less";
 // import "bootstrap/dist/css/bootstrap.css";
 
-import { ConfigProvider } from "antd";
+import {ConfigProvider} from "antd";
 // 由于 antd 组件的默认文案是英文，所以需要修改为中文
 import zhCN from "antd/es/locale/zh_CN";
 import Routers from "client/router";
-import React, { Component } from "react";
-import { Provider } from "react-redux";
+import React, {Component} from "react";
+import {Provider} from "react-redux";
 // import 'tailwindcss/tailwind.css';
 // let {
 //   NODE_ENV, // 环境参数
@@ -26,7 +26,7 @@ import { Provider } from "react-redux";
 
 class Index extends Component {
   render() {
-    const { history, store, routesComponent } = this.props;
+    const {history, store, routesComponent} = this.props;
 
     /*
   Warning: Detected multiple renderers concurrently rendering the same context provider. This is currently unsupported.

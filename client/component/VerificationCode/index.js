@@ -6,13 +6,13 @@
  * @Description: In User Settings Edit
  * @FilePath: /error-sytem/admin/src/common/component/VerificationCode/index.js
  */
-import { Form, Input } from "antd";
-import { getVerifyCode } from "client/assets/js/request/index";
-import { checkVerificationCode } from "client/utils";
-import React, { useCallback, useEffect, useState } from "react";
+import {Form, Input} from "antd";
+import {getVerifyCode} from "client/assets/js/request/index";
+import {checkVerificationCode} from "client/utils";
+import React, {useCallback, useEffect, useState} from "react";
 
 const tailLayout = {
-  wrapperCol: { offset: 8, span: 16 }
+  wrapperCol: {offset: 8, span: 16}
 };
 
 const Index = () => {
@@ -21,7 +21,7 @@ const Index = () => {
   const verifyCode = useCallback(async () => {
     const data = await getVerifyCode();
     const {
-      data: { svg }
+      data: {svg}
     } = data;
     setVerifyCodeData({
       svg
@@ -30,7 +30,7 @@ const Index = () => {
   useEffect(() => {
     verifyCode();
   }, []);
-  const { svg = "" } = verifyCodeData;
+  const {svg = ""} = verifyCodeData;
 
   return (
     <>
@@ -64,7 +64,7 @@ const Index = () => {
             width: "110px",
             height: "35px"
           }}
-          dangerouslySetInnerHTML={{ __html: svg }}></div>
+          dangerouslySetInnerHTML={{__html: svg}}></div>
       </Form.Item>
     </>
   );

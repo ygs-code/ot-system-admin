@@ -1,11 +1,11 @@
 import "./index.less";
 
-import { message } from "antd";
-import { createRole, editRole, getRoleInfo } from "client/assets/js/request";
+import {message} from "antd";
+import {createRole, editRole, getRoleInfo} from "client/assets/js/request";
 import FormPage from "client/component/FormPage";
 import setBreadcrumbAndTitle from "client/component/setBreadcrumbAndTitle";
-import { mapRedux } from "client/redux";
-import { addRouterApi, routePaths } from "client/router";
+import {mapRedux} from "client/redux";
+import {addRouterApi, routePaths} from "client/router";
 import React from "react";
 
 class Index extends FormPage {
@@ -27,11 +27,11 @@ class Index extends FormPage {
   getInitialValues = async () => {
     const {
       match: {
-        params: { id }
+        params: {id}
       }
     } = this.props;
 
-    const { data: { description, name } = {} } = await getRoleInfo({
+    const {data: {description, name} = {}} = await getRoleInfo({
       id
     });
 
@@ -51,21 +51,21 @@ class Index extends FormPage {
   // 提交请求到接口
   onSubmitForm = async (formData) => {
     const {
-      history: { back }
+      history: {back}
     } = this.props;
     const {
       match: {
-        params: { id }
+        params: {id}
       }
     } = this.props;
 
     const values = await this.mapSubmitData(formData);
 
     if (id) {
-      const { message: mgs } = await editRole({ ...values });
+      const {message: mgs} = await editRole({...values});
       message.success(mgs);
     } else {
-      const { message: mgs } = await createRole({ ...values });
+      const {message: mgs} = await createRole({...values});
 
       message.success(mgs);
     }
@@ -77,7 +77,7 @@ class Index extends FormPage {
   getFields = () => {
     const {
       match: {
-        params: { action }
+        params: {action}
       }
     } = this.props;
 
@@ -93,7 +93,7 @@ class Index extends FormPage {
             itemProps: {},
 
             render: (props) => {
-              const { value } = props;
+              const {value} = props;
 
               return <div>{value}</div>;
             },

@@ -1,7 +1,7 @@
 import baseUrl from "./baseUrl";
 import filterGraphqlData from "./filterGraphqlData";
-import { codeMap } from "./redirect";
-import { error as errorMessage } from "./requestMessage";
+import {codeMap} from "./redirect";
+import {error as errorMessage} from "./requestMessage";
 import token from "./token";
 import XMLHttpRequest from "./XMLHttpRequest";
 
@@ -48,7 +48,7 @@ export default class Request {
     );
   }
   static setLoad(options) {
-    const { isLoad = true } = options;
+    const {isLoad = true} = options;
     if (isLoad) {
       this.requestQueue.push(options);
       // 开始加载数据
@@ -307,7 +307,7 @@ Request.defaultHeaders = {
 };
 // 错误拦截提示
 Request.error = (errorInfo) => {
-  const { code, message } = errorInfo[0] || {};
+  const {code, message} = errorInfo[0] || {};
   if (!code) {
     errorMessage("系统错误");
   } else {
@@ -335,7 +335,7 @@ Request.interceptors = {
   },
   //响应拦截
   response: async (response) => {
-    const { code } = response[0] || {};
+    const {code} = response[0] || {};
     if (code !== 200) {
       Request.error(response);
 
@@ -349,7 +349,7 @@ Request.interceptors = {
 export class Graphql {
   constructor(options) {
     this.options = options;
-    const { url } = options;
+    const {url} = options;
     this.url = url;
   }
   // 查询
@@ -415,7 +415,7 @@ export const gql = Graphql.gql;
 // Graphql 配置项 start
 //Graphql 错误请求
 Graphql.error = (errorInfo) => {
-  const { code, message } = errorInfo[0] || {};
+  const {code, message} = errorInfo[0] || {};
 
   if (!code) {
     errorMessage("系统错误");
@@ -432,20 +432,20 @@ Graphql.error = (errorInfo) => {
 Graphql.interceptors.response = (response) => {
   const data = response[0] || {};
   const options = response[2] || {};
-  const { code } = data;
+  const {code} = data;
   if (code && code !== 200) {
     return Promise.reject(response);
   }
   for (let key in data) {
     if (data.hasOwnProperty(key)) {
-      const { code } = data[key];
+      const {code} = data[key];
       if (code !== 200) {
         response[0] = data[key];
         return Promise.reject(response);
       }
     }
   }
-  const { filterData } = options;
+  const {filterData} = options;
   return Promise.resolve(filterData ? filterGraphqlData(data) : response);
 };
 // Graphql 配置项 end

@@ -1,4 +1,4 @@
-import { CheckDataType } from "./CheckDataType";
+import {CheckDataType} from "./CheckDataType";
 
 const recursionTreeData = (
   treeData,

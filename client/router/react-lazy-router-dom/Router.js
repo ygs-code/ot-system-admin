@@ -19,7 +19,7 @@ class Router extends Component {
   constructor(props) {
     super(props);
 
-    const { history, staticContext } = this.props;
+    const {history, staticContext} = this.props;
 
     this.state = {
       location: history.location
@@ -29,7 +29,7 @@ class Router extends Component {
     this._pendingLocation = null;
 
     if (!staticContext) {
-      this.unlisten = history.listen(({ location }) => {
+      this.unlisten = history.listen(({location}) => {
         this._pendingLocation = location;
       });
     }
@@ -44,7 +44,7 @@ class Router extends Component {
     }
 
     if (!this.props.staticContext) {
-      this.unlisten = this.props.history.listen(({ location }) => {
+      this.unlisten = this.props.history.listen(({location}) => {
         if (this._isMounted) {
           this.setState({
             location: location
@@ -76,9 +76,9 @@ class Router extends Component {
     };
   };
   render() {
-    const { children, staticContext, loading, history, routesComponent } =
+    const {children, staticContext, loading, history, routesComponent} =
       this.props;
-    const { location } = this.state;
+    const {location} = this.state;
     /* eslint-disable   */
     return createElement(RouterContext.Provider, {
       value: {
@@ -116,4 +116,4 @@ Router.propTypes = {
   }
 };
 
-export { RouterContext as __RouterContext, Router };
+export {RouterContext as __RouterContext, Router};

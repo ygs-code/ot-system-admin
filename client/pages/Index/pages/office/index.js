@@ -6,7 +6,7 @@
  * @FilePath: /react-ssr-lazy-loading/client/pages/marketing/index.js
  * @Description:
  */
-import React, { memo } from "react";
+import React, {memo} from "react";
 
 const Index = memo(() => {
   return <div className="user">系统菜单页面</div>;

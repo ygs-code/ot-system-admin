@@ -1,8 +1,8 @@
 import PropTypes from "prop-types";
-import { Children, cloneElement } from "react";
+import {Children, cloneElement} from "react";
 
 const Route = (props) => {
-  const { children } = props;
+  const {children} = props;
   return children
     ? Children.map(children, (child) => {
         return cloneElement(child, props);
@@ -16,4 +16,4 @@ Route.propTypes = {
   component: PropTypes.oneOfType([PropTypes.func, PropTypes.object]).isRequired
 };
 
-export { Route };
+export {Route};

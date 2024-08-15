@@ -9,8 +9,8 @@
 
 import "./index.less";
 
-import { Pagination, Table } from "antd";
-import React, { useEffect, useState } from "react";
+import {Pagination, Table} from "antd";
+import React, {useEffect, useState} from "react";
 
 const Index = (props) => {
   const {

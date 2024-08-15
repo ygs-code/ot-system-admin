@@ -8,9 +8,9 @@
  */
 import "./index.less";
 
-import { Button } from "antd";
+import {Button} from "antd";
 import Form from "client/component/Form";
-import React, { PureComponent } from "react";
+import React, {PureComponent} from "react";
 
 export default class extends PureComponent {
   constructor(props) {
@@ -42,7 +42,7 @@ export default class extends PureComponent {
 
   // 验证表单
   onValidaForm = async () => {
-    const { validateFields } = this.form;
+    const {validateFields} = this.form;
 
     await validateFields()
       .then(async (values) => {
@@ -83,12 +83,12 @@ export default class extends PureComponent {
   getFooter = () => {
     const {
       match: {
-        params: { action }
+        params: {action}
       },
       history = {}
     } = this.props;
 
-    const { loading } = this.state;
+    const {loading} = this.state;
 
     const readOnly = action === "view";
     return (
@@ -119,7 +119,7 @@ export default class extends PureComponent {
             initialValues={async () => {
               const {
                 match: {
-                  params: { id }
+                  params: {id}
                 }
               } = this.props;
               return id === undefined ? {} : await this.getInitialValues();

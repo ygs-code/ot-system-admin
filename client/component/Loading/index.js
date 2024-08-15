@@ -6,7 +6,7 @@
  * @FilePath: /react-loading-ssr/client/component/Loading/index.js
  * @Description:
  */
-import { Skeleton } from "antd";
+import {Skeleton} from "antd";
 import React from "react";
 
 export default () => {

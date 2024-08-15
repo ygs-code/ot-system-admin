@@ -6,9 +6,9 @@
  * @Description: In User Settings Edit
  * @FilePath: /error-sytem/client/src/redux/models/reducers/user.js
  */
-import { getUserInfo } from "client/assets/js/request";
+import {getUserInfo} from "client/assets/js/request";
 
-import { getPropsState } from "../index";
+import {getPropsState} from "../index";
 
 export default (global) => ({
   name: "user",
@@ -27,8 +27,8 @@ export default (global) => ({
   },
   effects: (dispatch) => {
     return {
-      async getUserInfo(state, { payload: param = {} }) {
-        const { data } = await getUserInfo(param);
+      async getUserInfo(state, {payload: param = {}}) {
+        const {data} = await getUserInfo(param);
         // debugger;
 
         dispatch({

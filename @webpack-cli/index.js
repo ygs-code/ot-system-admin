@@ -7,6 +7,6 @@
  * @Description:
  */
 require("@babel/polyfill");
-const Server = require("./compiler-server");
+const Server = require("./compiler-server-koa").default;
 
 module.exports = new Server();

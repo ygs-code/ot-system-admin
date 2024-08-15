@@ -1,4 +1,4 @@
-import { createBrowserHistory, createMemoryHistory } from "history";
+import {createBrowserHistory, createMemoryHistory} from "history";
 
 let history = {};
 export const getBrowserHistory = (props = {}) =>
@@ -13,7 +13,7 @@ export const getBrowserHistory = (props = {}) =>
 export const getMemoryHistory = (props = {}) =>
   (history = createMemoryHistory(props));
 
-export { history };
+export {history};
 export const getHistory = () => {
   return history;
 };

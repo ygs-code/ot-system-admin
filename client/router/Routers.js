@@ -8,7 +8,7 @@
  */
 import NoPages from "client/component/404";
 import Loading from "client/component/Loading";
-import { toComponent } from "client/router";
+import {toComponent} from "client/router";
 import {
   Route,
   Router,
@@ -25,7 +25,7 @@ import React from "react";
 //   );
 // };
 const Routers = (props) => {
-  const { history, routesComponent = [], level } = props;
+  const {history, routesComponent = [], level} = props;
 
   return (
     <Router
@@ -41,7 +41,7 @@ const Routers = (props) => {
             return b.path.length - a.path.length;
           })
           .map((route) => {
-            let { path, exact = true, Component } = route;
+            let {path, exact = true, Component} = route;
 
             return (
               <Route

@@ -5,25 +5,25 @@ import {
   getRolePermissionList
 } from "client/assets/js/request";
 import TreePicker from "client/component/TreePicker";
-import { findTreeData } from "client/utils";
-import React, { useEffect } from "react";
+import {findTreeData} from "client/utils";
+import React, {useEffect} from "react";
 
 const Picker = (props) => {
-  const { searchProps = {}, readOnly } = props;
+  const {searchProps = {}, readOnly} = props;
   const transformTreeData = (data, treeData = []) => {
     if (!data.length) {
       return treeData;
     }
     let addIds = [];
     for (let item of data) {
-      const { parentId, id } = item;
+      const {parentId, id} = item;
       if (parentId === null) {
         addIds.push(id);
         treeData.push(item);
       } else {
         const data = findTreeData(treeData, parentId, "id", "children");
         if (data) {
-          const { children = [] } = data;
+          const {children = []} = data;
           data.children = [...children, item];
           addIds.push(id);
         }
@@ -65,7 +65,7 @@ const Picker = (props) => {
 };
 
 export default (props) => {
-  const { roleId, onChange } = props;
+  const {roleId, onChange} = props;
 
   useEffect(() => {
     roleId &&
@@ -74,7 +74,7 @@ export default (props) => {
         pageNum: 1,
         pageSize: 10000
       }).then((data) => {
-        const { data: { list = [] } = {} } = data;
+        const {data: {list = []} = {}} = data;
         onChange({
           checkedKeys: list.map((item) => {
             return item.permissionId;

@@ -1,15 +1,15 @@
 import "./index.less";
 
 import img from "client/assets/img/404.png";
-import Layout, { layout } from "client/component/Layout";
-import React, { memo } from "react";
+import Layout, {layout} from "client/component/Layout";
+import React, {memo} from "react";
 
 /*eslint no-undef: "error"*/
 /*eslint-env process*/
-const { env: { NODE_ENV, PUBLICPATH, RENDER } = {} } = process;
+const {env: {NODE_ENV, PUBLICPATH, RENDER} = {}} = process;
 export default (props) => {
   const {
-    user: { user: { email, id, name, phone, type } = {} } = {},
+    user: {user: {email, id, name, phone, type} = {}} = {},
     onClick = () => {}
   } = props;
 
@@ -29,7 +29,7 @@ export default (props) => {
         <p>您可能输错了网址，或该网页已删除或不存在</p>
         <a
           onClick={(e) => {
-            const { origin } = window.location;
+            const {origin} = window.location;
 
             window.location.href = origin + PUBLICPATH;
             e.stopPropagation();

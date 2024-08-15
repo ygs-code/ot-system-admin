@@ -6,7 +6,7 @@
  * @FilePath: /react-ssr-lazy-loading/client/App/App.js
  * @Description:
  */
-import "antd/dist/antd.css";
+// import "antd/dist/antd.css";
 import "./index.less";
 import "./index.css";
 import "client/assets/css/base.less";

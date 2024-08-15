@@ -8,5 +8,9 @@
  */
 require("@babel/polyfill");
 const Server = require("./compiler-server-koa").default;
+/*
+ 1. 先读文件拷贝到这个目录中，然后在执行
+
+*/
 
 module.exports = new Server();

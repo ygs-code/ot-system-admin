@@ -23,13 +23,23 @@ if (fs.existsSync(path.join(process.cwd(), "./htmllinter.config.js"))) {
   ));
 }
 
+
+
+
 const { resolve } = path;
 let {
   NODE_ENV, // 环境参数
   WEB_ENV, // 环境参数
   target, // 环境参数
-  htmlWebpackPluginOptions = ""
+  htmlWebpackPluginOptions = "",
+  APP_ROOT_DIRECTORY
 } = process.env; // 环境参数
+
+
+
+console.log('APP_ROOT_DIRECTORY==',APP_ROOT_DIRECTORY)
+
+
 //    是否是生产环境
 const isEnvProduction = NODE_ENV === "production";
 //   是否是测试开发环境

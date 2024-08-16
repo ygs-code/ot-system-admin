@@ -15,13 +15,8 @@ let {
   NODE_ENV, // 环境参数
   WEB_ENV, // 环境参数
   target, // 环境参数
-  htmlWebpackPluginOptions = "",
-  APP_ROOT_DIRECTORY
+  htmlWebpackPluginOptions = ""
 } = process.env; // 环境参数
-
-console.log("APP_ROOT_DIRECTORY==", APP_ROOT_DIRECTORY);
-console.log("process.env==", process.env);
-
 //    是否是生产环境
 const isEnvProduction = NODE_ENV === "production";
 //   是否是测试开发环境
@@ -57,6 +52,13 @@ module.exports = {
     ignored: ["**/node_modules", "/node_modules/"]
   },
   devServer: {
+    watchFiles: [
+      path.join(process.cwd(), "/client/**/*"),
+      path.join(process.cwd(), "/client/*"),
+      path.join(process.cwd(), "/public/**/*"),
+      path.join(process.cwd(), "/public/*")
+    ],
+
     // output: {
     //     publicPath: '/', // 静态资源文件公开目录
     // },
@@ -67,17 +69,17 @@ module.exports = {
     // },
 
     // 代理 支持对象或者数组配置化
-    proxy: [
-      {
-        context: ["/api/v1/common/upload/"],
-        target: "https://webpack.docschina.org/",
-        changeOrigin: true,
-        secure: false
-        // pathRewrite: {
-        //   "^/api/v1/common/upload/": "/",
-        // },
-      }
-    ]
+    // proxy: [
+    //   {
+    //     context: ["/api/v1/common/upload/"],
+    //     target: "https://webpack.docschina.org/",
+    //     changeOrigin: true,
+    //     secure: false
+    //     // pathRewrite: {
+    //     //   "^/api/v1/common/upload/": "/",
+    //     // },
+    //   }
+    // ]
 
     // proxy: [
     //   {

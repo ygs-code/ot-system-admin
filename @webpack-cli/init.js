@@ -15,14 +15,38 @@ const writeFile = require("./utils/writeFile");
 const readWriteFiles = require("./utils/readWriteFiles");
 
 class Init {
-  constructor() {
-    this.init();
+  constructor({ callback = () => {} }) {
+    this.options = {
+      callback
+    };
   }
 
   init() {
+    const { callback } = this.options;
+    console.log("文件检查开始");
     this.checkWebpackConfig();
+    console.log("文件检查完毕");
+
+    console.log("复制文件开始");
+    this.copyWebpackConfig();
+    console.log("复制文件完毕");
+
+    this.app = callback();
   }
 
+  copyWebpackConfig() {
+    readWriteFiles({
+      isWatch: false,
+      // from: path.join(process.cwd(), "/@webpack-cli/.webpack.config/**"),
+      // to: path.join(process.cwd(), "/webpack.config"),
+
+      to: path.join(process.cwd(), "/@webpack-cli/.webpack.config"),
+      from: path.join(process.cwd(), "/webpack.config/**"),
+      transform: (contents, path) => {
+        return contents;
+      }
+    });
+  }
   transformPath(path) {
     let reg = /(\\\\)|(\\)/g;
     return path.replace(reg, "/");
@@ -101,4 +125,4 @@ class Init {
   apply() {}
 }
 
-new Init();
+module.exports = Init;

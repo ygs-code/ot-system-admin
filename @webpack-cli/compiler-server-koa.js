@@ -1,5 +1,6 @@
 const fs = require("fs");
 const bodyparser = require("koa-bodyparser");
+const bodyParser = require("koa-bodyparser");
 const historyApiFallback = require("koa-history-api-fallback");
 const Koa = require("koa");
 const portfinder = require("portfinder");
@@ -18,7 +19,9 @@ const getIPAdress = require("./utils/getIPAdress");
 const { createProxyMiddleware } = require("http-proxy-middleware");
 const koaConnect = require("koa-connect");
 
-const koaServerHttpProxy = require('koa-server-http-proxy')
+const koaServerHttpProxy = require("koa-server-http-proxy");
+
+const koaHttpProxyServer = require("./koa-http-proxy-server");
 
 // chalk插件，用来在命令行中输入不同颜色的文字
 const chalk = require("chalk");
@@ -207,31 +210,27 @@ class WebpackHot {
     //   )
     // );
 
+    console.log("webpackDevMiddleware===", webpackDevMiddleware);
 
-
-    console.log('webpackDevMiddleware===',webpackDevMiddleware)
-
-
-    this.app.use.use(webpackDevMiddleware.koaWrapper(_this.compiler, {
-      // ...devServer,
-      // // noInfo: true,
-      // serverSideRender: true, // 是否是服务器渲染
-      // watchOptions
-      // //设置允许跨域
-      // headers: () => {
-      //   return {
-      //     // "Last-Modified": new Date(),
-      //     "Access-Control-Allow-Origin": "*",
-      //     "Access-Control-Allow-Headers": "content-type",
-      //     "Access-Control-Allow-Methods": "DELETE,PUT,POST,GET,OPTIONS"
-      //   };
-      // }
-
-      // publicPath: "/"
-      // writeToDisk: true //是否写入本地磁盘
-    }));
-
-
+    this.app.use(
+      webpackDevMiddleware.koaWrapper(_this.compiler, {
+        // ...devServer,
+        // // noInfo: true,
+        serverSideRender: true, // 是否是服务器渲染
+        // watchOptions
+        // //设置允许跨域
+        // headers: () => {
+        //   return {
+        //     // "Last-Modified": new Date(),
+        //     "Access-Control-Allow-Origin": "*",
+        //     "Access-Control-Allow-Headers": "content-type",
+        //     "Access-Control-Allow-Methods": "DELETE,PUT,POST,GET,OPTIONS"
+        //   };
+        // }
+        // publicPath: "/"
+        // writeToDisk: true //是否写入本地磁盘
+      })
+    );
   }
 
   // 代理服务器
@@ -343,9 +342,28 @@ class WebpackHot {
 
     console.log("targets==", targets);
 
+    const { createProxyMiddleware, fixRequestBody } = koaHttpProxyServer;
+
     Object.keys(targets).forEach((context) => {
       var options = targets[context];
-      this.app.use(koaServerHttpProxy(context, options));
+
+      const exampleProxy = createProxyMiddleware(context, {
+        /**
+         * Fix bodyParser
+         **/
+        ...options,
+        onProxyReq: fixRequestBody
+      });
+
+
+      console.log('options==',options)
+
+
+      this.app.use(bodyParser()).use(exampleProxy);
+
+      // koaHttpProxyServer
+
+      // this.app.use(koaServerHttpProxy(context, options));
     });
 
     // this.app.use(

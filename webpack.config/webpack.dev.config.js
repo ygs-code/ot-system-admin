@@ -190,8 +190,11 @@ module.exports = {
       //   // }
       // },
       "/api": {
-        target: "http://127.0.0.1:3003",
-        changeOrigin: true
+        target: "http://127.0.0.1:3003/api",
+        changeOrigin: true,
+        pathRewrite: {
+          "^/api": "/"
+        }
       }
     }
 

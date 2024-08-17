@@ -10,13 +10,15 @@ const httpProxy = require("http-proxy-middleware");
 const koaProxy = require("koa2-proxy-middleware");
 const path = require("path");
 const webpack = require("webpack");
-const webpackDevMiddleware = require("./webpack-dev-middleware");
+const webpackDevMiddleware = require("webpack-dev-middleware");
 const webpackHotMiddleware = require("webpack-hot-middleware");
 const webpackHotServerMiddleware = require("webpack-hot-server-middleware");
 const getIPAdress = require("./utils/getIPAdress");
 
 const { createProxyMiddleware } = require("http-proxy-middleware");
 const koaConnect = require("koa-connect");
+
+const koaServerHttpProxy = require('koa-server-http-proxy')
 
 // chalk插件，用来在命令行中输入不同颜色的文字
 const chalk = require("chalk");
@@ -181,29 +183,55 @@ class WebpackHot {
     //   ignored: '/node_modules/',
     // },
 
-    this.app.use(
-      _this.koaDevware(
-        webpackDevMiddleware(_this.compiler, {
-          ...devServer,
-          // noInfo: true,
-          serverSideRender: true, // 是否是服务器渲染
-          watchOptions
-          // //设置允许跨域
-          // headers: () => {
-          //   return {
-          //     // "Last-Modified": new Date(),
-          //     "Access-Control-Allow-Origin": "*",
-          //     "Access-Control-Allow-Headers": "content-type",
-          //     "Access-Control-Allow-Methods": "DELETE,PUT,POST,GET,OPTIONS"
-          //   };
-          // }
+    // this.app.use(
+    //   _this.koaDevware(
+    //     webpackDevMiddleware(_this.compiler, {
+    //       ...devServer,
+    //       // noInfo: true,
+    //       serverSideRender: true, // 是否是服务器渲染
+    //       watchOptions
+    //       // //设置允许跨域
+    //       // headers: () => {
+    //       //   return {
+    //       //     // "Last-Modified": new Date(),
+    //       //     "Access-Control-Allow-Origin": "*",
+    //       //     "Access-Control-Allow-Headers": "content-type",
+    //       //     "Access-Control-Allow-Methods": "DELETE,PUT,POST,GET,OPTIONS"
+    //       //   };
+    //       // }
 
-          // publicPath: "/"
-          // writeToDisk: true //是否写入本地磁盘
-        }),
-        _this.compiler
-      )
-    );
+    //       // publicPath: "/"
+    //       // writeToDisk: true //是否写入本地磁盘
+    //     }),
+    //     // _this.compiler
+    //   )
+    // );
+
+
+
+    console.log('webpackDevMiddleware===',webpackDevMiddleware)
+
+
+    this.app.use.use(webpackDevMiddleware.koaWrapper(_this.compiler, {
+      // ...devServer,
+      // // noInfo: true,
+      // serverSideRender: true, // 是否是服务器渲染
+      // watchOptions
+      // //设置允许跨域
+      // headers: () => {
+      //   return {
+      //     // "Last-Modified": new Date(),
+      //     "Access-Control-Allow-Origin": "*",
+      //     "Access-Control-Allow-Headers": "content-type",
+      //     "Access-Control-Allow-Methods": "DELETE,PUT,POST,GET,OPTIONS"
+      //   };
+      // }
+
+      // publicPath: "/"
+      // writeToDisk: true //是否写入本地磁盘
+    }));
+
+
   }
 
   // 代理服务器
@@ -315,6 +343,11 @@ class WebpackHot {
 
     console.log("targets==", targets);
 
+    Object.keys(targets).forEach((context) => {
+      var options = targets[context];
+      this.app.use(koaServerHttpProxy(context, options));
+    });
+
     // this.app.use(
     //   koaProxy({
     //     targets
@@ -334,23 +367,22 @@ class WebpackHot {
     //   changeOrigin: true,
     // })));
 
-    this.app.use(async (ctx, next) => {
-      if (ctx.url.startsWith("/api")) {
-        //匹配有api字段的请求url
-        ctx.respond = false; // 绕过koa内置对象response ，写入原始res对象，而不是koa处理过的response
-        await k2c(
-          httpProxy({
-            target: "http://127.0.0.1:3003",
-            changeOrigin: true,
-            secure: false,
-            // pathRewrite: { "^/api": "" }
-          })
-        )(ctx, next);
-      }
-      await next();
-    });
-    this.app.use(bodyparser({ enableTypes: ["json", "form", "text"] }));
-    
+    // this.app.use(async (ctx, next) => {
+    //   if (ctx.url.startsWith("/api")) {
+    //     //匹配有api字段的请求url
+    //     ctx.respond = false; // 绕过koa内置对象response ，写入原始res对象，而不是koa处理过的response
+    //     await k2c(
+    //       httpProxy({
+    //         target: "http://127.0.0.1:3003",
+    //         changeOrigin: true,
+    //         secure: false,
+    //         // pathRewrite: { "^/api": "" }
+    //       })
+    //     )(ctx, next);
+    //   }
+    //   await next();
+    // });
+    // this.app.use(bodyparser({ enableTypes: ["json", "form", "text"] }));
   }
 
   setConnectHistoryApiFallback() {

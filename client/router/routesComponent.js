@@ -1,6 +1,6 @@
 
 // 按需加载插件
-import {lazy} from "client/router/react-lazy-router-dom";
+import { lazy } from "client/router/react-lazy-router-dom";
 import pagesIndexPagesOfficeRouterRoutesconfig from "client/pages/Index/pages/office/router/routesConfig.js";
 import pagesIndexPagesSystemRouterRoutesconfig from "client/pages/Index/pages/system/router/routesConfig.js";
 import pagesIndexRouterRoutesconfig from "client/pages/Index/router/routesConfig.js";
@@ -236,7 +236,7 @@ let routesComponentConfig=[
                      level:1,
                      routesConfigPath:"E:/code/webpack-cli/client/pages/router/routesConfig.js",
                    },
-    ];
+    ]
 
 export const routesConfigs = [
   ...pagesIndexPagesOfficeRouterRoutesconfig,

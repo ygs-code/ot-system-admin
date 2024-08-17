@@ -8,7 +8,6 @@
  */
 //配置： https://eslint.bootcss.com/
 module.exports = {
-
   root: true, // 当前项目使用这个配置文件, 不会往父级目录找.eslintrc.js文件
 
   env: {
@@ -54,9 +53,9 @@ module.exports = {
     "no-console": "warn",
     "no-unexpected-multiline": "warn",
     // // 自定义规则 - 其实上面集成后有很多内置的规则, 这里可以进行规则的一些修改
-    // 'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off', // 上线环境用打印就报警告, 开发环境关闭此规则
-    // 'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off', // debugger可以终止代码执行
-    // 'no-multiple-empty-lines': 'off', // 不允许有连续多行空行(关闭规则)
+    "no-console": process.env.NODE_ENV === "production" ? "warn" : "off", // 上线环境用打印就报警告, 开发环境关闭此规则
+    "no-debugger": process.env.NODE_ENV === "production" ? "warn" : "off", // debugger可以终止代码执行
+    'no-multiple-empty-lines': 'error', // 不允许有连续多行空行(关闭规则)
     // 'no-undef': 1, //不能有未定义的变量
     // eqeqeq: ['error', 'always'],
     eqeqeq: ["warn", "always"],
@@ -65,7 +64,7 @@ module.exports = {
     // 'no-void': 2, //禁用void操作符
     "@babel/new-cap": "error",
     "@babel/no-invalid-this": "error",
-    "@babel/no-unused-expressions": "error",
+    "@babel/no-unused-expressions": "warn",
     "@babel/object-curly-spacing": "error",
     "@babel/semi": "error"
   }

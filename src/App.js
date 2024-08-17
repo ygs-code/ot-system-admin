@@ -17,9 +17,13 @@ import "./App.css";
 import "./App1.less";
 import "./App3.scss";
 console.log("process ==", process); // 'test'
+
+debugger
+
 /*global APP_CONFIG*/
 var server_api_key = APP_CONFIG.api_key;
 console.log("APP_CONFIG=", APP_CONFIG);
+debugger
 
 console.log(
   "process asd 阿斯顿发斯蒂芬   asdf asdf sasd fsdf    f asdfsadf sadf asdfasdf  dyuiopguysttyfugiho asdf asdfsdf 安师大发生地方  gd dsf   sadf asdf=  ",

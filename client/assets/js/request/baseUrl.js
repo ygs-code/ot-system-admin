@@ -7,13 +7,28 @@
  * @FilePath: /error-sytem/client/src/common/js/request/baseUrl.js
  */
 // const env = process.env.NODE_ENV; // 环境参数
-const {env: {NODE_ENV, ENTRY_SERVER_NAME, RENDER} = {}} = process;
+
+// DOMAIN_NAME='';
+// DOMAIN_MIDDLE='/api';
+
+const {
+  env: {
+    NODE_ENV,
+    DOMAIN_NAME,
+    DOMAIN_MIDDLE
+  } = {}
+} = process;
+
+console.log('process==',process);
+
 let baseUrl = "";
-if (NODE_ENV === "development") {
-  baseUrl = "http://127.0.0.1:3003/api/";
-}
-if (NODE_ENV === "production") {
-  baseUrl = `http://${ENTRY_SERVER_NAME}/api/`;
-}
+// if (NODE_ENV === "development") {
+//   baseUrl = "http://127.0.0.1:3003/api/";
+// }
+// if (NODE_ENV === "production") {
+  // baseUrl = `http://${DOMAIN_NAME}${DOMAIN_MIDDLE}`;
+// }
+
+baseUrl = `${DOMAIN_NAME}${DOMAIN_MIDDLE}`;
 
 export default baseUrl;

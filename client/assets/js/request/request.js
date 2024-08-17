@@ -8,7 +8,9 @@ import XMLHttpRequest from "./XMLHttpRequest";
 // 导出普通请求
 export default class Request {
   static platform = "web"; //smallProgram 小程序 , web 网页
-  static baseUrl = "";
+  //配置项
+  //配置默认前缀
+  static baseUrl = '';
   // 请求队列
   static requestQueue = [];
   // 默认请求头设置
@@ -28,12 +30,27 @@ export default class Request {
   static transformUrl(baseUrl, url) {
     /* eslint-disable   */
     const urlHpptReg = /^(http\:\/\/)|^(https\:\/\/)/gi;
+
+    console.log("urlHpptReg1==", (baseUrl + url).match(urlHpptReg));
+    console.log("url2==",         ((baseUrl + url).match(urlHpptReg)?.[0] || "") );
+    console.log("urlHpptReg3=",   (baseUrl + url).replace(urlHpptReg, "").replace(urlReg, "/"));
+    console.log("url4==", url);
+    console.log("baseUrl==", baseUrl);
+    debugger;
+
     /* eslint-enable   */
     const urlReg = /(\/\/)+/gi;
+    console.log({
+      urlSuffix: url,
+      url:
+        ((baseUrl + url).match(urlHpptReg)?.[0] || "") +
+        (baseUrl + url).replace(urlHpptReg, "").replace(urlReg, "/")
+    });
+    debugger;
     return {
       urlSuffix: url,
       url:
-        (baseUrl + url).match(urlHpptReg)[0] +
+        ((baseUrl + url).match(urlHpptReg)?.[0] || "") +
         (baseUrl + url).replace(urlHpptReg, "").replace(urlReg, "/")
     };
   }
@@ -119,35 +136,83 @@ export default class Request {
     return this.request(url, parameter, options);
   }
   static request(url, parameter, options) {
-    let {
-      method,
-      headers = {},
-      requestId = this.guid(),
-      success = () => {},
-      isPromise = true
-    } = options;
+    try {
+      let {
+        method,
+        headers = {},
+        requestId = this.guid(),
+        success = () => {},
+        isPromise = true,
+        baseUrl
+      } = options;
 
-    let error = options.error || Request.error || (() => {});
+      let error = options.error || Request.error || (() => {});
 
-    const urls = this.transformUrl(this.baseUrl, url);
-    let requestInterceptors =
-      options?.interceptors?.request ||
-      Request?.interceptors?.request ||
-      ((config) => config);
-    let responseInterceptors =
-      options?.interceptors?.response ||
-      Request?.interceptors?.response ||
-      ((response) => response);
+  
+      // 参数的可以代替 替换 默认的
 
-    // this.setLoad({
-    //   url,
-    //   parameter,
-    //   ...options,
-    // });
 
-    return isPromise
-      ? new Promise((resolve, reject) => {
-          new XMLHttpRequest().xhRequest(
+      console.log('baseUrl==',baseUrl);
+      console.log('this.baseUrl==',this.baseUrl);
+      debugger;
+      const urls = this.transformUrl(baseUrl || this.baseUrl, url);
+
+   
+      let requestInterceptors =
+        options?.interceptors?.request ||
+        Request?.interceptors?.request ||
+        ((config) => config);
+      let responseInterceptors =
+        options?.interceptors?.response ||
+        Request?.interceptors?.response ||
+        ((response) => response);
+
+      // this.setLoad({
+      //   url,
+      //   parameter,
+      //   ...options,
+      // });
+
+      return isPromise
+        ? new Promise((resolve, reject) => {
+            new XMLHttpRequest().xhRequest(
+              requestInterceptors({
+                ...options,
+                ...urls,
+                method,
+                parameter,
+                headers: {
+                  ...this.defaultHeaders,
+                  ...headers,
+                  ["request-id"]: requestId
+                },
+                success: async (...ags) => {
+                  ags = await responseInterceptors(ags).catch(() => {
+                    error(ags);
+                    reject(ags);
+                  });
+                  // const data = ags.length ? ags[0] : null;
+                  // if (data) {
+                  // const { code, message = "" } = data;
+                  // if (code == 200) {
+                  success(ags);
+                  resolve(ags);
+                  //   return;
+                  // }
+                  // errorMessage(message);
+                  // }
+                  // error(ags);
+                  // reject(ags);
+                },
+                error: (...ags) => {
+                  // ags = responseInterceptors(ags);
+                  error(ags);
+                  reject(ags);
+                }
+              })
+            );
+          })
+        : new XMLHttpRequest().xhRequest(
             requestInterceptors({
               ...options,
               ...urls,
@@ -161,52 +226,19 @@ export default class Request {
               success: async (...ags) => {
                 ags = await responseInterceptors(ags).catch(() => {
                   error(ags);
-                  reject(ags);
                 });
-                // const data = ags.length ? ags[0] : null;
-                // if (data) {
-                // const { code, message = "" } = data;
-                // if (code == 200) {
                 success(ags);
-                resolve(ags);
-                //   return;
-                // }
-                // errorMessage(message);
-                // }
-                // error(ags);
-                // reject(ags);
               },
               error: (...ags) => {
                 // ags = responseInterceptors(ags);
                 error(ags);
-                reject(ags);
               }
             })
           );
-        })
-      : new XMLHttpRequest().xhRequest(
-          requestInterceptors({
-            ...options,
-            ...urls,
-            method,
-            parameter,
-            headers: {
-              ...this.defaultHeaders,
-              ...headers,
-              ["request-id"]: requestId
-            },
-            success: async (...ags) => {
-              ags = await responseInterceptors(ags).catch(() => {
-                error(ags);
-              });
-              success(ags);
-            },
-            error: (...ags) => {
-              // ags = responseInterceptors(ags);
-              error(ags);
-            }
-          })
-        );
+    } catch (error) {
+      console.log("error===", error);
+      debugger;
+    }
   }
   static uploadFile(url, parameter, options) {
     const urls = this.transformUrl(this.baseUrl, url);

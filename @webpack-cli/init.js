@@ -27,9 +27,9 @@ class Init {
     this.checkWebpackConfig();
     console.log("文件检查完毕");
 
-    console.log("复制文件开始");
-    this.copyWebpackConfig();
-    console.log("复制文件完毕");
+    // console.log("复制文件开始");
+    // this.copyWebpackConfig();
+    // console.log("复制文件完毕");
 
     this.app = callback();
   }

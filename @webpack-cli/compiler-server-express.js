@@ -39,17 +39,16 @@ checkVersions();
 // 自定义中间件
 const myMiddleware = () => {
   return async (ctx, next) => {
-    console.log("ctx======", ctx);
-    console.log("next======", next);
+
 
     // 在调用下一个中间件之前可以做一些事情
-    console.log("Before next middleware");
+
 
     // 调用下一个中间件
     await next();
 
     // 在调用下一个中间件之后可以做一些事情
-    console.log("After next middleware");
+ 
   };
 };
 
@@ -76,6 +75,10 @@ class App {
     this.port = await new Promise((resolve, reject) => {
       //查找端口号
       portfinder.getPort((err, port) => {
+
+
+        console.log('port==',port)
+
         if (err) {
           reject(err);
           return;
@@ -121,8 +124,7 @@ class App {
     const compiler = webpack(
       this.config
       //   (err, stats) => {
-      //   console.log();
-
+   
       //   // this.isEnvDevelopment &&
       //   //   $BrowserReloadErrorOverlayWepbackPlugin.watch(err, stats)
       //   if (err) {

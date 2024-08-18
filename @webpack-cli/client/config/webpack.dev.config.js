@@ -328,12 +328,12 @@ module.exports = {
       errors: true,
       inline: true
     },
-    watchFiles: [
-      path.join(process.cwd(), "/client/**/*"),
-      path.join(process.cwd(), "/client/*"),
-      path.join(process.cwd(), "/public/**/*"),
-      path.join(process.cwd(), "/public/*")
-    ],
+    // watchFiles: [
+    //   path.join(process.cwd(), "/client/**/*"),
+    //   path.join(process.cwd(), "/client/*"),
+    //   path.join(process.cwd(), "/public/**/*"),
+    //   path.join(process.cwd(), "/public/*")
+    // ],
     liveReload: true, // 编译之后是否自动刷新浏览器
     static: {
       directory: path.join(process.cwd(), "/dist"),

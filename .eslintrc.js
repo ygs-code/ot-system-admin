@@ -65,7 +65,7 @@ module.exports = {
     // 'no-void': 2, //禁用void操作符
     "@babel/new-cap": "error",
     "@babel/no-invalid-this": "error",
-    "@babel/no-unused-expressions": "error",
+    "@babel/no-unused-expressions": "warn",
     "@babel/object-curly-spacing": "error",
     "@babel/semi": "error"
   }

@@ -79,7 +79,7 @@ module.exports = {
     filename: "static/js/[name].js",
     chunkFilename: "static/js/[name][contenthash].js",
     // 访问静态资源目录 比如 css img
-    publicPath: "/" // dev 服务器需要是绝对，而编译出来需要是相对
+    publicPath: "/" ,// dev 服务器需要是绝对，而编译出来需要是相对
     // // 导出库(exported library)的名称
     // library: "server",
     // //   导出库(exported library)的类型
@@ -101,7 +101,7 @@ module.exports = {
     // }
     // 如果一个模块是在 require 时抛出异常，告诉 webpack 从模块实例缓存(require.cache)中删除这个模块。
     // 并且重启webpack的时候也会删除cache缓存
-    // strictModuleExceptionHandling: true,
+    strictModuleExceptionHandling: true,
   },
 
   resolve: {

@@ -39,8 +39,6 @@ module.exports = function wdm(compiler, opts) {
   // start watching
   if (!options.lazy) {
 
-    console.log('options.watchOptions==',options.watchOptions)
-
     context.watching = compiler.watch(options.watchOptions, (err) => {
       if (err) {
         context.log.error(err.stack || err);

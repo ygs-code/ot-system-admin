@@ -8,7 +8,7 @@
  */
 require("@babel/polyfill");
 const Init = require("./init.js");
-const Server = require("./compiler-server-koa").default;
+// const Server = require("./compiler-server-koa");
 /*
  1. 先读文件拷贝到这个目录中，然后在执行
 
@@ -17,6 +17,10 @@ const Server = require("./compiler-server-koa").default;
 module.exports = new Init({
   callback: () => {
     console.log("开始编译");
-    return new Server();
+
+    setTimeout(() => {
+      const Server = require("./compiler-server-koa");
+      return new Server();
+    }, 100);
   }
 }).init();

@@ -1,21 +1,15 @@
-const webpack = require("webpack");
 const fs = require("fs");
-// const htmllintLoader = require('htmllint-loader');
 const StylelintPlugin = require("stylelint-webpack-plugin");
 const ESLintPlugin = require("eslint-webpack-plugin");
 const ExtendedDefinePlugin = require("extended-define-webpack-plugin");
 const HtmllinterWebpackPlugin = require("htmllinter-webpack-plugin");
 const DirectoryNamedWebpackPlugin = require("directory-named-webpack-plugin");
-const MyExampleWebpackPlugin = require("./definePlugin/MyExampleWebpackPlugin");
-const os = require("os");
-const HappyPack = require("happypack");
-const happyThreadPool = HappyPack.ThreadPool({ size: os.cpus().length - 1 });
-const WebpackPluginRouter = require("./definePlugin/webpack-plugin-router");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const CopyPlugin = require("copy-webpack-plugin");
 const path = require("path");
 const publicPath = "/";
 let htmllinterConfig = {};
+
 if (fs.existsSync(path.join(process.cwd(), "./htmllinter.config.js"))) {
   htmllinterConfig = require(path.join(
     process.cwd(),
@@ -23,10 +17,6 @@ if (fs.existsSync(path.join(process.cwd(), "./htmllinter.config.js"))) {
   ));
 }
 
-
-
-
-const { resolve } = path;
 let {
   NODE_ENV, // 环境参数
   WEB_ENV, // 环境参数
@@ -35,29 +25,14 @@ let {
   APP_ROOT_DIRECTORY
 } = process.env; // 环境参数
 
+console.log("APP_ROOT_DIRECTORY==", APP_ROOT_DIRECTORY);
 
-
-console.log('APP_ROOT_DIRECTORY==',APP_ROOT_DIRECTORY)
-
-
-//    是否是生产环境
-const isEnvProduction = NODE_ENV === "production";
-//   是否是测试开发环境
-const isEnvDevelopment = NODE_ENV === "development";
-const cacheLoader = (happypackId) => {
-  return isEnvDevelopment
-    ? [
-        `happypack/loader?id=${happypackId}&cacheDirectory=true`,
-        "thread-loader",
-        "cache-loader"
-      ]
-    : ["thread-loader", `happypack/loader?id=${happypackId}`];
-};
 
 module.exports = {
+  // name: "client",
   // 入口
   entry: {
-    // myVue: [path.join(process.cwd(), "/client/myVue.js")], // 公共包抽取
+     // 公共包抽取
     vendor: ["react"],
     index: [
       "@babel/polyfill",
@@ -79,7 +54,7 @@ module.exports = {
     filename: "static/js/[name].js",
     chunkFilename: "static/js/[name][contenthash].js",
     // 访问静态资源目录 比如 css img
-    publicPath: "/" ,// dev 服务器需要是绝对，而编译出来需要是相对
+    publicPath: "/", // dev 服务器需要是绝对，而编译出来需要是相对
     // // 导出库(exported library)的名称
     // library: "server",
     // //   导出库(exported library)的类型
@@ -88,17 +63,17 @@ module.exports = {
     // umdNamedDefine: true,
     // globalObject: "this",
     // chunk 请求到期之前的毫秒数，默认为 120000
-    // chunkLoadTimeout: 120000,
-    // // 「devtool 中模块」的文件名模板 调试webpack的配置问题
-    // // 你的文件在chrome开发者工具中显示为webpack:///foo.js?a93h, 。如果我们希望文件名显示得更清晰呢，比如说 webpack:///path/to/foo.js
-    // devtoolModuleFilenameTemplate: (info) => {
-    //   // "webpack://[namespace]/[resource-path]?[loaders]"
-    //   return `webpack:///${info.resourcePath}?${info.loaders}`;
-    // },
-    // // 如果多个模块产生相同的名称，使用
-    // devtoolFallbackModuleFilenameTemplate: (info) => {
-    //   return `webpack:///${info.resourcePath}?${info.loaders}`;
-    // }
+    chunkLoadTimeout: 120000,
+    // 「devtool 中模块」的文件名模板 调试webpack的配置问题
+    // 你的文件在chrome开发者工具中显示为webpack:///foo.js?a93h, 。如果我们希望文件名显示得更清晰呢，比如说 webpack:///path/to/foo.js
+    devtoolModuleFilenameTemplate: (info) => {
+      // "webpack://[namespace]/[resource-path]?[loaders]"
+      return `webpack:///${info.resourcePath}?${info.loaders}`;
+    },
+    // 如果多个模块产生相同的名称，使用
+    devtoolFallbackModuleFilenameTemplate: (info) => {
+      return `webpack:///${info.resourcePath}?${info.loaders}`;
+    },
     // 如果一个模块是在 require 时抛出异常，告诉 webpack 从模块实例缓存(require.cache)中删除这个模块。
     // 并且重启webpack的时候也会删除cache缓存
     strictModuleExceptionHandling: true,
@@ -147,22 +122,10 @@ module.exports = {
     //dllPlugin 插件需要的包
     // 路径配置 解析配置
     alias: {
-      // buffer: "buffer",
-      // crypto: "crypto-browserify",
-      // vm: "vm-browserify",
-      // crypto: false,
-      // stream: "stream-browserify",
       "@": path.join(process.cwd(), "/client"),
       client: path.join(process.cwd(), "/client")
     }
   },
-
-  // resolve: {
-  //   // 路径配置
-  //   alias: {
-  //     // '@': path.join(process.cwd(), '/client'),
-  //   }
-  // },
   module: {
     // loader
     rules: [
@@ -171,46 +134,11 @@ module.exports = {
         // 增强兼容性
         include: path.join(process.cwd(), "/client"),
         sideEffects: true
-      },
-
-      //配置 https://github.com/robbiedigital/htmllint-loader
-      // {
-      //     test: /\.(htm|html|xhtml|hbs|handlebars|php|ejs)$/,
-      //     // loader: path.join(
-      //     //     __dirname,
-      //     //     './defineLoader/MyExampleWebpackLoader.js'
-      //     // ),
-      //     loader: 'htmllint-loader',
-      //     exclude: /(node_modules)/,
-      //     options: {
-      //         config: path.join(process.cwd(), '/.htmllintrc'),
-      //         //   config: '.htmllintrc', // path to custom config file
-      //         emitError: true, //发现的错误将始终被触发，将禁用设置为false。
-      //         emitWarning: true, //如果将disable设置为false，则发现的警告将始终被发出。
-      //         failOnError: true, //如果有任何错误，将导致模块构建失败，禁用设置为false。
-      //         failOnWarning: false, //如果有任何警告，如果设置为true，将导致模块构建失败。
-      //         quiet: false, //如果设置为true，将只处理和报告错误，而忽略警告。
-      //     },
-      // },
-      {
-        test: /\.js?$/,
-        enforce: "pre",
-        // 排除文件,因为这些包已经编译过，无需再次编译
-        exclude: /(node_modules|bower_components)/,
-        use: {
-          loader: path.join(
-            __dirname,
-            "./defineLoader/MyExampleWebpackLoader.js"
-          ),
-          options: {}
-        }
       }
     ]
   },
 
   plugins: [
-
-
     // html静态页面
     new HtmlWebpackPlugin({
       ...(() => {
@@ -269,17 +197,17 @@ module.exports = {
     }),
 
     // 路由文件
-    new WebpackPluginRouter({
-      publicPath,
-      entry: path.join(process.cwd(), "/client"),
-      //延迟监听时间
-      aggregateTimeout: 300,
-      watch: ["routesConfig.js"],
-      output: {
-        routesComponent: "/client/router/routesComponent.js",
-        routePaths: "/client/router/routePaths.js"
-      }
-    }),
+    // new WebpackPluginRouter({
+    //   publicPath,
+    //   entry: path.join(process.cwd(), "/client"),
+    //   //延迟监听时间
+    //   aggregateTimeout: 300,
+    //   watch: ["routesConfig.js"],
+    //   output: {
+    //     routesComponent: "/client/router/routesComponent.js",
+    //     routePaths: "/client/router/routePaths.js"
+    //   }
+    // }),
     // html 编译检查
     new HtmllinterWebpackPlugin({
       config: htmllinterConfig
@@ -322,33 +250,6 @@ module.exports = {
       quiet: false, //如果设置为true，将只处理和报告错误，而忽略警告。
       fix: true //自动修复
     }),
-
-    // new HappyPack({
-    //   id: "MyExampleWebpackLoader",
-    //   use: [  //添加loader
-    //     {
-    //       loader: path.join(
-    //         __dirname,
-    //         "./defineLoader/MyExampleWebpackLoader.js"
-    //       ),
-    //       options: {
-    //         name: "graphql",
-    //       },
-    //     },
-    //     // "raw-loader",
-    //   ],
-    //   // 输出执行日志
-    //   verbose: true,
-    //   // 使用共享线程池
-    //   threadPool: happyThreadPool,
-    // }),
-
-    // 自定义插件
-    new MyExampleWebpackPlugin({
-      // 出口
-      outputPath: path.join(process.cwd(), "/app")
-    }),
-
     // 注入全局常量
     new ExtendedDefinePlugin({
       APP_CONFIG: {
@@ -358,22 +259,14 @@ module.exports = {
           api_key: "123456790"
         }
       }
-    }),
+    })
     /*
                如果我要在一个webpack打包覆盖的地方的xxx.js文件中用到react，该怎么做？
               通常来讲，我们会直接`import React from 'react'` 有很多很多js文件需要引入呢？一直引入吗？
               可以一直引入。同样会造成不必要的工作量。
-               */
-    new webpack.ProvidePlugin({
-      React: "react"
-    })
-    // 他们两个有点类似
-    // webpack.BannerPlugin 为每一个头文件添加一个文件，这里可以加入公共文件
-    // source-map-support 源映射(Source Map)是一种数据格式，它存储了源代码和生成代码之间的位置映射关系。
-    // new webpack.BannerPlugin({
-    //   banner: 'require("source-map-support").install();',
-    //   raw: true,
-    //   entryOnly: false,
-    // }),
+    */
+    // new webpack.ProvidePlugin({
+    //   React: "react"
+    // })
   ]
 };

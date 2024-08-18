@@ -44,12 +44,12 @@ const cacheLoader = (happypackId) => {
 
 module.exports = {
   mode: "production",
-  output: {
-    publicPath: "./", // dev 服务器需要是绝对，而编译出来需要是相对
-    // 如果一个模块是在 require 时抛出异常，告诉 webpack 从模块实例缓存(require.cache)中删除这个模块。
-    // 并且重启webpack的时候也会删除cache缓存
-    strictModuleExceptionHandling: true
-  },
+  // output: {
+  //   publicPath: "./", // dev 服务器需要是绝对，而编译出来需要是相对
+  //   // 如果一个模块是在 require 时抛出异常，告诉 webpack 从模块实例缓存(require.cache)中删除这个模块。
+  //   // 并且重启webpack的时候也会删除cache缓存
+  //   strictModuleExceptionHandling: true
+  // },
 
   // 是否监听文件 这个参数已经被废弃掉，设置他会有警告
   // watch: false,
@@ -277,38 +277,38 @@ module.exports = {
       minRatio: 0.8 //压缩比例
     }),
 
-    // 复制
-    new CopyPlugin({
-      patterns: [
-        {
-          // from: path.join(process.cwd(), "/client/static"),
-          // to: path.join(process.cwd(), "/dist/client/static"),
+    // // 复制
+    // new CopyPlugin({
+    //   patterns: [
+    //     {
+    //       // from: path.join(process.cwd(), "/client/static"),
+    //       // to: path.join(process.cwd(), "/dist/client/static"),
 
-          from: path
-            .join(process.cwd(), "/client/static/**/*")
-            .replace(/\\/gi, "/"),
-          to: path.join(process.cwd(), "/client/dist").replace(/\\/gi, "/")
-        }
-      ]
-    }),
-    //清理编译目录
-    new CleanWebpackPlugin({
-      cleanStaleWebpackAssets: false,
-      //配置清理文件 如果不清理则加 ！
-      cleanOnceBeforeBuildPatterns: ["*", "!dll*"]
-      // cleanOnceBeforeBuildPatterns: [
-      //   "index.html",
-      //   "**/index*.js",
-      //   "**/index*.css",
-      // !./image/*
-      // ],
-    }),
-    new MiniCssExtractPlugin({
-      // Options similar to the same options in webpackOptions.output
-      // both options are optional
-      filename: "static/css/[name].[contenthash:8].css",
-      chunkFilename: "static/css/[name].[contenthash:8].chunk.css"
-    }),
+    //       from: path
+    //         .join(process.cwd(), "/client/static/**/*")
+    //         .replace(/\\/gi, "/"),
+    //       to: path.join(process.cwd(), "/client/dist").replace(/\\/gi, "/")
+    //     }
+    //   ]
+    // }),
+    // //清理编译目录
+    // new CleanWebpackPlugin({
+    //   cleanStaleWebpackAssets: false,
+    //   //配置清理文件 如果不清理则加 ！
+    //   cleanOnceBeforeBuildPatterns: ["*", "!dll*"]
+    //   // cleanOnceBeforeBuildPatterns: [
+    //   //   "index.html",
+    //   //   "**/index*.js",
+    //   //   "**/index*.css",
+    //   // !./image/*
+    //   // ],
+    // }),
+    // new MiniCssExtractPlugin({
+    //   // Options similar to the same options in webpackOptions.output
+    //   // both options are optional
+    //   filename: "static/css/[name].[contenthash:8].css",
+    //   chunkFilename: "static/css/[name].[contenthash:8].chunk.css"
+    // }),
     new HappyPack({
       id: "babel",
       //添加loader

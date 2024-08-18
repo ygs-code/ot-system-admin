@@ -1,20 +1,32 @@
-import fs from "fs";
-import bodyparser from "koa-bodyparser";
-import historyApiFallback from "koa-history-api-fallback";
-import Koa from "koa";
-import portfinder from "portfinder";
-// import ReactLoadableSSRAddon from "react-loadable-ssr-addon";
-// import { createProxyMiddleware } from "http-proxy-middleware";
-import koaProxy from "koa2-proxy-middleware";
-import path from "path";
-import webpack from "webpack";
-import webpackDevMiddleware from "./webpack-dev-middleware";
-import webpackHotMiddleware from "webpack-hot-middleware";
-import webpackHotServerMiddleware from "webpack-hot-server-middleware";
+const fs = require("fs");
+const bodyparser = require("koa-bodyparser");
+const bodyParser = require("koa-bodyparser");
+const historyApiFallback = require("koa-history-api-fallback");
+const Koa = require("koa");
+const portfinder = require("portfinder");
+const k2c = require("koa2-connect");
+const httpProxy = require("http-proxy-middleware");
+// const  ReactLoadableSSRAddon = require( "react-loadable-ssr-addon";
+// const  { createProxyMiddleware } = require( "http-proxy-middleware";
+const koaProxy = require("koa2-proxy-middleware");
+const path = require("path");
+const webpack = require("webpack");
+const webpackDevMiddleware = require("webpack-dev-middleware");
+const webpackHotMiddleware = require("webpack-hot-middleware");
+const webpackHotServerMiddleware = require("webpack-hot-server-middleware");
+const getIPAdress = require("./utils/getIPAdress");
+
+const { createProxyMiddleware } = require("http-proxy-middleware");
+const koaConnect = require("koa-connect");
+
+const koaServerHttpProxy = require("koa-server-http-proxy");
+
+const koaHttpProxyServer = require("./koa-http-proxy-server");
+
 // chalk插件，用来在命令行中输入不同颜色的文字
-import chalk from "chalk";
-// import connectHistoryApiFallback from "connect-history-api-fallback";
-// import { compiler, config } from "@/webpack";
+const chalk = require("chalk");
+// const  connectHistoryApiFallback = require( "connect-history-api-fallback";
+// const  { compiler, config } = require( "@/webpack";
 
 const {
   NODE_ENV, // 环境参数
@@ -25,7 +37,7 @@ const {
 const clientWebpackConfig = require("./client");
 const serverWebpackConfig = require("./server");
 
-// import { writeFile } from "@/webpack/utils";
+// const  { writeFile } = require( "@/webpack/utils";
 
 // let {
 //   NODE_ENV, // 环境参数
@@ -165,9 +177,7 @@ class WebpackHot {
   }
   addWebpackDevMiddleware() {
     const _this = this;
-    const { devServer ,watchOptions={}} = this.config;
-
-
+    const { devServer, watchOptions = {} } = this.config;
 
     // watchOptions: {
     //   //延迟监听时间
@@ -176,29 +186,50 @@ class WebpackHot {
     //   ignored: '/node_modules/',
     // },
 
+    // this.app.use(
+    //   _this.koaDevware(
+    //     webpackDevMiddleware(_this.compiler, {
+    //       ...devServer,
+    //       // noInfo: true,
+    //       serverSideRender: true, // 是否是服务器渲染
+    //       watchOptions
+    //       // //设置允许跨域
+    //       // headers: () => {
+    //       //   return {
+    //       //     // "Last-Modified": new Date(),
+    //       //     "Access-Control-Allow-Origin": "*",
+    //       //     "Access-Control-Allow-Headers": "content-type",
+    //       //     "Access-Control-Allow-Methods": "DELETE,PUT,POST,GET,OPTIONS"
+    //       //   };
+    //       // }
+
+    //       // publicPath: "/"
+    //       // writeToDisk: true //是否写入本地磁盘
+    //     }),
+    //     // _this.compiler
+    //   )
+    // );
+
+    console.log("webpackDevMiddleware===", webpackDevMiddleware);
 
     this.app.use(
-      _this.koaDevware(
-        webpackDevMiddleware(_this.compiler, {
-          ...devServer,
-          // noInfo: true,
-          serverSideRender: true, // 是否是服务器渲染
-          watchOptions
-          // //设置允许跨域
-          // headers: () => {
-          //   return {
-          //     // "Last-Modified": new Date(),
-          //     "Access-Control-Allow-Origin": "*",
-          //     "Access-Control-Allow-Headers": "content-type",
-          //     "Access-Control-Allow-Methods": "DELETE,PUT,POST,GET,OPTIONS"
-          //   };
-          // }
-
-          // publicPath: "/"
-          // writeToDisk: true //是否写入本地磁盘
-        }),
-        _this.compiler
-      )
+      webpackDevMiddleware.koaWrapper(_this.compiler, {
+        // ...devServer,
+        // // noInfo: true,
+        serverSideRender: true, // 是否是服务器渲染
+        // watchOptions
+        // //设置允许跨域
+        // headers: () => {
+        //   return {
+        //     // "Last-Modified": new Date(),
+        //     "Access-Control-Allow-Origin": "*",
+        //     "Access-Control-Allow-Headers": "content-type",
+        //     "Access-Control-Allow-Methods": "DELETE,PUT,POST,GET,OPTIONS"
+        //   };
+        // }
+        // publicPath: "/"
+        // writeToDisk: true //是否写入本地磁盘
+      })
     );
   }
 
@@ -308,16 +339,68 @@ class WebpackHot {
         }
       }
     }
-    this.app.use(
-      koaProxy({
-        targets
-      })
-    );
-    this.app.use(
-      bodyparser({
-        enableTypes: ["json", "form", "text"]
-      })
-    );
+
+    console.log("targets==", targets);
+
+    const { createProxyMiddleware, fixRequestBody } = koaHttpProxyServer;
+
+    Object.keys(targets).forEach((context) => {
+      var options = targets[context];
+
+      const exampleProxy = createProxyMiddleware(context, {
+        /**
+         * Fix bodyParser
+         **/
+        ...options,
+        onProxyReq: fixRequestBody
+      });
+
+
+      console.log('options==',options)
+
+
+      this.app.use(bodyParser()).use(exampleProxy);
+
+      // koaHttpProxyServer
+
+      // this.app.use(koaServerHttpProxy(context, options));
+    });
+
+    // this.app.use(
+    //   koaProxy({
+    //     targets
+    //   })
+    // );
+
+    // this.app.use(
+    //   bodyparser({
+    //     enableTypes: ["json", "form", "text"]
+    //   })
+    // );
+
+    // "/api": {
+    //   target: "http://127.0.0.1:3003",
+    // this.app.use(koaConnect(createProxyMiddleware('/api/(.*)', {
+    //   target:  "http://127.0.0.1:3003", // 目标服务器地址
+    //   changeOrigin: true,
+    // })));
+
+    // this.app.use(async (ctx, next) => {
+    //   if (ctx.url.startsWith("/api")) {
+    //     //匹配有api字段的请求url
+    //     ctx.respond = false; // 绕过koa内置对象response ，写入原始res对象，而不是koa处理过的response
+    //     await k2c(
+    //       httpProxy({
+    //         target: "http://127.0.0.1:3003",
+    //         changeOrigin: true,
+    //         secure: false,
+    //         // pathRewrite: { "^/api": "" }
+    //       })
+    //     )(ctx, next);
+    //   }
+    //   await next();
+    // });
+    // this.app.use(bodyparser({ enableTypes: ["json", "form", "text"] }));
   }
 
   setConnectHistoryApiFallback() {
@@ -392,6 +475,9 @@ class WebpackHot {
     this.port = await new Promise((resolve, reject) => {
       //查找端口号
       portfinder.getPort((err, port) => {
+        console.log("err===========", err);
+        console.log("port===========", port);
+
         if (err) {
           reject(err);
           return;
@@ -402,16 +488,17 @@ class WebpackHot {
     });
 
     this.config.devServer = this.config.devServer || {};
-    this.config.devServer.port = this.port || {};
+    this.config.devServer.port = this.port;
 
-    const server = this.app.listen(port, function () {
+    const server = this.app.listen(this.port, function () {
       var port = server.address().port;
-      // console.log(
-      //   `\n==> 🌎  node服务器启动成功，监听端口：${port}. 请打开浏览器 http://${ADDRESS}:${port}/ \n`
-      // );
-      console.log(`\n编译代码服务器端口:${port}\n`);
+      console.log(
+        `\n==> 🌎  node服务器启动成功，监听端口：${port}.
+         请打开浏览器 http://${getIPAdress()}:${port}/ 
+         或者：http://localhost:${port}/  \n`
+      );
     });
   }
 }
 
-export default WebpackHot;
+module.exports = WebpackHot;

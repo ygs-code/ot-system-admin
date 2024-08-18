@@ -6,18 +6,27 @@
  * @Description: In User Settings Edit
  * @FilePath: /webpack-cli/@webpack-cli/client/config/index.js
  */
-require('@babel/polyfill')
-const path = require('path')
-const fs = require('fs')
-const { merge } = require('webpack-merge')
-const SpeedMeasurePlugin = require('speed-measure-webpack-plugin')
-const clientBaseConfig = require('./webpack.base.config')
-const devConfig = require('./webpack.dev.config')
-const prodConfig = require('./webpack.prod.config')
-const testConfig = require('../../webpack.test.config')
+require("@babel/polyfill");
+const path = require("path");
+const fs = require("fs");
+const { merge } = require("webpack-merge");
+const SpeedMeasurePlugin = require("speed-measure-webpack-plugin");
+const clientBaseConfig = require("./webpack.base.config");
+const devConfig = require("./webpack.dev.config");
+const prodConfig = require("./webpack.prod.config");
+const testConfig = require("../../webpack.test.config");
 
-// const userDevConfig = require('../../user-webpack-config/webpack.dev.config')
-// const userProdConfig = require('../../user-webpack-config/webpack.prod.config')
+const userBaseConfig = require(process.cwd() +
+  "/webpack.config/webpack.base.config.js");
+
+const userDevConfig = require(process.cwd() +
+  "/webpack.config/webpack.dev.config.js");
+
+// require("../../.webpack.config/webpack.dev.config");
+const userProdConfig = require(process.cwd() +
+  "/webpack.config/webpack.prod.config.js");
+
+// require("../../.webpack.config/webpack.prod.config");
 // const { getArgv } = require("../../utils");
 // const WEB_ENV = getArgv("WEB_ENV"); // 环境参数
 // const target = getArgv("target"); // 环境参数
@@ -25,38 +34,32 @@ const testConfig = require('../../webpack.test.config')
 const {
   NODE_ENV, // 环境参数
   WEB_ENV, // 环境参数
-  target, // 环境参数
-} = process.env // 环境参数
+  target // 环境参数
+} = process.env; // 环境参数
 
 //   是否是测试开发环境
-const isEnvDevelopment = NODE_ENV === 'development'
+const isEnvDevelopment = NODE_ENV === "development";
 //    是否是生产环境
-const isEnvProduction = NODE_ENV === 'production'
-
-// console.log('WEB_ENV=',WEB_ENV)
-// console.log('isEnvDevelopment=',isEnvDevelopment)
-// console.log('target=',target)
-// console.log('isEnvProduction=',isEnvProduction)
-// console.log('isEnvProduction=',isEnvProduction)
+const isEnvProduction = NODE_ENV === "production";
 
 //添加smp.wrap会有bug 编译缓存出问题
-const smp = new SpeedMeasurePlugin()
+const smp = new SpeedMeasurePlugin();
 module.exports = async () => {
-  let userBaseConfig = {}
-  if (
-    fs.existsSync(process.cwd() + '/user-webpack-config/webpack.base.config.js')
-  ) {
-    userBaseConfig = require(process.cwd() +
-      '/user-webpack-config/webpack.base.config.js')
-  }
+  // let userBaseConfig = {}
+  // if (
+  //   fs.existsSync(process.cwd() + '/user-webpack-config/webpack.base.config.js')
+  // ) {
+  //   userBaseConfig = require(process.cwd() +
+  //     '/user-webpack-config/webpack.base.config.js')
+  // }
 
-  let userDevConfig = {}
-  if (
-    fs.existsSync(process.cwd() + '/user-webpack-config/webpack.dev.config.js')
-  ) {
-    userDevConfig = require(process.cwd() +
-      '/user-webpack-config/webpack.dev.config.js')
-  }
+  // let userDevConfig = {}
+  // if (
+  //   fs.existsSync(process.cwd() + '/user-webpack-config/webpack.dev.config.js')
+  // ) {
+  //   userDevConfig = require(process.cwd() +
+  //     '/user-webpack-config/webpack.dev.config.js')
+  // }
 
   // let userDevConfig = {}
   // try {
@@ -78,13 +81,13 @@ module.exports = async () => {
   //       resolve({});
   //     });
   // });
-  let userProdConfig = {}
-  if (
-    fs.existsSync(process.cwd() + '/user-webpack-config/webpack.prod.config.js')
-  ) {
-    userProdConfig = require(process.cwd() +
-      '/user-webpack-config/webpack.prod.config.js')
-  }
+  // let userProdConfig = {}
+  // if (
+  //   fs.existsSync(process.cwd() + '/user-webpack-config/webpack.prod.config.js')
+  // ) {
+  //   userProdConfig = require(process.cwd() +
+  //     '/user-webpack-config/webpack.prod.config.js')
+  // }
   // try {
   //   userProdConfig = require(process.cwd() +
   //     '/user-webpack-config/webpack.prod.config.js')
@@ -104,18 +107,19 @@ module.exports = async () => {
   //     })
   // })
 
-  let config = {}
-  if (WEB_ENV === 'test') {
+  let config = {};
+  if (WEB_ENV === "test") {
     //   测试代码打包
     config = merge(
       // baseConfig,
       clientBaseConfig,
-      testConfig,
+      // userBaseConfig,
+      // testConfig,
       userBaseConfig,
       isEnvDevelopment ? devConfig : prodConfig,
-      isEnvDevelopment ? userDevConfig : userProdConfig,
+      isEnvDevelopment ? userDevConfig : userProdConfig
       // prdConfig,
-    )
+    );
   } else {
     // 源码打包
     config = merge(
@@ -123,14 +127,14 @@ module.exports = async () => {
       clientBaseConfig,
       userBaseConfig,
       isEnvDevelopment ? devConfig : prodConfig,
-      isEnvDevelopment ? userDevConfig : userProdConfig,
-    )
+      isEnvDevelopment ? userDevConfig : userProdConfig
+    );
     const {
       devServer: {
         open: autoOpenBrowser, // 是否自动开启浏览器
-        liveReload = true, // 是否自动刷新
-      } = {},
-    } = config
+        liveReload = true // 是否自动刷新
+      } = {}
+    } = config;
     // 开启浏览器重新刷新功能
     if (isEnvDevelopment && liveReload) {
       Object.keys(config.entry).forEach((name) => {
@@ -138,10 +142,10 @@ module.exports = async () => {
         config.entry[name] = [
           // 把中间件打包进去每个js中
           // path.join(__dirname, '../webpack-hot-middleware/client?noInfo=true&reload=true'),
-        ].concat(config.entry[name])
-      })
+        ].concat(config.entry[name]);
+      });
     }
   }
 
-  return config
-}
+  return config;
+};

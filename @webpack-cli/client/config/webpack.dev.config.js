@@ -86,7 +86,7 @@ module.exports = {
     // // },
     // // // 如果一个模块是在 require 时抛出异常，告诉 webpack 从模块实例缓存(require.cache)中删除这个模块。
     // // // 并且重启webpack的时候也会删除cache缓存
-    strictModuleExceptionHandling: false
+    // strictModuleExceptionHandling: false
   },
   // 是否监听文件 这个参数已经被废弃掉，设置他会有警告
   // watch: true,

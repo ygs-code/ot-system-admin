@@ -16,7 +16,7 @@ export default class Request {
   // 默认请求头设置
   static defaultHeaders = {};
   //错误拦截
-  static error() {}
+  static error() { }
   //请求拦截器
   static interceptors = {
     request: (config) => {
@@ -31,12 +31,6 @@ export default class Request {
     /* eslint-disable   */
     const urlHpptReg = /^(http\:\/\/)|^(https\:\/\/)/gi;
 
-    console.log("urlHpptReg1==", (baseUrl + url).match(urlHpptReg));
-    console.log("url2==",         ((baseUrl + url).match(urlHpptReg)?.[0] || "") );
-    console.log("urlHpptReg3=",   (baseUrl + url).replace(urlHpptReg, "").replace(urlReg, "/"));
-    console.log("url4==", url);
-    console.log("baseUrl==", baseUrl);
-    debugger;
 
     /* eslint-enable   */
     const urlReg = /(\/\/)+/gi;
@@ -46,7 +40,7 @@ export default class Request {
         ((baseUrl + url).match(urlHpptReg)?.[0] || "") +
         (baseUrl + url).replace(urlHpptReg, "").replace(urlReg, "/")
     });
-    debugger;
+
     return {
       urlSuffix: url,
       url:
@@ -141,23 +135,14 @@ export default class Request {
         method,
         headers = {},
         requestId = this.guid(),
-        success = () => {},
+        success = () => { },
         isPromise = true,
         baseUrl
       } = options;
 
-      let error = options.error || Request.error || (() => {});
-
-  
+      let error = options.error || Request.error || (() => { });
       // 参数的可以代替 替换 默认的
-
-
-      console.log('baseUrl==',baseUrl);
-      console.log('this.baseUrl==',this.baseUrl);
-      debugger;
       const urls = this.transformUrl(baseUrl || this.baseUrl, url);
-
-   
       let requestInterceptors =
         options?.interceptors?.request ||
         Request?.interceptors?.request ||
@@ -175,44 +160,7 @@ export default class Request {
 
       return isPromise
         ? new Promise((resolve, reject) => {
-            new XMLHttpRequest().xhRequest(
-              requestInterceptors({
-                ...options,
-                ...urls,
-                method,
-                parameter,
-                headers: {
-                  ...this.defaultHeaders,
-                  ...headers,
-                  ["request-id"]: requestId
-                },
-                success: async (...ags) => {
-                  ags = await responseInterceptors(ags).catch(() => {
-                    error(ags);
-                    reject(ags);
-                  });
-                  // const data = ags.length ? ags[0] : null;
-                  // if (data) {
-                  // const { code, message = "" } = data;
-                  // if (code == 200) {
-                  success(ags);
-                  resolve(ags);
-                  //   return;
-                  // }
-                  // errorMessage(message);
-                  // }
-                  // error(ags);
-                  // reject(ags);
-                },
-                error: (...ags) => {
-                  // ags = responseInterceptors(ags);
-                  error(ags);
-                  reject(ags);
-                }
-              })
-            );
-          })
-        : new XMLHttpRequest().xhRequest(
+          new XMLHttpRequest().xhRequest(
             requestInterceptors({
               ...options,
               ...urls,
@@ -226,18 +174,54 @@ export default class Request {
               success: async (...ags) => {
                 ags = await responseInterceptors(ags).catch(() => {
                   error(ags);
+                  reject(ags);
                 });
+                // const data = ags.length ? ags[0] : null;
+                // if (data) {
+                // const { code, message = "" } = data;
+                // if (code == 200) {
                 success(ags);
+                resolve(ags);
+                //   return;
+                // }
+                // errorMessage(message);
+                // }
+                // error(ags);
+                // reject(ags);
               },
               error: (...ags) => {
                 // ags = responseInterceptors(ags);
                 error(ags);
+                reject(ags);
               }
             })
           );
+        })
+        : new XMLHttpRequest().xhRequest(
+          requestInterceptors({
+            ...options,
+            ...urls,
+            method,
+            parameter,
+            headers: {
+              ...this.defaultHeaders,
+              ...headers,
+              ["request-id"]: requestId
+            },
+            success: async (...ags) => {
+              ags = await responseInterceptors(ags).catch(() => {
+                error(ags);
+              });
+              success(ags);
+            },
+            error: (...ags) => {
+              // ags = responseInterceptors(ags);
+              error(ags);
+            }
+          })
+        );
     } catch (error) {
       console.log("error===", error);
-      debugger;
     }
   }
   static uploadFile(url, parameter, options) {
@@ -253,12 +237,12 @@ export default class Request {
       headers = {},
       requestId = this.guid(),
       isPromise = true,
-      success = () => {},
+      success = () => { },
       // error = () => {},
       method
       // url,
     } = options;
-    let error = Request.error || options.error || (() => {});
+    let error = Request.error || options.error || (() => { });
 
     let requestInterceptors =
       options?.interceptors?.request ||
@@ -280,34 +264,7 @@ export default class Request {
     // });
     return isPromise
       ? new Promise((resolve, reject) => {
-          new XMLHttpRequest().xhRequest(
-            requestInterceptors({
-              ...options,
-              ...urls,
-              method,
-              parameter: formData,
-              headers: {
-                ...headers,
-                ["request-id"]: requestId
-              },
-              success: async (...ags) => {
-                ags = await responseInterceptors(ags).catch(() => {
-                  error(...ags);
-                  reject(ags);
-                });
-
-                success(...ags);
-                resolve(...ags);
-              },
-              error: async (...ags) => {
-                // ags = responseInterceptors(ags);
-                error(...ags);
-                reject(ags);
-              }
-            })
-          );
-        })
-      : new XMLHttpRequest().xhRequest(
+        new XMLHttpRequest().xhRequest(
           requestInterceptors({
             ...options,
             ...urls,
@@ -317,14 +274,41 @@ export default class Request {
               ...headers,
               ["request-id"]: requestId
             },
-            success: (...ags) => {
+            success: async (...ags) => {
+              ags = await responseInterceptors(ags).catch(() => {
+                error(...ags);
+                reject(ags);
+              });
+
               success(...ags);
+              resolve(...ags);
             },
-            error: (...ags) => {
+            error: async (...ags) => {
+              // ags = responseInterceptors(ags);
               error(...ags);
+              reject(ags);
             }
           })
         );
+      })
+      : new XMLHttpRequest().xhRequest(
+        requestInterceptors({
+          ...options,
+          ...urls,
+          method,
+          parameter: formData,
+          headers: {
+            ...headers,
+            ["request-id"]: requestId
+          },
+          success: (...ags) => {
+            success(...ags);
+          },
+          error: (...ags) => {
+            error(...ags);
+          }
+        })
+      );
   }
 }
 

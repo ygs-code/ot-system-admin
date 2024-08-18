@@ -110,7 +110,7 @@ const Index = memo((props) => {
   return (
     <div className="lazy-loading-img">
       <ul className="card-group-box">
-        {data.map((item, index) => (
+        {/* {data.map((item, index) => (
           <li ref={refs[index]} key={index}>
             {item.map(($item) => {
               const { id, title, url, scenery } = $item;
@@ -128,7 +128,7 @@ const Index = memo((props) => {
               );
             })}
           </li>
-        ))}
+        ))} */}
       </ul>
     </div>
   );

@@ -1,32 +1,19 @@
 const fs = require("fs");
-const bodyparser = require("koa-bodyparser");
 const bodyParser = require("koa-bodyparser");
 const historyApiFallback = require("koa-history-api-fallback");
 const Koa = require("koa");
 const portfinder = require("portfinder");
-const k2c = require("koa2-connect");
-const httpProxy = require("http-proxy-middleware");
-// const  ReactLoadableSSRAddon = require( "react-loadable-ssr-addon";
-// const  { createProxyMiddleware } = require( "http-proxy-middleware";
-const koaProxy = require("koa2-proxy-middleware");
+
 const path = require("path");
 const webpack = require("webpack");
 const webpackDevMiddleware = require("webpack-dev-middleware");
 const webpackHotMiddleware = require("webpack-hot-middleware");
 const webpackHotServerMiddleware = require("webpack-hot-server-middleware");
 const getIPAdress = require("./utils/getIPAdress");
-
-const { createProxyMiddleware } = require("http-proxy-middleware");
-const koaConnect = require("koa-connect");
-
-const koaServerHttpProxy = require("koa-server-http-proxy");
-
 const koaHttpProxyServer = require("./koa-http-proxy-server");
 
 // chalk插件，用来在命令行中输入不同颜色的文字
-const chalk = require("chalk");
-// const  connectHistoryApiFallback = require( "connect-history-api-fallback";
-// const  { compiler, config } = require( "@/webpack";
+// const chalk = require("chalk");
 
 const {
   NODE_ENV, // 环境参数
@@ -37,7 +24,7 @@ const {
 const clientWebpackConfig = require("./client");
 const serverWebpackConfig = require("./server");
 
-// const  { writeFile } = require( "@/webpack/utils";
+
 
 // let {
 //   NODE_ENV, // 环境参数
@@ -51,6 +38,9 @@ const isEnvProduction = NODE_ENV === "production";
 //   是否是测试开发环境
 const isEnvDevelopment = NODE_ENV === "development";
 
+
+const { createProxyMiddleware, fixRequestBody } = koaHttpProxyServer;
+
 class WebpackHot {
   constructor() {
     this.app = new Koa();
@@ -58,36 +48,7 @@ class WebpackHot {
     this.init();
   }
   async init() {
-    // var _this = this;
-    // for (let [index, item] of config[0].plugins.entries()) {
-    //   if (item instanceof ReactLoadableSSRAddon) {
-    //     item.apply = function apply(compiler) {
-    //       const PLUGIN_NAME = "ReactLoadableSSRAddon";
-    //       // 写入文件
-    //       writeFile(this.options.filename, "{}");
-    //       // fs.writeFileSync(this.options.filename, "{}");
-    //       compiler.hooks.emit.tapAsync(PLUGIN_NAME, this.handleEmit.bind(this));
-    //     };
-    //     item.writeAssetsFile = function () {
-    //       const filePath = this.manifestOutputPath;
-    //       const fileDir = path.dirname(filePath);
-    //       const json = JSON.stringify(this.manifest, null, 2);
-    //       try {
-    //         if (!fs.existsSync(fileDir)) {
-    //           fs.mkdirSync(fileDir, { recursive: true });
-    //         }
-    //       } catch (err) {
-    //         if (err.code !== "EEXIST") {
-    //           throw err;
-    //         }
-    //       }
-    //       _this.compilerOptions.assetsManifest = json;
-    //       fs.writeFileSync(filePath, json);
-    //     };
-    //     config[0].plugins[index] = item;
-    //     break;
-    //   }
-    // }
+
 
     // 获取配置
     this.config =
@@ -150,14 +111,16 @@ class WebpackHot {
   addWebpackHotMiddleware() {
     this.app.use(async (ctx, next) => {
       const { response, request, req, res } = ctx;
-      // console.log("req==", req);
-      // console.log("res==", res);
       await webpackHotMiddleware(
         this.compiler.compilers.find((compiler) => compiler.name === "client")
       )(request, response, next);
     });
   }
   addMiddleware() {
+    // 开启代理
+    this.setProxyMiddleware();
+
+
     // if (!isSsr) {
     // handle fallback for HTML5 history API
     // 通过指定的索引页面中间件代理请求，用于单页应用程序，利用HTML5 History API。
@@ -165,8 +128,6 @@ class WebpackHot {
     this.setConnectHistoryApiFallback();
     // }
 
-    // 开启代理
-    this.setProxyMiddleware();
     // dev服务器
     this.addWebpackDevMiddleware();
     // 热更新自动刷新，但是感觉问题
@@ -177,7 +138,18 @@ class WebpackHot {
   }
   addWebpackDevMiddleware() {
     const _this = this;
-    const { devServer, watchOptions = {} } = this.config;
+    const {
+      devServer: {
+        open: autoOpenBrowser, // 是否自动开启浏览器
+        writeToDisk = false, // 写入硬盘
+        devMiddleware: devMiddlewareConfig = {}
+      } = {}
+    } = this.config;
+
+    const {
+      // 一个开发环境的中间件
+      writeToDisk: devMiddlewareWriteToDisk = false // 写入硬盘
+    } = devMiddlewareConfig;
 
     // watchOptions: {
     //   //延迟监听时间
@@ -206,14 +178,14 @@ class WebpackHot {
     //       // publicPath: "/"
     //       // writeToDisk: true //是否写入本地磁盘
     //     }),
-    //     // _this.compiler
+    //      _this.compiler
     //   )
     // );
 
     console.log("webpackDevMiddleware===", webpackDevMiddleware);
 
-    this.app.use(
-      webpackDevMiddleware.koaWrapper(_this.compiler, {
+    // this.app.use(
+      this.devMiddleware = webpackDevMiddleware.koaWrapper(_this.compiler, {
         // ...devServer,
         // // noInfo: true,
         serverSideRender: true, // 是否是服务器渲染
@@ -229,8 +201,30 @@ class WebpackHot {
         // }
         // publicPath: "/"
         // writeToDisk: true //是否写入本地磁盘
+        ...devMiddlewareConfig,
+        publicPath: this.config.output.publicPath,
+        writeToDisk: writeToDisk || devMiddlewareWriteToDisk //是否写入本地磁盘
       })
-    );
+    // );
+
+
+
+    // 下面是加载动画
+    // this.devMiddleware.waitUntilValid(() => {
+    //   // 启动服务器
+    //   console.log("第一次代码编译完成");
+    //   //  测试环境不打开浏览器
+    //   if (autoOpenBrowser && process.env.NODE_ENV !== "testing") {
+    //     const url = "http://localhost:" + this.port;
+    //     console.log("客户端地址:", url);
+    //     opn(url);
+    //   }
+
+    //   // const filename = this.devMiddleware.getFilenameFromUrl("/index.js");
+    //   // console.log(`Filename is ${filename}`);
+    // });
+    this.app.use( this.devMiddleware )
+
   }
 
   // 代理服务器
@@ -280,17 +274,6 @@ class WebpackHot {
                 },
             }
             */
-      // Object.keys(proxy).forEach((context) => {
-      //   // 下面是代理表的处理方法， 可以使用后台管理
-      //   var options = proxy[context];
-      //   if (typeof options === "string") {
-      //     // 支持 proxy: { '/api':'http://localhost:3000' }
-      //     options = { target: options };
-      //   }
-      //   this.app.use(context, createProxyMiddleware(options));
-      // });
-
-      // this.koaProxy
       targets = proxy;
     }
 
@@ -340,71 +323,24 @@ class WebpackHot {
       }
     }
 
-    console.log("targets==", targets);
-
-    const { createProxyMiddleware, fixRequestBody } = koaHttpProxyServer;
-
     Object.keys(targets).forEach((context) => {
       var options = targets[context];
-
-      const exampleProxy = createProxyMiddleware(context, {
+      const exampleProxy = createProxyMiddleware({
         /**
          * Fix bodyParser
          **/
+        context,
         ...options,
         onProxyReq: fixRequestBody
       });
-
-
-      console.log('options==',options)
-
-
       this.app.use(bodyParser()).use(exampleProxy);
-
-      // koaHttpProxyServer
-
-      // this.app.use(koaServerHttpProxy(context, options));
     });
 
-    // this.app.use(
-    //   koaProxy({
-    //     targets
-    //   })
-    // );
 
-    // this.app.use(
-    //   bodyparser({
-    //     enableTypes: ["json", "form", "text"]
-    //   })
-    // );
-
-    // "/api": {
-    //   target: "http://127.0.0.1:3003",
-    // this.app.use(koaConnect(createProxyMiddleware('/api/(.*)', {
-    //   target:  "http://127.0.0.1:3003", // 目标服务器地址
-    //   changeOrigin: true,
-    // })));
-
-    // this.app.use(async (ctx, next) => {
-    //   if (ctx.url.startsWith("/api")) {
-    //     //匹配有api字段的请求url
-    //     ctx.respond = false; // 绕过koa内置对象response ，写入原始res对象，而不是koa处理过的response
-    //     await k2c(
-    //       httpProxy({
-    //         target: "http://127.0.0.1:3003",
-    //         changeOrigin: true,
-    //         secure: false,
-    //         // pathRewrite: { "^/api": "" }
-    //       })
-    //     )(ctx, next);
-    //   }
-    //   await next();
-    // });
-    // this.app.use(bodyparser({ enableTypes: ["json", "form", "text"] }));
   }
 
   setConnectHistoryApiFallback() {
-    console.log(" this.app==", this.app);
+
 
     this.app.use(historyApiFallback());
   }

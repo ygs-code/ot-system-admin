@@ -20,9 +20,9 @@ const Index = (options) => {
           if (title) {
             document.title = title;
           }
-          if (breadcrumb) {
-            setBreadcrumb(breadcrumb);
-          }
+          // if (breadcrumb) {
+          //   setBreadcrumb(breadcrumb);
+          // }
         }, []);
 
         return <C {...props} />;

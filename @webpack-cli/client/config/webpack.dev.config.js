@@ -137,7 +137,7 @@ module.exports = {
     //   name: (entrypoint) => `runtime~${entrypoint.name}`,
     // },
   },
-  devtool: "cheap-module-source-map", // 生产环境和开发环境判断
+  // devtool: "cheap-module-source-map", // 生产环境和开发环境判断
   module: {
     rules: [
       // js和jsx编译

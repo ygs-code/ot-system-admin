@@ -17,6 +17,25 @@ let {
 
 // 用户自定义webpack
 module.exports = {
+
+/*
+http://webpack.docschina.org/configuration/devtool/#root
+开发环境：速度快，调试友好
+（eval>inline>cheap>…）
+
+速度快排序：
+eval-cheap-source-map
+eval-source-map
+
+
+调试友好排序：
+   source-map
+   cheap-module-source-map
+   cheap-source-map
+*/
+// 具有高质量SourceMaps的开发构建的推荐选择。
+  devtool: "eval-source-map", //  
+
   module: {
     rules: [
       // css
@@ -163,6 +182,7 @@ module.exports = {
 
       watch: true
     },
+    writeToDisk:true,
     index: path.resolve(process.cwd(), "/dist/index.html"), // dist/index 主页面
     contentBase: path.join(process.cwd(), "/dist"), //访问主页的界面 目录
     // port: 8089, // 开启服务器的端口

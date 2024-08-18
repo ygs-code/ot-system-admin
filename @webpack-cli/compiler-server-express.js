@@ -275,6 +275,8 @@ class App {
       writeToDisk: writeToDisk || devMiddlewareWriteToDisk //是否写入本地磁盘
       // quiet: true,
     });
+
+    
     // 下面是加载动画
     this.devMiddleware.waitUntilValid(() => {
       // 启动服务器

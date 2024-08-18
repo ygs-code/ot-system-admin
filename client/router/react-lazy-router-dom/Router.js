@@ -1,10 +1,9 @@
-import PropTypes from "prop-types";
+// import PropTypes from "prop-types";
 import {
   Children,
   Component,
   createContext,
   createElement
-  // isValidElement
 } from "react";
 
 var createNamedContext = function createNamedContext(name) {
@@ -93,27 +92,6 @@ class Router extends Component {
     /* eslint-enable */
   }
 }
-
-Router.propTypes = {
-  history: PropTypes.object.isRequired,
-  staticContext: PropTypes.object,
-  /* eslint-disable   */
-  routesComponent: PropTypes.array,
-  /* eslint-enable   */
-  loading: function (props, propName, componentName) {
-    if (!props[propName]) {
-      return new Error(
-        `In component ${componentName} props ${propName} type is invalid -- expected a ${propName} is component`
-      );
-    }
-    try {
-      createElement(props[propName]);
-    } catch (error) {
-      return new Error(
-        `In component ${componentName} props ${propName} type is invalid -- expected a ${propName} is component`
-      );
-    }
-  }
-};
+ 
 
 export {RouterContext as __RouterContext, Router};

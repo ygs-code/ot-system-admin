@@ -27,6 +27,21 @@ const cacheLoader = (happypackId) => {
 
 // 用户自定义webpack
 module.exports = {
+ /*
+ 生产环境：源代码隐藏？调试友好？
+   源代码隐藏：
+     nosources-source-map 源代码和构建后js代码全部隐藏
+     hidden-source-map 只隐藏源代码，会提示构建后代码错误的错误位置
+      
+     调试友好：
+       source-map
+       cheap-module-source-map
+
+    none 无提示   
+ */
+    // 推荐用于具有高质量SourceMaps的生产构建。
+  devtool: "source-map", //  
+
   output: {
     publicPath: "./", // dev 服务器需要是绝对，而编译出来需要是相对
     // 如果一个模块是在 require 时抛出异常，告诉 webpack 从模块实例缓存(require.cache)中删除这个模块。

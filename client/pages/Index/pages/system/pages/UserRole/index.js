@@ -1,9 +1,9 @@
 import {Input} from "antd";
 import {getUserList, getUserRoleList} from "client/assets/js/request";
-import setBreadcrumbAndTitle from "client/component/setBreadcrumbAndTitle";
-import TableButton from "client/component/TableButton";
-import {tablePage} from "client/component/TablePage";
-import Tabs from "client/component/Tabs";
+import setBreadcrumbAndTitle from "client/components/setBreadcrumbAndTitle";
+import TableButton from "client/components/TableButton";
+import {tablePage} from "client/components/TablePage";
+import Tabs from "client/components/Tabs";
 import {addRouterApi} from "client/router";
 import React, {Component} from "react";
 // 权限控制

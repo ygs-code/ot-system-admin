@@ -5,7 +5,7 @@ import "./index.less";
 
 import {Button, Form, Input, message} from "antd";
 import {login} from "client/assets/js/request/index";
-import VerificationCode from "client/component/VerificationCode";
+import VerificationCode from "client/components/VerificationCode";
 import {mapRedux} from "client/redux";
 import {addRouterApi} from "client/router";
 import {checkEmail, checkPassword, checkPhone, checkUser} from "client/utils";

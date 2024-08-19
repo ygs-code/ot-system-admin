@@ -7,9 +7,9 @@ import {
   getPermissionInfo,
   getPermissionList
 } from "client/assets/js/request";
-import FormPage from "client/component/FormPage";
-import LazySelect from "client/component/LazySelect";
-import setBreadcrumbAndTitle from "client/component/setBreadcrumbAndTitle";
+import FormPage from "client/components/FormPage";
+import LazySelect from "client/components/LazySelect";
+import setBreadcrumbAndTitle from "client/components/setBreadcrumbAndTitle";
 import {mapRedux} from "client/redux";
 import {addRouterApi, routePaths} from "client/router";
 import React from "react";

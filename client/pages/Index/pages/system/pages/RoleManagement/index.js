@@ -1,8 +1,8 @@
 import {Button, message} from "antd";
 import {getRoleList, removeRole} from "client/assets/js/request";
-import setBreadcrumbAndTitle from "client/component/setBreadcrumbAndTitle";
-import TableButton from "client/component/TableButton";
-import {tablePage} from "client/component/TablePage";
+import setBreadcrumbAndTitle from "client/components/setBreadcrumbAndTitle";
+import TableButton from "client/components/TableButton";
+import {tablePage} from "client/components/TablePage";
 import {addRouterApi} from "client/router";
 import React, {Component} from "react";
 // 权限控制

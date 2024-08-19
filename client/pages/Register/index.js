@@ -3,7 +3,7 @@ import "./index.less";
 
 import {Button, Form, Input, message} from "antd";
 import {createUser} from "client/assets/js/request/index";
-import VerificationCode from "client/component/VerificationCode";
+import VerificationCode from "client/components/VerificationCode";
 import {addRouterApi, toComponent} from "client/router";
 import {checkEmail, checkPassword, checkPhone, checkUser} from "client/utils";
 import React from "react";

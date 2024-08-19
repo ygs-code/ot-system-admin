@@ -9,12 +9,12 @@ import {
   getUserInfo,
   getUserRoleList
 } from "client/assets/js/request";
-import FormPage from "client/component/FormPage";
-import setBreadcrumbAndTitle from "client/component/setBreadcrumbAndTitle";
-import TableButton from "client/component/TableButton";
-import TablePicker from "client/component/TablePicker";
-import {TreeContent} from "client/component/TreePicker";
-import PermissionPicker from "client/pages/Index/pages/system/component/PermissionPicker";
+import FormPage from "client/components/FormPage";
+import setBreadcrumbAndTitle from "client/components/setBreadcrumbAndTitle";
+import TableButton from "client/components/TableButton";
+import TablePicker from "client/components/TablePicker";
+import {TreeContent} from "client/components/TreePicker";
+import PermissionPicker from "client/pages/Index/pages/system/components/PermissionPicker";
 import {mapRedux} from "client/redux";
 import {addRouterApi, routePaths} from "client/router";
 import {findTreeData} from "client/utils";

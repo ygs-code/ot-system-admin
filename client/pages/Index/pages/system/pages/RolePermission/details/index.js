@@ -2,9 +2,9 @@ import "./index.less";
 
 import {message} from "antd";
 import {editRolePermission, getRoleInfo} from "client/assets/js/request";
-import FormPage from "client/component/FormPage";
-import setBreadcrumbAndTitle from "client/component/setBreadcrumbAndTitle";
-import PermissionPicker from "client/pages/Index/pages/system/component/PermissionPicker";
+import FormPage from "client/components/FormPage";
+import setBreadcrumbAndTitle from "client/components/setBreadcrumbAndTitle";
+import PermissionPicker from "client/pages/Index/pages/system/components/PermissionPicker";
 import {mapRedux} from "client/redux";
 import {addRouterApi, routePaths} from "client/router";
 import React from "react";

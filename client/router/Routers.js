@@ -6,8 +6,8 @@
  * @FilePath: /react-ssr-lazy-loading/client/router/Routers.js
  * @Description:
  */
-import NoPages from "client/component/404";
-import Loading from "client/component/Loading";
+import NoPages from "client/components/404";
+import Loading from "client/components/Loading";
 import {toComponent} from "client/router";
 import {
   Route,

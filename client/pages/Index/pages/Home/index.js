@@ -1,6 +1,6 @@
 import "./index.less";
 
-import setBreadcrumbAndTitle from "client/component/setBreadcrumbAndTitle";
+import setBreadcrumbAndTitle from "client/components/setBreadcrumbAndTitle";
 import React, {memo} from "react";
 
 // 权限控制

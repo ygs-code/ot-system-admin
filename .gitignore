@@ -6,3 +6,8 @@ yarn.lock
 
 **/yarn.lock
 yarn.lock
+
+**/**/routesComponent.js
+*/**/routesComponent.js
+**/routesComponent.js
+routesComponent.js

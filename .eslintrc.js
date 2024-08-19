@@ -50,7 +50,7 @@ module.exports = {
     "react/jsx-uses-vars": 1,
     "react/display-name": 1,
     "no-unused-vars": "warn",
-    "no-console": "warn",
+    // "no-console": "warn",
     "no-unexpected-multiline": "warn",
     // // 自定义规则 - 其实上面集成后有很多内置的规则, 这里可以进行规则的一些修改
     "no-console": process.env.NODE_ENV === "production" ? "warn" : "off", // 上线环境用打印就报警告, 开发环境关闭此规则

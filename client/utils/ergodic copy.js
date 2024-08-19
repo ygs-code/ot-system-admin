@@ -1,3 +1,5 @@
+
+
 import _ from "lodash";
 
 import { CheckDataType } from "./CheckDataType";
@@ -11,7 +13,7 @@ const mapTree = (
   for (let [index, item] of data.entries()) {
     data[index] = {
       ...item,
-      ...(callback(item, index, parentData) || {})
+      ...(callback(item, index, parentData) || {}),
     };
     if (data[index][childrenKey] && data[index][childrenKey].length) {
       data[index] = {
@@ -21,7 +23,7 @@ const mapTree = (
           callback,
           childrenKey,
           parentData
-        )
+        ),
       };
     }
   }
@@ -33,7 +35,7 @@ const mapTreeData = ({
   treeData,
   childrenCallback = () => {},
   itemCallback = () => {},
-  nextKey = "children"
+  nextKey = "children",
 }) => {
   for (let item of treeData) {
     if (item[nextKey] && item[nextKey].length) {
@@ -41,7 +43,7 @@ const mapTreeData = ({
         treeData: item[nextKey],
         childrenCallback,
         itemCallback,
-        nextKey
+        nextKey,
       });
     } else {
       childrenCallback(item);
@@ -56,7 +58,7 @@ const recursionTreeData = (parameter, _index = null) => {
   let {
     treeData = [],
     childrenCallback = () => {},
-    itemCallback = () => {}
+    itemCallback = () => {},
   } = parameter;
   return treeData.map((item, index) => {
     if (item.children && item.children.length >= 1) {
@@ -66,17 +68,17 @@ const recursionTreeData = (parameter, _index = null) => {
           {
             treeData: item.children,
             childrenCallback,
-            itemCallback
+            itemCallback,
           },
           _index === null ? `${index}` : `${_index}-${index}`
         ),
-        index: _index === null ? `${index}` : `${_index}-${index}`
+        index: _index === null ? `${index}` : `${_index}-${index}`,
       };
       childrenCallback(item);
     }
     item = {
       ...item,
-      index: _index === null ? `${index}` : `${_index}-${index}`
+      index: _index === null ? `${index}` : `${_index}-${index}`,
     };
     itemCallback(item);
     return item;
@@ -117,7 +119,7 @@ const findTreePath = (options, path = []) => {
     value,
     valueKey,
     nextKey = "children",
-    callback = () => {}
+    callback = () => {},
   } = options;
   for (var i = 0; i < treeData.length; i++) {
     var tempPath = [...path];
@@ -132,7 +134,7 @@ const findTreePath = (options, path = []) => {
           treeData: treeData[i][nextKey],
           value,
           valueKey,
-          callback
+          callback,
         },
         tempPath
       );
@@ -308,7 +310,7 @@ const transformData = (source, path = "", obj = {}, type = "object") => {
 const mergeData = (old, source) => {
   let obj = {
     ...transformData(old),
-    ...transformData(source)
+    ...transformData(source),
   };
   let data = CheckDataType.isArray(old) ? [] : {};
   for (let key in obj) {
@@ -320,7 +322,12 @@ const mergeData = (old, source) => {
 };
 
 function findParent(options, path = []) {
-  const { data = [], value, valueKey, childrenKey = "children" } = options;
+  const {
+    data = [],
+    value,
+    valueKey,
+    childrenKey = "children",
+  } = options;
 
   for (const item of data) {
     // 当前路径包含这个项的code
@@ -344,25 +351,6 @@ function findParent(options, path = []) {
   return null;
 }
 
-// // 复杂类型数据，深拷贝
-// const deepCopy = (
-//   source, // 来源数据
-//   target // 新的数据 如果是数组则为 [], 如果是对象传参则为{}
-// ) => {
-//   target = target || {};
-//   for (let i in source) {
-//     if (source[i] && source.hasOwnProperty(i)) {
-//       if (typeof source[i] === "object") {
-//         target[i] = source[i] && source[i].constructor === Array ? [] : {};
-//         deepCopy(source[i], target[i]);
-//       } else {
-//         target[i] = source[i];
-//       }
-//     }
-//   }
-//   return target;
-// };
-
 export {
   mapTreeData,
   transformData,
@@ -375,5 +363,5 @@ export {
   findTreeData,
   findTreePath,
   findParent,
-  mapTree
+  mapTree,
 };

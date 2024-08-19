@@ -11,14 +11,7 @@
 // } from './deepCopy'
 // import {SubscribePublished} from './SubscribePublished';
 import {CheckDataType} from "./CheckDataType";
-import {
-  deepCopy,
-  diffData,
-  filterTreeData,
-  findTreeData,
-  findTreePath,
-  recursionTreeData
-} from "./ergodic";
+export * from "./ergodic";
 import {getBaseInitState} from "./getBaseInitState";
 // import {FloatingBall} from './FloatingBall';
 import {getStyle} from "./getCssAttr";
@@ -43,15 +36,15 @@ export {
   checkPhone,
   checkUser,
   checkVerificationCode,
-  deepCopy, // 深度拷贝
-  diffData, // 比较新旧两个数据
-  filterTreeData, // 过滤树数据结构
-  findTreeData, // 搜索到树数据的某一条数据单条 不包括父层数据的
-  findTreePath,
+  // deepCopy, // 深度拷贝
+  // diffData, // 比较新旧两个数据
+  // filterTreeData, // 过滤树数据结构
+  // findTreeData, // 搜索到树数据的某一条数据单条 不包括父层数据的
+  // findTreePath,
   firstToUpper,
   getBaseInitState,
   getStyle, // 获取样式
-  recursionTreeData,
+  // recursionTreeData,
   // recursionTreeData, // 递归循环树数据
   stabilization, // 防抖函数
   statusThrottle, //  状态拦截器

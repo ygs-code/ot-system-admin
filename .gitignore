@@ -7,7 +7,15 @@ yarn.lock
 **/yarn.lock
 yarn.lock
 
+
+*/**/**/routesComponent
+**/**/routesComponent
 **/**/routesComponent.js
 */**/routesComponent.js
 **/routesComponent.js
 routesComponent.js
+*/**/**/router/routesComponent.js
+**/**/router/routesComponent.js
+**/**/router/routesComponent.js
+
+client/router/routesComponent.js

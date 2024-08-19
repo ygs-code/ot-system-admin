@@ -13,7 +13,7 @@ const getIPAdress = require("./utils/getIPAdress");
 const koaHttpProxyServer = require("./koa-http-proxy-server");
 
 // chalk插件，用来在命令行中输入不同颜色的文字
-// const chalk = require("chalk");
+const chalk = require("chalk");
 
 const {
   NODE_ENV, // 环境参数
@@ -23,8 +23,6 @@ const {
 } = process.env; // 环境参数
 const clientWebpackConfig = require("./client");
 const serverWebpackConfig = require("./server");
-
-
 
 // let {
 //   NODE_ENV, // 环境参数
@@ -38,7 +36,6 @@ const isEnvProduction = NODE_ENV === "production";
 //   是否是测试开发环境
 const isEnvDevelopment = NODE_ENV === "development";
 
-
 const { createProxyMiddleware, fixRequestBody } = koaHttpProxyServer;
 
 class WebpackHot {
@@ -48,8 +45,6 @@ class WebpackHot {
     this.init();
   }
   async init() {
-
-
     // 获取配置
     this.config =
       target === "web"
@@ -103,9 +98,62 @@ class WebpackHot {
       //   // }
       //  }
     );
-    this.addMiddleware();
 
-    this.listen();
+    if (isEnvDevelopment) {
+      this.addMiddleware();
+
+      this.listen();
+    } else {
+      this.compiler.run(
+        //
+        (err, stats) => {
+          console.log();
+
+          // this.isEnvDevelopment &&
+          //   $BrowserReloadErrorOverlayWepbackPlugin.watch(err, stats)
+          if (err) {
+            console.log("编译错误 Errors:" + chalk.red(err.stack || err));
+            if (err.details) {
+              console.log("编译错误 Errors:" + chalk.red(err.details));
+            }
+            return;
+          }
+          if (stats.hasErrors()) {
+            console.log(
+              "编译错误 Errors:" +
+                chalk.red(
+                  stats.toString({
+                    colors: true,
+                    chunks: false // Makes the build much quieter
+                  }) + "\n\n"
+                )
+            );
+          }
+
+          // else if (stats.hasWarnings()) {
+          //   console.log(
+          //     "Warnings:" +
+          //       chalk.yellow(
+          //         stats.toString({
+          //           colors: true,
+          //         }) + "\n\n"
+          //       )
+          //   );
+          // }
+          // else {
+          //     process.stdout.write(
+          //         stats.toString({
+          //             colors: true,
+          //         }) + '\n\n'
+          //     );
+          // }
+        }
+      );
+    }
+
+    // this.addMiddleware();
+
+    // this.listen();
   }
 
   addWebpackHotMiddleware() {
@@ -119,7 +167,6 @@ class WebpackHot {
   addMiddleware() {
     // 开启代理
     this.setProxyMiddleware();
-
 
     // if (!isSsr) {
     // handle fallback for HTML5 history API
@@ -185,29 +232,27 @@ class WebpackHot {
     console.log("webpackDevMiddleware===", webpackDevMiddleware);
 
     // this.app.use(
-      this.devMiddleware = webpackDevMiddleware.koaWrapper(_this.compiler, {
-        // ...devServer,
-        // // noInfo: true,
-        serverSideRender: true, // 是否是服务器渲染
-        // watchOptions
-        // //设置允许跨域
-        // headers: () => {
-        //   return {
-        //     // "Last-Modified": new Date(),
-        //     "Access-Control-Allow-Origin": "*",
-        //     "Access-Control-Allow-Headers": "content-type",
-        //     "Access-Control-Allow-Methods": "DELETE,PUT,POST,GET,OPTIONS"
-        //   };
-        // }
-        // publicPath: "/"
-        // writeToDisk: true //是否写入本地磁盘
-        ...devMiddlewareConfig,
-        publicPath: this.config.output.publicPath,
-        writeToDisk: writeToDisk || devMiddlewareWriteToDisk //是否写入本地磁盘
-      })
+    this.devMiddleware = webpackDevMiddleware.koaWrapper(_this.compiler, {
+      // ...devServer,
+      // // noInfo: true,
+      serverSideRender: true, // 是否是服务器渲染
+      // watchOptions
+      // //设置允许跨域
+      // headers: () => {
+      //   return {
+      //     // "Last-Modified": new Date(),
+      //     "Access-Control-Allow-Origin": "*",
+      //     "Access-Control-Allow-Headers": "content-type",
+      //     "Access-Control-Allow-Methods": "DELETE,PUT,POST,GET,OPTIONS"
+      //   };
+      // }
+      // publicPath: "/"
+      // writeToDisk: true //是否写入本地磁盘
+      ...devMiddlewareConfig,
+      publicPath: this.config.output.publicPath,
+      writeToDisk: writeToDisk || devMiddlewareWriteToDisk //是否写入本地磁盘
+    });
     // );
-
-
 
     // 下面是加载动画
     // this.devMiddleware.waitUntilValid(() => {
@@ -223,8 +268,7 @@ class WebpackHot {
     //   // const filename = this.devMiddleware.getFilenameFromUrl("/index.js");
     //   // console.log(`Filename is ${filename}`);
     // });
-    this.app.use( this.devMiddleware )
-
+    this.app.use(this.devMiddleware);
   }
 
   // 代理服务器
@@ -335,13 +379,9 @@ class WebpackHot {
       });
       this.app.use(bodyParser()).use(exampleProxy);
     });
-
-
   }
 
   setConnectHistoryApiFallback() {
-
-
     this.app.use(historyApiFallback());
   }
 
@@ -411,9 +451,6 @@ class WebpackHot {
     this.port = await new Promise((resolve, reject) => {
       //查找端口号
       portfinder.getPort((err, port) => {
-        console.log("err===========", err);
-        console.log("port===========", port);
-
         if (err) {
           reject(err);
           return;

@@ -3,6 +3,9 @@ const path = require("path");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const CopyPlugin = require("copy-webpack-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
+
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+
 const { resolve } = path;
 let {
   NODE_ENV, // 环境参数
@@ -55,31 +58,33 @@ module.exports = {
         test: /\.css$/i,
         // 排除文件,因为这些包已经编译过，无需再次编译
         // exclude: /(node_modules|bower_components)/,
-        exclude: /(node_modules|bower_components)^((?!bootstrap).)+$/,
+        // exclude: /(node_modules|bower_components)^((?!bootstrap).)+$/,
+        exclude: /(node_modules|bower_components)/,
         use: [
           // 'thread-loader',
           MiniCssExtractPlugin.loader,
           {
             loader: "css-loader",
             options: {
-              sourceMap: true
+              sourceMap: true,
+              importLoaders: 2,
             }
           },
           {
             loader: "postcss-loader",
-            options: {
-              postcssOptions: {
-                plugins: [
-                  [
-                    "autoprefixer",
-                    {
-                      // Options
-                    }
-                  ]
-                  //   "tailwindcss"
-                ]
-              }
-            }
+            // options: {
+            //   postcssOptions: {
+            //     plugins: [
+            //       [
+            //         "autoprefixer",
+            //         {
+            //           // Options
+            //         }
+            //       ]
+            //       //   "tailwindcss"
+            //     ]
+            //   }
+            // }
           }
         ]
       },
@@ -97,22 +102,22 @@ module.exports = {
               sourceMap: true
             }
           },
-          {
-            loader: "postcss-loader",
-            options: {
-              postcssOptions: {
-                plugins: [
-                  [
-                    "autoprefixer",
-                    {
-                      // Options
-                    }
-                  ]
-                  //   'tailwindcss'
-                ]
-              }
-            }
-          }
+          // {
+          //   loader: "postcss-loader",
+          //   options: {
+          //     postcssOptions: {
+          //       plugins: [
+          //         [
+          //           "autoprefixer",
+          //           {
+          //             // Options
+          //           }
+          //         ]
+          //         //   'tailwindcss'
+          //       ]
+          //     }
+          //   }
+          // }
         ]
       },
 
@@ -134,22 +139,22 @@ module.exports = {
               sourceMap: true
             }
           },
-          {
-            loader: "postcss-loader",
-            options: {
-              postcssOptions: {
-                plugins: [
-                  [
-                    "autoprefixer",
-                    {
-                      // Options
-                    }
-                  ]
-                  //   'tailwindcss'
-                ]
-              }
-            }
-          }
+          // {
+          //   loader: "postcss-loader",
+          //   // options: {
+          //   //   postcssOptions: {
+          //   //     plugins: [
+          //   //       [
+          //   //         "autoprefixer",
+          //   //         {
+          //   //           // Options
+          //   //         }
+          //   //       ]
+          //   //       //   'tailwindcss'
+          //   //     ]
+          //   //   }
+          //   // }
+          // }
         ]
       }
     ]

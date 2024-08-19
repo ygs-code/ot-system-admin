@@ -17,8 +17,7 @@ let {
 
 // 用户自定义webpack
 module.exports = {
-
-/*
+  /*
 http://webpack.docschina.org/configuration/devtool/#root
 开发环境：速度快，调试友好
 （eval>inline>cheap>…）
@@ -33,8 +32,8 @@ eval-source-map
    cheap-module-source-map
    cheap-source-map
 */
-// 具有高质量SourceMaps的开发构建的推荐选择。
-  devtool: "eval-source-map", //  
+  // 具有高质量SourceMaps的开发构建的推荐选择。
+  devtool: "eval-source-map", //
 
   module: {
     rules: [
@@ -42,7 +41,7 @@ eval-source-map
       {
         test: /\.css$/i,
         // 排除文件,因为这些包已经编译过，无需再次编译
-        // exclude: /(node_modules|bower_components)/,
+        exclude: /(node_modules|bower_components)/,
         use: [
           "style-loader",
           //   'css-loader',
@@ -59,14 +58,15 @@ eval-source-map
             options: {
               postcssOptions: {
                 plugins: [
-                  [
-                    "autoprefixer",
+                //  "autoprefixer",
+                  // [
+                  //   // "autoprefixer",
 
-                    {
-                      // Options
-                    }
-                  ]
-                  // "tailwindcss",
+                  //   {
+                  //     // Options
+                  //   }
+                  // ],
+                  // "tailwindcss"
                 ]
               }
             }
@@ -92,19 +92,20 @@ eval-source-map
           },
           {
             loader: "postcss-loader",
-            options: {
-              postcssOptions: {
-                plugins: [
-                  [
-                    "autoprefixer",
-                    {
-                      // Options
-                    }
-                  ]
-                  // "tailwindcss",
-                ]
-              }
-            }
+            // options: {
+            //   postcssOptions: {
+            //     plugins: [
+            //       [
+            //         "autoprefixer",
+
+            //         {
+            //           // Options
+            //         }
+            //       ],
+            //       "tailwindcss"
+            //     ]
+            //   }
+            // }
           }
         ]
       },
@@ -131,19 +132,19 @@ eval-source-map
           },
           {
             loader: "postcss-loader",
-            options: {
-              postcssOptions: {
-                plugins: [
-                  [
-                    "autoprefixer",
-                    {
-                      // Options
-                    }
-                  ]
-                  // "tailwindcss",
-                ]
-              }
-            }
+            // options: {
+            //   postcssOptions: {
+            //     plugins: [
+            //       [
+            //         "autoprefixer",
+            //         {
+            //           // Options
+            //         }
+            //       ],
+            //       "tailwindcss"
+            //     ]
+            //   }
+            // }
           }
         ]
       }
@@ -182,7 +183,7 @@ eval-source-map
 
       watch: true
     },
-    writeToDisk:true,
+    writeToDisk: true,
     index: path.resolve(process.cwd(), "/dist/index.html"), // dist/index 主页面
     contentBase: path.join(process.cwd(), "/dist"), //访问主页的界面 目录
     // port: 8089, // 开启服务器的端口
@@ -212,6 +213,7 @@ eval-source-map
       "/api": {
         target: "http://127.0.0.1:3003/api",
         changeOrigin: true,
+        secure: false, // 忽略无效的 SSL 证书
         pathRewrite: {
           "^/api": "/"
         }

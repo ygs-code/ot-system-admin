@@ -8,9 +8,10 @@
  */
 // import "antd/dist/antd.css";
 import "./index.less";
-import "./index.css";
+// import "./index.css";
 import "client/assets/css/base.less";
-// import "bootstrap/dist/css/bootstrap.css";
+// import "client/assets/css/tailwind.css";
+
 
 import {ConfigProvider} from "antd";
 // 由于 antd 组件的默认文案是英文，所以需要修改为中文

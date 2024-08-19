@@ -7,6 +7,11 @@ const DirectoryNamedWebpackPlugin = require("directory-named-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const CopyPlugin = require("copy-webpack-plugin");
 const WebpackPluginRouter = require("./definePlugin/webpack-plugin-router");
+
+// module.exports = {
+//     plugins: [tailwindcss('./tailwind.config.cjs'), autoprefixer],
+// };
+
 const path = require("path");
 const publicPath = "/";
 let htmllinterConfig = {};
@@ -75,7 +80,7 @@ module.exports = {
     // 如果多个模块产生相同的名称，使用
     devtoolFallbackModuleFilenameTemplate: (info) => {
       return `webpack:///${info.resourcePath}?${info.loaders}`;
-    },
+    }
     // 如果一个模块是在 require 时抛出异常，告诉 webpack 从模块实例缓存(require.cache)中删除这个模块。
     // // 并且重启webpack的时候也会删除cache缓存
     // strictModuleExceptionHandling: true,
@@ -235,23 +240,23 @@ module.exports = {
       // },
     }),
     // // stylelint 插件 编译检查
-    new StylelintPlugin({
-      emitError: true, //发现的错误将始终被触发，将禁用设置为false。
-      emitWarning: true, //如果将disable设置为false，则发现的警告将始终被发出。
-      failOnError: true, //如果有任何错误，将导致模块构建失败，禁用设置为false。
-      failOnWarning: false, //如果有任何警告，如果设置为true，将导致模块构建失败。
-      quiet: false //如果设置为true，将只处理和报告错误，而忽略警告。
-      // fix: true, //自动修复
-    }),
+    // new StylelintPlugin({
+    //   emitError: true, //发现的错误将始终被触发，将禁用设置为false。
+    //   emitWarning: true, //如果将disable设置为false，则发现的警告将始终被发出。
+    //   failOnError: true, //如果有任何错误，将导致模块构建失败，禁用设置为false。
+    //   failOnWarning: false, //如果有任何警告，如果设置为true，将导致模块构建失败。
+    //   quiet: false //如果设置为true，将只处理和报告错误，而忽略警告。
+    //   // fix: true, //自动修复
+    // }),
     // eslint 插件编译检查
-    new ESLintPlugin({
-      emitError: true, //发现的错误将始终被触发，将禁用设置为false。
-      emitWarning: true, //如果将disable设置为false，则发现的警告将始终被发出。
-      failOnError: true, //如果有任何错误，将导致模块构建失败，禁用设置为false。
-      failOnWarning: false, //如果有任何警告，如果设置为true，将导致模块构建失败。
-      quiet: false, //如果设置为true，将只处理和报告错误，而忽略警告。
-      fix: true //自动修复
-    }),
+    // new ESLintPlugin({
+    //   emitError: true, //发现的错误将始终被触发，将禁用设置为false。
+    //   emitWarning: true, //如果将disable设置为false，则发现的警告将始终被发出。
+    //   failOnError: true, //如果有任何错误，将导致模块构建失败，禁用设置为false。
+    //   failOnWarning: false, //如果有任何警告，如果设置为true，将导致模块构建失败。
+    //   quiet: false, //如果设置为true，将只处理和报告错误，而忽略警告。
+    //   fix: true //自动修复
+    // }),
 
     //DefinePlugin 允许创建一个在编译时可以配置的全局常量。这可能会对开发模式和发布模式的构建允许不同的行为非常有用
     // new ExtendedDefinePlugin({
@@ -279,6 +284,10 @@ module.exports = {
         }
       }
     })
+
+    // tailwindcss('../tailwind.config.cjs'),
+    //  autoprefixer
+
     /*
                如果我要在一个webpack打包覆盖的地方的xxx.js文件中用到react，该怎么做？
               通常来讲，我们会直接`import React from 'react'` 有很多很多js文件需要引入呢？一直引入吗？

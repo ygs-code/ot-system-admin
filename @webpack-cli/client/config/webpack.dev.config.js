@@ -53,6 +53,7 @@ const getIPAdress = () => {
 
 module.exports = {
   mode: "development",
+  // mode: "production",
   output: {
     // // 输出目录
     // path: path.join(process.cwd(), '/dist'),

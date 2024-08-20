@@ -9,6 +9,7 @@ const webpack = require("webpack");
 const webpackDevMiddleware = require("webpack-dev-middleware");
 const webpackHotMiddleware = require("webpack-hot-middleware");
 const webpackHotServerMiddleware = require("webpack-hot-server-middleware");
+const serve = require("koa-static");
 const getIPAdress = require("./utils/getIPAdress");
 const koaHttpProxyServer = require("./koa-http-proxy-server");
 
@@ -164,6 +165,11 @@ class WebpackHot {
       )(request, response, next);
     });
   }
+
+  // 静态资源
+  addStaticMiddleware() {
+    this.app.use(serve("."));
+  }
   addMiddleware() {
     // 开启代理
     this.setProxyMiddleware();
@@ -175,8 +181,11 @@ class WebpackHot {
     this.setConnectHistoryApiFallback();
     // }
 
+    this.addStaticMiddleware();
     // dev服务器
     this.addWebpackDevMiddleware();
+
+
     // 热更新自动刷新，但是感觉问题
     // this.addWebpackHotMiddleware();
     // if (isSsr) {

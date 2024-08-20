@@ -3,8 +3,9 @@ const path = require("path");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const CopyPlugin = require("copy-webpack-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
-
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const CleanCSSPlugin = require("less-plugin-clean-css");
+const BundleAnalyzerPlugin =
+  require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 
 const { resolve } = path;
 let {
@@ -30,7 +31,7 @@ const cacheLoader = (happypackId) => {
 
 // 用户自定义webpack
 module.exports = {
- /*
+  /*
  生产环境：源代码隐藏？调试友好？
    源代码隐藏：
      nosources-source-map 源代码和构建后js代码全部隐藏
@@ -42,8 +43,8 @@ module.exports = {
 
     none 无提示   
  */
-    // 推荐用于具有高质量SourceMaps的生产构建。
-  devtool: "source-map", //  
+  // 推荐用于具有高质量SourceMaps的生产构建。
+  devtool: "source-map", //
 
   output: {
     publicPath: "./", // dev 服务器需要是绝对，而编译出来需要是相对
@@ -67,11 +68,11 @@ module.exports = {
             loader: "css-loader",
             options: {
               sourceMap: true,
-              importLoaders: 2,
+              importLoaders: 2
             }
           },
           {
-            loader: "postcss-loader",
+            loader: "postcss-loader"
             // options: {
             //   postcssOptions: {
             //     plugins: [
@@ -98,10 +99,24 @@ module.exports = {
           "css-loader",
           {
             loader: "less-loader",
+
             options: {
-              sourceMap: true
+              implementation: require("less"),
+              sourceMap: true,
+              lessLogAsWarnOrErr: true,
+              // webpack 路径解析
+              webpackImporter: true,
+              lessOptions: {
+                // 删除多余的代码
+                plugins: [new CleanCSSPlugin({ advanced: true })]
+                // paths: [path.join(process.cwd(), "/client")]
+              }
+              // 设置别名
+              // alias: {
+              //   "@": path.join(process.cwd(), "/client")
+              // }
             }
-          },
+          }
           // {
           //   loader: "postcss-loader",
           //   options: {
@@ -135,10 +150,11 @@ module.exports = {
             loader: "sass-loader",
             options: {
               // Prefer `dart-sass`
+              webpackImporter: true,
               implementation: require("sass"),
               sourceMap: true
             }
-          },
+          }
           // {
           //   loader: "postcss-loader",
           //   // options: {

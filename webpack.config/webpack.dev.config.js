@@ -7,6 +7,7 @@
  * @Description:
  */
 const path = require("path");
+const CleanCSSPlugin = require("less-plugin-clean-css");
 const { resolve } = path;
 let {
   NODE_ENV, // 环境参数
@@ -51,7 +52,14 @@ eval-source-map
             loader: "css-loader",
             options: {
               sourceMap: true,
-              url:false
+              // 设置别名
+              // alias: {
+              //   "@": path.join(process.cwd(), "/client")
+              // },
+              url: true,
+              // webpack 路径解析
+              webpackImporter: true,
+              import: true
             }
           },
           {
@@ -59,10 +67,9 @@ eval-source-map
             options: {
               postcssOptions: {
                 plugins: [
-                //  "autoprefixer",
+                  //  "autoprefixer",
                   // [
                   //   // "autoprefixer",
-
                   //   {
                   //     // Options
                   //   }
@@ -77,6 +84,7 @@ eval-source-map
       // less
       {
         test: /\.less$/i,
+        exclude: /(node_modules|bower_components)/,
         use: [
           // compiles Less to CSS
           "style-loader",
@@ -86,13 +94,26 @@ eval-source-map
           "cache-loader",
           {
             loader: "less-loader",
+
             options: {
               implementation: require("less"),
-              sourceMap: true
+              sourceMap: true,
+              lessLogAsWarnOrErr: true,
+              // webpack 路径解析
+              webpackImporter: true,
+              lessOptions: {
+                // 删除多余的代码
+                plugins: [new CleanCSSPlugin({ advanced: true })]
+                // paths: [path.join(process.cwd(), "/client")]
+              }
+              // 设置别名
+              // alias: {
+              //   "@": path.join(process.cwd(), "/client")
+              // }
             }
           },
           {
-            loader: "postcss-loader",
+            loader: "postcss-loader"
             // options: {
             //   postcssOptions: {
             //     plugins: [
@@ -128,11 +149,17 @@ eval-source-map
             options: {
               // Prefer `dart-sass`
               implementation: require("sass"),
-              sourceMap: true
+              sourceMap: true,
+              // webpack 路径解析
+              webpackImporter: true
+              // 设置别名
+              // alias: {
+              //   "@": path.join(process.cwd(), "/client")
+              // }
             }
           },
           {
-            loader: "postcss-loader",
+            loader: "postcss-loader"
             // options: {
             //   postcssOptions: {
             //     plugins: [

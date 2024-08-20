@@ -116,16 +116,16 @@ module.exports = {
       path.join(process.cwd(), "/client")
     ],
     // 可以省略引用后缀
-    extensions: [
-      ".js",
-      "jsx",
-      ".ts",
-      ".tsx",
-      ".graphql",
-      ".json",
-      ".node",
-      ".sql"
-    ],
+    // extensions: [
+    //   ".js",
+    //   "jsx",
+    //   ".ts",
+    //   ".tsx",
+    //   ".graphql",
+    //   ".json",
+    //   ".node",
+    //   ".sql"
+    // ],
     // 1.不需要node polyfilss webpack 去掉了node polyfilss 需要自己手动添加
     //dllPlugin 插件需要的包
     // 路径配置 解析配置
@@ -146,7 +146,7 @@ module.exports = {
         options: {
           //当图片小于8k 会被base64处理
           //图片体积会变大，文件请求更慢 如果使用http 2.0 则这里配置是不好的
-          // limit: 8 * 1024,
+          limit: 8 * 1024,
           //默认使用的是es6模块化，
           //解析时就会报错
           // 解决，关闭es6模块化，使用commonjs
@@ -155,7 +155,7 @@ module.exports = {
           // [name] 文件名
           //[contenthash:10]  hash 10
           //[ext]  原拓展名
-          name: "static/image/[name].[contenthash:10].[ext]"
+          name: "static/image/[name].[contenthash:10].[ext]",
         },
         type: "javascript/auto"
       },

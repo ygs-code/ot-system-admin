@@ -33,7 +33,7 @@ const Index = (props) => {
 
   return (
     <div className="center log-in">
-      <h3>《智慧建筑-福i企管理后台》 </h3>
+      <h3>《OT协同文档系统》 </h3>
       <Form
         {...layout}
         name="basic"

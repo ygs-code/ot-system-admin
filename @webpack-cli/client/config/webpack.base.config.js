@@ -141,6 +141,9 @@ module.exports = {
       "jsx",
       ".ts",
       ".tsx",
+      ".css",
+      ".scss",
+      ".less",
       ".graphql",
       ".json",
       ".node",
@@ -384,40 +387,7 @@ module.exports = {
         use: "json-loader"
       },
 
-      //处理图片
-      //！默认处理不了html中的图片 <img src="./img/BM.jpg" alt=""> 打包后路径不会改变！
-      {
-        test: /\.(jpg|png|gif|svg)$/,
-        //只用一个loader  但要下载url-loader 和 file-loader
-        loader: "url-loader", // 处理样式中的url
-        options: {
-          //当图片小于8k 会被base64处理
-          //图片体积会变大，文件请求更慢 如果使用http 2.0 则这里配置是不好的
-          limit: 8 * 1024,
-          //默认使用的是es6模块化，
-          //解析时就会报错
-          // 解决，关闭es6模块化，使用commonjs
-          esModule: false,
-          //图片名字重命名
-          // [name] 文件名
-          //[contenthash:10]  hash 10
-          //[ext]  原拓展名
-          name: "static/image/[name].[contenthash:10].[ext]"
-        }
-      },
 
-      // {
-      //   test: /\.(json)$/,
-      //   loader: 'url-loader',
-      //   // Exclude `js` files to keep "css" loader working as it injects
-      //   // its runtime that would otherwise be processed through "file" loader.
-      //   // Also exclude `html` and `json` extensions so they get processed
-      //   // by webpacks internal loaders.
-      //   // exclude: [/\.(js|mjs|jsx|ts|tsx)$/, /\.html$/, /\.json$/, /\.css$/],
-      //   options: {
-      //     name: 'static/json/[name].[contenthash:10].[ext]',
-      //   },
-      // },
 
       // ts
       {

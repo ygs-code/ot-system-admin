@@ -50,7 +50,7 @@ const Index = (props) => {
   return (
     <div className="log-in-page">
       <div className="center log-in">
-        <h3 className="">智慧建筑-福i企管理后台</h3>
+        <h3 className="">《OT协同文档系统》</h3>
 
         <Form
           {...layout}

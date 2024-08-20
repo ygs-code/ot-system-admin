@@ -181,7 +181,7 @@ class WebpackHot {
     this.setConnectHistoryApiFallback();
     // }
 
-    this.addStaticMiddleware();
+    // this.addStaticMiddleware();
     // dev服务器
     this.addWebpackDevMiddleware();
 

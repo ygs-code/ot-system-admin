@@ -84,7 +84,7 @@ module.exports = {
     // 如果一个模块是在 require 时抛出异常，告诉 webpack 从模块实例缓存(require.cache)中删除这个模块。
     // // 并且重启webpack的时候也会删除cache缓存
     strictModuleExceptionHandling: true,
-    assetModuleFilename: "images/[hash][ext][query]"
+    // assetModuleFilename: "images/[hash][ext][query]"
   },
 
   resolve: {
@@ -150,12 +150,12 @@ module.exports = {
           //默认使用的是es6模块化，
           //解析时就会报错
           // 解决，关闭es6模块化，使用commonjs
-          esModule: false
+          esModule: false,
           //图片名字重命名
           // [name] 文件名
           //[contenthash:10]  hash 10
           //[ext]  原拓展名
-          // name: "static/image/[name].[contenthash:10].[ext]"
+          name: "static/image/[name].[contenthash:10].[ext]"
         },
         type: "javascript/auto"
       },

@@ -133,7 +133,7 @@ module.exports = {
         // sideEffects 默认为 true， 告诉 Webpack ，所有文件都有副作用，他们不能被 Tree Shaking。
         // 增强兼容性
         include: path.join(process.cwd(), "/client"),
-        sideEffects: true
+        sideEffects:  false,
       }
     ]
   },

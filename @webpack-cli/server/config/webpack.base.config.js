@@ -381,7 +381,7 @@ module.exports = {
             },
             {
                 include: path.join(process.cwd(), '/app'),
-                sideEffects: true,
+                sideEffects:  false,
             },
             {
                 test: /\.node$/,

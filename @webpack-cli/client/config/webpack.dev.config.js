@@ -6,6 +6,7 @@ const nodeExternals = require("webpack-node-externals");
 const CaseSensitivePathsPlugin = require("case-sensitive-paths-webpack-plugin");
 const { ESBuildPlugin, ESBuildMinifyPlugin } = require("esbuild-loader");
 // const WebpackHotPlugin = require('browser-reload-error-overlay-wepback-plugin');
+const HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
 const WebpackHotPlugin = require("webpack-hot-plugin");
 const HappyPack = require("happypack");
 const os = require("os");
@@ -269,6 +270,10 @@ module.exports = {
     ]
   },
   plugins: [
+
+
+    new HardSourceWebpackPlugin(), // <- 直接加入这行代码就行 ] 
+
     //esbuild-loader
     new ESBuildPlugin(),
 

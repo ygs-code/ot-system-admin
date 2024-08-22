@@ -17,8 +17,6 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const WebpackBuildDllPlugin = require('webpack-build-dll-plugin');
 const DllReferencePlugin = require('webpack/lib/DllReferencePlugin');
-const HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
-
 const { resolve } = path;
 const happyThreadPool = HappyPack.ThreadPool({ size: os.cpus().length - 1 });
 const WEB_ENV = getArgv('WEB_ENV'); // 环境参数

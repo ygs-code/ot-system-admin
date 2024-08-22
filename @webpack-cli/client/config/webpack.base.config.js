@@ -16,7 +16,6 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer");
 const WebpackBuildDllPlugin = require("webpack-build-dll-plugin");
 const DllReferencePlugin = require("webpack/lib/DllReferencePlugin");
-const HardSourceWebpackPlugin = require("hard-source-webpack-plugin");
 const ExtendedDefinePlugin = require("extended-define-webpack-plugin");
 const ESLintPlugin = require("eslint-webpack-plugin");
 const { ESBuildPlugin, ESBuildMinifyPlugin } = require("esbuild-loader");

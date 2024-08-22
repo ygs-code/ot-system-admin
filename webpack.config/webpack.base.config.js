@@ -84,7 +84,7 @@ module.exports = {
     // 如果一个模块是在 require 时抛出异常，告诉 webpack 从模块实例缓存(require.cache)中删除这个模块。
     // // 并且重启webpack的时候也会删除cache缓存
     strictModuleExceptionHandling: true,
-    assetModuleFilename: "images/[hash][ext][query]"
+    // assetModuleFilename: "images/[hash][ext][query]"
   },
 
   resolve: {

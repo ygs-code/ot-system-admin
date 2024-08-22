@@ -17,6 +17,11 @@ import {
   SnippetsOutlined
   // ProjectOutlined
 } from "@ant-design/icons";
+import { matchPath } from "@/router/react-lazy-router-dom/matchPath.js";
+import routesComponent from "@/router/routesComponent.js";
+import config from "./config";
+import { mapTree } from "@/utils";
+
 import {
   Menu
   //  Select
@@ -30,7 +35,7 @@ import React, {
   useState
 } from "react";
 
-const {SubMenu} = Menu;
+const { SubMenu } = Menu;
 // const { Option } = Select;
 // const { Header, Sider, Content } = Layout;
 const MindMap = memo(
@@ -54,9 +59,10 @@ const MindMap = memo(
 
 export default memo((props) => {
   const {
-    match: {path, params: {id} = {}} = {},
+    match: { path, params: { id } = {} } = {},
     routePaths = {},
-    pushRoute
+    pushRoute,
+    location
   } = props;
 
   const [selectedKeys, setSelectedKeys] = useState("-1");
@@ -67,106 +73,21 @@ export default memo((props) => {
       url
     });
   }, []);
-  console.log("routePaths=======", routePaths.document);
-
-  const menuData = useMemo(() => {
-    return [
-      {
-        title: "系统设置",
-        iconComponent: <SettingOutlined />,
-        key: "0",
-        children: [
-          {
-            title: "用户权限设置",
-            key: "0-0",
-            children: [
-              {
-                title: "用户管理",
-                url: routePaths.userManagement, // 路由地址
-
-                key: "0-0-0",
-                children: [
-                  // 子菜单
-                ]
-              },
-              {
-                title: "角色管理",
-                url: routePaths.roleManagement, // 路由地址
-
-                key: "0-0-1",
-                children: [
-                  // 子菜单
-                ]
-              },
-
-              {
-                title: "权限管理",
-                url: routePaths.permissionManagement, // 路由地址
-
-                key: "0-0-2",
-                children: [
-                  // 子菜单
-                ]
-              },
-              {
-                title: "角色&权限",
-                url: routePaths.rolePermission, // 路由地址
-
-                key: "0-0-3",
-                children: [
-                  // 子菜单
-                ]
-              },
-              {
-                title: "用户&角色",
-                url: routePaths.userRole, // 路由地址
-
-                key: "0-0-4",
-                children: [
-                  // 子菜单
-                ]
-              }
-            ]
-          }
-        ]
-      },
-
-      {
-        title: "协同文档",
-        iconComponent: <SnippetsOutlined />,
-        key: "1",
-        children: [
-          {
-            url: routePaths.document, // 路由地址
-            title: "文档",
-            key: "1-0"
-          }
-          // {
-          //   title: "思维导图",
-          //   url: "http:xxxxx", // 路由地址
-          //   iconComponent: <MindMap />,
-          //   key: "1-1"
-          // }
-        ]
-      }
-    ];
-  }, []);
-
-  useEffect(() => {
-    const menuSelectedKeys =
-      sessionStorage.getItem("adminMenuSelectedKeys") || "";
-    let menuOpenKeys = sessionStorage.getItem("adminMenuOpenKeys") || "[]";
-    menuOpenKeys = JSON.parse(menuOpenKeys);
-
-    setSelectedKeys(menuSelectedKeys);
-    setOpenKeys(menuOpenKeys);
-  }, [id, path]);
 
   const getItems = useCallback((menuData, index = null) => {
     return menuData.map((item, _index) => {
       const menuKey = index === null ? _index : `${index}_${_index}`;
-      const {title, iconComponent = null, children = [], url} = item;
+      const { title, iconComponent = null, children = [], url } = item;
+      let { exact, path, strict, sensitive } =
+        routesComponent.find((_item) => {
+          return _item.path === item.url;
+        }) || {};
+
       return {
+        exact,
+        path,
+        strict,
+        sensitive,
         url,
         label: title,
         key: menuKey,
@@ -175,33 +96,43 @@ export default memo((props) => {
       };
     });
   }, []);
-  const getMenu = useCallback((menuData = [], index = null) => {
-    return menuData.map((item, _index) => {
-      const menuKey = index === null ? _index : `${index}_${_index}`;
-      return item.children && item.children.length ? (
-        <SubMenu key={menuKey} icon={item.iconComponent} title={item.title}>
-          {getMenu(item.children, menuKey)}
-        </SubMenu>
-      ) : (
-        <Menu.Item
-          key={menuKey}
-          icon={item.iconComponent}
-          onClick={() => {
-            goTo(item);
-          }}>
-          {item.title}
-        </Menu.Item>
-      );
-    });
+
+  const menuData = useMemo(() => {
+    return getItems(config(routePaths));
+  }, [routePaths]);
+
+  const findMenuSelectedKey = useCallback((data) => {
+    for (let item of data) {
+      const { exact, path, strict, sensitive, children = [] } = item;
+      let menu = matchPath(location.pathname, {
+        path: path,
+        exact: exact,
+        strict: strict,
+        sensitive: sensitive
+      });
+      if (menu) {
+        return {
+          ...menu,
+          ...item
+        };
+      } else if (children && children.length) {
+        return findMenuSelectedKey(children);
+      }
+    }
   }, []);
 
-  // const onChange = useCallback((value) => {});
+  useEffect(() => {
+    let { key } = findMenuSelectedKey(menuData) || {};
 
-  // const onBlur = useCallback(() => {});
+    setSelectedKeys(key);
+  }, [menuData]);
 
-  // const onFocus = useCallback(() => {});
-
-  // const onSearch = useCallback((val) => {});
+  useEffect(() => {
+    // 打开的key
+    let menuOpenKeys = sessionStorage.getItem("adminMenuOpenKeys") || "[]";
+    menuOpenKeys = JSON.parse(menuOpenKeys);
+    setOpenKeys(menuOpenKeys);
+  }, [id, path]);
 
   return (
     <Menu
@@ -217,45 +148,17 @@ export default memo((props) => {
         const {
           key: selectedKeys,
           keyPath,
-          item: {props: {url} = {}} = {}
+          item: { props: { url } = {} } = {}
         } = value;
 
-        sessionStorage.setItem("adminMenuSelectedKeys", selectedKeys);
         sessionStorage.setItem("adminMenuOpenKeys", JSON.stringify(keyPath));
+
         setSelectedKeys(selectedKeys);
         setOpenKeys(keyPath);
 
         goTo(url);
       }}
-      items={getItems(menuData)}
-      defaultSelectedKeys={[selectedKeys]}>
-      {/*
-        //   isProjectPage() ? (
-        //   <Menu.Item key="-1" icon={<HomeOutlined />}>
-        //     <Select
-        //       style={{ width: "185px" }}
-        //       className="menu-select"
-        //       showSearch
-        //       placeholder="请选择项目"
-        //       optionFilterProp="children"
-        //       onChange={onChange}
-        //       onFocus={onFocus}
-        //       onBlur={onBlur}
-        //       onSearch={onSearch}
-        //       filterOption={(input, option) =>
-        //         option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-        //       }
-        //     >
-        //       <Option value="jack">Jack</Option>
-        //       <Option value="lucy">Lucy</Option>
-        //       <Option value="tom">Tom</Option>
-        //     </Select>
-        //   </Menu.Item>
-        // ) : null}
-        */}
-      {/*
-    {getMenu(menuData)}
-    */}
-    </Menu>
+      items={menuData}
+      defaultSelectedKeys={[selectedKeys]}></Menu>
   );
 });

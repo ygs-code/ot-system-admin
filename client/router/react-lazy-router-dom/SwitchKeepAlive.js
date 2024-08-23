@@ -8,6 +8,7 @@ import React, {
 } from "react";
 // import { isContextConsumer, isValidElementType } from "react-is";
 import invariant from "tiny-invariant";
+import KeepAlive, {Conditional} from "./KeepAlive.js";
 
 import {matchPath} from "./matchPath";
 import {__RouterContext as RouterContext} from "./Router";
@@ -107,21 +108,44 @@ const isValidElementType = (type) => {
 const NullComponent = () => {
   return <div> </div>;
 };
-class Switch extends Component {
+class SwitchKeepAlive extends Component {
   constructor(props) {
     super(props);
+
     this.state = {
       AsynComponent: NullComponent,
       locationKey: "",
       match: null,
-      isSync: true
+      isSync: true,
+      components: []
     };
   }
   componentDidMount() {
+    const {AsynComponent, locationKey, match, components} = this.state;
+    let {children} = this.props;
+    let {history = {}, location = {}, routesComponent = []} = this.context;
+
+    let {key, pathname} = location;
+    const index = components.findIndex((item) => {
+      return item.pathname === pathname;
+    });
+
     let {loading: Loading} = this.context;
     if (Loading) {
       this.setState({
         AsynComponent: Loading
+      });
+    }
+    if (index === -1) {
+      this.setState({
+        components: [
+          ...components,
+          {
+            pathname,
+            component: Loading || NullComponent,
+            type: "loading"
+          }
+        ]
       });
     }
   }
@@ -147,7 +171,7 @@ class Switch extends Component {
     //   component = component(this.props);
     //   component = this.getSyncComponent(component, callback);
     // }
-     else if (
+    else if (
       Object.prototype.toString.call(component).slice(1, -1) ===
       "object Promise"
     ) {
@@ -195,35 +219,31 @@ class Switch extends Component {
     return component;
   };
 
-  getComponent = () => {
-    const {AsynComponent, locationKey, match} = this.state;
+  loadComponents = () => {
+    const {AsynComponent, locationKey, match, components} = this.state;
     let {children} = this.props;
-    let {history = {}, location = {}, routesComponent = []} = this.context;
-    let {key} = location;
+    let {
+      history = {},
+      location = {},
+      routesComponent = [],
+      Loading
+    } = this.context;
 
+    let {key, pathname} = location;
     if (!Object.keys(this.context).length) {
       throw new Error(
-        invariant(false, "You should not use <Switch/> outside a <Router>")
+        invariant(
+          false,
+          "You should not use <SwitchKeepAlive/> outside a <Router>"
+        )
       );
     }
-
-    if (key === locationKey) {
-      return (
-        <MatchContext.Provider
-          value={{
-            history,
-            location,
-            match
-          }}>
-          <AsynComponent
-            match={match}
-            history={history}
-            location={location}
-            exact={match.isExact}
-            routesComponent={routesComponent}
-          />
-        </MatchContext.Provider>
-      );
+    const index = components.findIndex((item) => {
+      return item.pathname === pathname;
+    });
+    const Component = index >= 0 ? components[index].component : null;
+    if (Component) {
+      return components;
     }
 
     var newMatch = null;
@@ -253,73 +273,119 @@ class Switch extends Component {
 
         if (newMatch) {
           SyncComponent = this.getSyncComponent(component, (AsynComponent) => {
+            const index = components.findIndex((item) => {
+              return item.pathname === pathname;
+            });
+
+            if (index >= 0) {
+              components[index].component = AsynComponent;
+            } else {
+              components.push({
+                pathname,
+                component: AsynComponent
+              });
+            }
+
             this.setState({
               isSync: false,
-              AsynComponent,
+              AsynComponent, // 异步
               match: newMatch,
-              locationKey: key
+              locationKey: key,
+              components: [...components]
             });
           });
 
           if (SyncComponent) {
+            components.push({
+              pathname,
+              component: SyncComponent
+            });
             this.setState({
               isSync: true,
-              AsynComponent: SyncComponent,
+              AsynComponent: SyncComponent, // 同步
               match: newMatch,
-              locationKey: key
+              locationKey: key,
+              components: [...components]
             });
           }
         }
       }
     });
 
+    return components;
+  };
+  getComponents = () => {
+    const {AsynComponent, locationKey, match} = this.state;
 
-    return SyncComponent ? (
-      <MatchContext.Provider
-        value={{
-          history,
-          location,
-          match: newMatch
-        }}>
-        <SyncComponent
-          match={newMatch}
-          history={history}
-          location={location}
-          exact={newMatch?.isExact}
-          routesComponent={routesComponent}
-        />
-      </MatchContext.Provider>
-    ) : (
-      <MatchContext.Provider
-        value={{
-          history,
-          location,
-          match: newMatch
-        }}>
-        <AsynComponent
-          match={newMatch}
-          history={history}
-          location={location}
-          exact={newMatch?.isExact}
-          routesComponent={routesComponent}
-        />
-      </MatchContext.Provider>
-    );
+    let {children} = this.props;
+    let {history = {}, location = {}, routesComponent = []} = this.context;
+    let {key, pathname} = location;
 
-    
+    if (!Object.keys(this.context).length) {
+      throw new Error(
+        invariant(
+          false,
+          "You should not use <SwitchKeepAlive/> outside a <Router>"
+        )
+      );
+    }
+
+    const components = this.loadComponents();
+    return components.map((item, index) => {
+      const {component: Component, type} = item;
+      return type === "loading" ? (
+        <MatchContext.Provider
+          key={key}
+          value={{
+            history,
+            location,
+            match
+          }}>
+          <Component
+            match={match}
+            history={history}
+            location={location}
+            exact={match?.isExact}
+            routesComponent={routesComponent}
+          />
+        </MatchContext.Provider>
+      ) : (
+        <MatchContext.Provider
+          key={item.pathname}
+          value={{
+            history,
+            location,
+            match
+          }}>
+          {" "}
+          <Conditional _key={item.pathname} active={item.pathname === pathname}>
+            <Component
+              match={match}
+              history={history}
+              location={location}
+              exact={match?.isExact}
+              routesComponent={routesComponent}
+            />
+          </Conditional>
+        </MatchContext.Provider>
+      );
+    });
   };
 
   render() {
-    return this.getComponent();
+    const {children} = this.props;
+
+    return this.getComponents();
   }
 }
 
-Switch.contextType = RouterContext;
-Switch.propTypes = {
+SwitchKeepAlive.contextType = RouterContext;
+SwitchKeepAlive.propTypes = {
   children: PropTypes.oneOfType([
     PropTypes.arrayOf(PropTypes.node),
     PropTypes.node
   ]).isRequired
 };
 
-export {isValidElementType, MatchContext, Switch};
+// 缓存路由
+export {isValidElementType, MatchContext, SwitchKeepAlive};

@@ -1,21 +1,13 @@
-const lazy = (loader) => {
+const lazy = async  (loader) => {
   lazy.loaderArr = [...lazy.loaderArr, loader];
-  return () => {
-    return loader()
-      .then((res) => {
-        return res.default;
-      })
-      .catch((e) => {
-        throw new Error(e);
-      });
-  };
+  return loader;
 };
 lazy.loaderArr = [];
 
 const preloadReady = (onSuccess = () => {}, onError = () => {}) => {
   const promiseArr = [];
   for (let item of lazy.loaderArr) {
-    promiseArr.push(item());
+    promiseArr.push(item);
   }
 
   return Promise.all(promiseArr)

@@ -113,7 +113,7 @@ class SwitchKeepAlive extends Component {
     super(props);
 
     this.state = {
-      AsynComponent: NullComponent,
+      // AsynComponent: NullComponent,
       locationKey: "",
       match: null,
       isSync: true,
@@ -131,11 +131,11 @@ class SwitchKeepAlive extends Component {
     });
 
     let {loading: Loading} = this.context;
-    if (Loading) {
-      this.setState({
-        AsynComponent: Loading
-      });
-    }
+    // if (Loading) {
+    //   this.setState({
+    //     AsynComponent: Loading
+    //   });
+    // }
     if (index === -1) {
       this.setState({
         components: [
@@ -150,7 +150,7 @@ class SwitchKeepAlive extends Component {
     }
   }
 
-  getSyncComponent = (component, callback = () => {}) => {
+  loadComponent = async (component) => {
     if (
       Object.prototype.toString.call(component).slice(1, -1) === "object Module"
     ) {
@@ -161,61 +161,21 @@ class SwitchKeepAlive extends Component {
       if (isValidElementType(component)) {
         return component;
       } else if (component.__esModule) {
-        component = this.getSyncComponent(component.default, callback);
+        component = await this.loadComponent(component.default);
       }
-    }
-    //  else if (
-    //   Object.prototype.toString.call(component).slice(1, -1) ===
-    //   "object Function"
-    // ) {
-    //   component = component(this.props);
-    //   component = this.getSyncComponent(component, callback);
-    // }
-    else if (
-      Object.prototype.toString.call(component).slice(1, -1) ===
-      "object Promise"
-    ) {
-      this.resolveComponent(component, callback).then((AsynComponent) => {
-        callback(AsynComponent);
-      });
-      return null;
-    }
-    return component;
-  };
-
-  resolveComponent = async (component, callback = () => {}) => {
-    if (
+    } else if (
       Object.prototype.toString.call(component).slice(1, -1) ===
       "object Function"
     ) {
       component = component(this.props);
-      component = this.resolveComponent(component, callback);
-    } else if (
-      Object.prototype.toString.call(component).slice(1, -1) === "object Module"
-    ) {
-      component = component.default;
+      component = await this.loadComponent(component);
     } else if (
       Object.prototype.toString.call(component).slice(1, -1) ===
       "object Promise"
     ) {
-      /* eslint-disable   */
-      // component = await new Promise(async (relove, reject) => {
-      //   setTimeout(async () => {
-      //     let data = await component;
-      //     relove(data);
-      //   }, 2000);
-      // });
-      /* eslint-enable   */
-
-      // let status = await getPromiseState(component);
-
       component = await component;
-
-      component = await this.resolveComponent(component, callback);
-    } else {
-      component = this.getSyncComponent(component, callback);
+      component = await this.loadComponent(component);
     }
-
     return component;
   };
 
@@ -247,9 +207,8 @@ class SwitchKeepAlive extends Component {
     }
 
     var newMatch = null;
-    let SyncComponent = null;
 
-    Children.forEach(children, (el) => {
+    Children.forEach(children, async (el) => {
       if (newMatch === null) {
         let {
           path: pathProp,
@@ -272,42 +231,25 @@ class SwitchKeepAlive extends Component {
         });
 
         if (newMatch) {
-          SyncComponent = this.getSyncComponent(component, (AsynComponent) => {
-            const index = components.findIndex((item) => {
-              return item.pathname === pathname;
-            });
-
-            if (index >= 0) {
-              components[index].component = AsynComponent;
-            } else {
-              components.push({
-                pathname,
-                component: AsynComponent
-              });
-            }
-
-            this.setState({
-              isSync: false,
-              AsynComponent, // 异步
-              match: newMatch,
-              locationKey: key,
-              components: [...components]
-            });
+          const Component = await this.loadComponent(component);
+          const index = components.findIndex((item) => {
+            return item.pathname === pathname;
           });
 
-          if (SyncComponent) {
+          if (index >= 0) {
+            components[index].component = Component;
+          } else {
             components.push({
               pathname,
-              component: SyncComponent
-            });
-            this.setState({
-              isSync: true,
-              AsynComponent: SyncComponent, // 同步
-              match: newMatch,
-              locationKey: key,
-              components: [...components]
+              component: Component
             });
           }
+
+          this.setState({
+            match: newMatch,
+            locationKey: key,
+            components: [...components]
+          });
         }
       }
     });
@@ -357,7 +299,6 @@ class SwitchKeepAlive extends Component {
             location,
             match
           }}>
-          {" "}
           <Conditional _key={item.pathname} active={item.pathname === pathname}>
             <Component
               match={match}

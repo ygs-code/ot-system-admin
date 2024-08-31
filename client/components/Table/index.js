@@ -4,13 +4,13 @@
  * @LastEditTime: 2021-08-26 11:33:11
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
- * @FilePath: /error-sytem/client/src/common/components/Table/index.js
+ * @FilePath: /error-sytem/@/src/common/component/Table/index.js
  */
 
-import "./index.less";
+import './index.less';
 
-import {Pagination, Table} from "antd";
-import React, {useEffect, useState} from "react";
+import { Pagination, Table } from 'antd';
+import React, { useEffect, useState } from 'react';
 
 const Index = (props) => {
   const {
@@ -22,7 +22,7 @@ const Index = (props) => {
       pageNum = 1,
       pageSize = 10,
       // pages,
-      total
+      total,
     } = {},
     // onChange = () => {},
     // onSelect = () => {}
@@ -31,12 +31,12 @@ const Index = (props) => {
     // rowKey,
     onChange = () => {},
     onSelect = () => {},
-    readOnly
+    readOnly,
   } = props;
   const {
     rowSelection = {},
     isShowSelect,
-    rowKey
+    rowKey,
     // onChange = () => {},
     // onSelect = () => {}
   } = tableProps;
@@ -45,7 +45,7 @@ const Index = (props) => {
     onChange: rowSelectionOnSelect = () => {},
     onChange: rowSelectionOnSelectAll = () => {},
     selectedRowKeys: rowSelectionSelectedRowKeys = [],
-    selectedRows: rowSelectionSelectedRows = []
+    selectedRows: rowSelectionSelectedRows = [],
   } = rowSelection;
 
   let [selectedRows, setSelectedRows] = useState([]);
@@ -56,12 +56,24 @@ const Index = (props) => {
     setSelectedRowKeys(rowSelectionSelectedRowKeys);
   }, []);
 
+  // 分页算法函数
+  const paginate = (array, pageSize, pageNum) => {
+    // 计算分页后的起始索引和结束索引
+    const startIndex = (pageNum - 1) * pageSize;
+
+    let endIndex = pageNum * pageSize;
+    endIndex = array.length >= endIndex ? endIndex : array.length;
+
+    // 返回分页后的数组
+    return array.slice(startIndex, endIndex);
+  };
+
   let $rowSelection = isShowSelect
     ? {
         selectedRowKeys,
         onSelect: (changeRow, selected, $selectedRows, nativeEvent) => {
           if (!rowKey) {
-            return console.error("rowKey未设置，请设置表格rowKey");
+            return console.error('rowKey未设置，请设置表格rowKey');
           }
           if (selected) {
             selectedRows.push(changeRow);
@@ -81,7 +93,7 @@ const Index = (props) => {
         },
         onSelectAll: (selected, $selectedRows, changeRows) => {
           if (!rowKey) {
-            return console.error("rowKey未设置，请设置表格rowKey");
+            return console.error('rowKey未设置，请设置表格rowKey');
           }
           if (selected) {
             selectedRows = selectedRows.concat(changeRows);
@@ -103,18 +115,17 @@ const Index = (props) => {
         getCheckboxProps: (record) => ({
           disabled: readOnly,
           // Column configuration not to be checked
-          name: record.name
-        })
+          name: record.name,
+        }),
       }
     : {};
 
   $rowSelection =
-    Object.keys(rowSelection).length === 0 &&
-    Object.keys($rowSelection).length === 0
+    Object.keys(rowSelection).length === 0 && Object.keys($rowSelection).length === 0
       ? null
       : {
           ...rowSelection,
-          ...$rowSelection
+          ...$rowSelection,
         };
 
   return (
@@ -123,7 +134,7 @@ const Index = (props) => {
         <Table
           {...tableProps}
           columns={columns}
-          dataSource={list}
+          dataSource={paginate(list, pageSize, pageNum)}
           rowSelection={$rowSelection}
           pagination={false}
         />
@@ -145,7 +156,7 @@ const Index = (props) => {
           onChange={(pageNum, pageSize) => {
             onChange({
               pageNum,
-              pageSize
+              pageSize,
             });
           }}
         />

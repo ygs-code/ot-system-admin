@@ -353,7 +353,7 @@ Request.interceptors = {
   response: async (response) => {
     const {code} = response[0] || {};
     if (code !== 200) {
-      Request.error(response);
+      // Request.error(response);
 
       return Promise.reject(response);
     }

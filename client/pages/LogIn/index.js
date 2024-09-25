@@ -1,7 +1,11 @@
 import "client/assets/css/base.less";
-// import "./index.scss";
-import "./index.less";
-// import "./index.css";
+import "./index.scss";
+import * as less  from "./index.less";
+
+// import  "./index.css";
+
+// import scss  from "./index.scss";
+// import  css  from  "./index.css";
 
 import { Button, Form, Input, message } from "antd";
 import { login } from "client/assets/js/request/index";
@@ -10,6 +14,11 @@ import { mapRedux } from "client/redux";
 import { addRouterApi } from "client/router";
 import { checkEmail, checkPassword, checkPhone, checkUser } from "client/utils";
 import React, { useEffect } from "react";
+
+// console.log('less==',less)
+// console.log('css==',css)
+// console.log('scss==',scss)
+// debugger
 
 const layout = {
   labelCol: { span: 8 },
@@ -128,3 +137,6 @@ const Index = (props) => {
 };
 
 export default mapRedux()(addRouterApi(Index));
+
+
+  

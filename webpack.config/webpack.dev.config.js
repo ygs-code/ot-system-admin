@@ -36,47 +36,64 @@ eval-source-map
   // 具有高质量SourceMaps的开发构建的推荐选择。
   devtool: "eval-source-map", //
 
+
   module: {
     rules: [
       // css
       {
         test: /\.css$/i,
         // 排除文件,因为这些包已经编译过，无需再次编译
-        exclude: /(node_modules|bower_components)/,
+        // exclude: /(node_modules|bower_components)/,
         use: [
-          "style-loader",
-          //   'css-loader',
-          "thread-loader",
-          "cache-loader",
+
+
+          {
+            loader: "style-loader",
+            // options: {
+            //   insert: "body",
+            // },
+          },
+          // 'css-loader',
+          // "thread-loader",
+          // "cache-loader",
           {
             loader: "css-loader",
             options: {
-              sourceMap: true,
-              // 设置别名
-              // alias: {
-              //   "@": path.join(process.cwd(), "/client")
+              // esModule: true,
+              // importLoaders: 2,
+              // modules: {
+              //   namedExport: true,
+              //   // localIdentName: "[name]",
+              //   localIdentName: "[path][name]__[local]--[hash:base64:5]",
               // },
+              // localIdentName: '[name]'
+              // esModule:false,
+              // modules: true, // 开启CSS Modules
+              // importLoaders: 1,
+              sourceMap: true,
+              // // 设置别名
+              // // alias: {
+              // //   "@": path.join(process.cwd(), "/client")
+              // // },
               url: true,
-              // webpack 路径解析
-              webpackImporter: true,
               import: true
             }
           },
           {
             loader: "postcss-loader",
             options: {
-              postcssOptions: {
-                plugins: [
-                  //  "autoprefixer",
-                  // [
-                  //   // "autoprefixer",
-                  //   {
-                  //     // Options
-                  //   }
-                  // ],
-                  // "tailwindcss"
-                ]
-              }
+              // postcssOptions: {
+              //   plugins: [
+              //     // "autoprefixer",
+              //     // [
+              //     //   // "autoprefixer",
+              //     //   {
+              //     //     // Options
+              //     //   }
+              //     // ],
+              //     // "tailwindcss"
+              //   ]
+              // }
             }
           }
         ]
@@ -90,11 +107,10 @@ eval-source-map
           "style-loader",
           "css-loader",
           // 'less-loader',
-          "thread-loader",
-          "cache-loader",
+          // "thread-loader",
+          // "cache-loader",
           {
             loader: "less-loader",
-
             options: {
               implementation: require("less"),
               sourceMap: true,
@@ -113,7 +129,7 @@ eval-source-map
             }
           },
           {
-            loader: "postcss-loader"
+            loader: "postcss-loader",
             // options: {
             //   postcssOptions: {
             //     plugins: [
@@ -124,7 +140,7 @@ eval-source-map
             //           // Options
             //         }
             //       ],
-            //       "tailwindcss"
+            //       // "tailwindcss"
             //     ]
             //   }
             // }
@@ -142,8 +158,8 @@ eval-source-map
           "css-loader",
           // Compiles Sass to CSS
           // 'sass-loader',
-          "thread-loader",
-          "cache-loader",
+          // "thread-loader",
+          // "cache-loader",
           {
             loader: "sass-loader",
             options: {
@@ -159,17 +175,17 @@ eval-source-map
             }
           },
           {
-            loader: "postcss-loader"
+            loader: "postcss-loader",
             // options: {
             //   postcssOptions: {
             //     plugins: [
             //       [
-            //         "autoprefixer",
+            //         // "autoprefixer",
             //         {
             //           // Options
             //         }
             //       ],
-            //       "tailwindcss"
+            //       // "tailwindcss"
             //     ]
             //   }
             // }

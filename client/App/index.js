@@ -13,7 +13,7 @@ import "client/assets/css/base.less";
 // import "client/assets/css/tailwind.css";
 
 
-import {ConfigProvider} from "antd";
+// import {ConfigProvider} from "antd";
 // 由于 antd 组件的默认文案是英文，所以需要修改为中文
 import zhCN from "antd/es/locale/zh_CN";
 import Routers from "client/router";
@@ -34,7 +34,7 @@ class Index extends Component {
   来自Provider组件
   */
     return (
-      <ConfigProvider locale={zhCN}>
+      // <ConfigProvider locale={zhCN}>
         <Provider store={store}>
           <Routers
             level={1}
@@ -42,7 +42,7 @@ class Index extends Component {
             routesComponent={routesComponent}
           />
         </Provider>
-      </ConfigProvider>
+      // </ConfigProvider>
     );
   }
   componentDidCatch(error, info) {

@@ -4,18 +4,18 @@
  * @LastEditTime: 2021-08-26 17:03:57
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
- * @FilePath: /error-sytem/@/src/common/component/Table/index.js
+ * @FilePath: /error-sytem/client/src/common/component/Table/index.js
  */
 
 import "./index.less";
 
-import { SearchForm } from "@/components/Form";
-import FormPicker from "@/components/FormPicker";
-import Table from "@/components/Table";
+import { SearchForm } from "client/components/Form";
+// import FormPicker from "client/components/FormPicker";
+import Table from "client/components/Table";
 import React from "react"; // , { memo, PureComponent }
 import { Spin, message } from "antd"; // , { memo, PureComponent }
-import Store from "@/redux/Store.js"; // , { memo, PureComponent }
-import { CheckDataType } from "@/utils/CheckDataType";
+import Store from "client/redux/Store.js"; // , { memo, PureComponent }
+import { CheckDataType } from "client/utils/CheckDataType";
 // class TablePage extends PureComponent {
 //   constructor(props) {
 //     super(props);
@@ -473,7 +473,7 @@ const tablePage = (Component) => {
       const { exportOpen } = this.state;
       return (
         <>
-          <FormPicker
+          {/* <FormPicker
             open={exportOpen}
             onCancel={() => {
               this.setState({ exportOpen: false });
@@ -520,7 +520,7 @@ const tablePage = (Component) => {
                   ]
                 }
               ];
-            }}></FormPicker>
+            }}></FormPicker> */}
           {super.render()}
 
           {/* {this.renderSearch()} {this.renderTable()} */}

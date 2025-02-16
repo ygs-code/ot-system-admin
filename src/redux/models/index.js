@@ -1,8 +1,5 @@
-import * as reducers from './reducers';
-import {register, registers} from './register';
-
-//注册 reducers
-const {reducers: newReducers, actions} = registers(reducers);
-
-export {register, registers, actions};
-export default newReducers;
+export {default as breadcrumb} from "./breadcrumb";
+export {default as head} from "./head";
+export {default as home} from "./home";
+export {default as nav} from "./nav";
+export {default as user} from "./user";

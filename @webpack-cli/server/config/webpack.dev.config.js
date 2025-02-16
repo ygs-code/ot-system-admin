@@ -17,8 +17,12 @@ module.exports = {
     //告诉 webpack 在 bundle 中引入「所包含模块信息」的相关注释
     pathinfo: true,
     //此选项会向硬盘写入一个输出文件，只在 devtool 启用了 SourceMap 选项时才使用。
+   
+   
+   
+    
     //默认不用配置也可以
-    sourceMapFilename: '[file].map',
+    // sourceMapFilename: '[file].map',
     // 自定义热更新的主文件名(main filename)。可选的值的详细信息，请查看 output.filename 选项
     // 占位符只能是 [hash]，默认值是： 可以默认不配置
     // hotUpdateMainFilename: "[hash].hot-update.json",
@@ -26,12 +30,12 @@ module.exports = {
     // 占位符只能是 [id] 和 [hash]，默认值是：
     hotUpdateChunkFilename: '[id].[hash].hot-update.js',
   },
-  // watch: true,
+  watch: true,
   watchOptions: {
     //延迟监听时间
     aggregateTimeout: 300,
-    // //忽略监听文件夹
-    // ignored: '/node_modules/',
+    //忽略监听文件夹
+    ignored: '/node_modules/',
   },
   //启用编译缓存日志输出
   infrastructureLogging: {

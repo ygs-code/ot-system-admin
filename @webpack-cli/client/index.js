@@ -3,7 +3,6 @@
  * @Author: Yao guan shou
  * @LastEditors: Yao guan shou
  * @LastEditTime: 2022-04-29 18:26:00
- * @FilePath: /webpack-cli/@webpack-cli/client/index.js
  * @Description:
  */
 require("@babel/polyfill");

@@ -1,18 +1,19 @@
 /*
- * @Date: 2022-07-04 10:02:13
+ * @Date: 2022-08-11 09:41:40
  * @Author: Yao guan shou
  * @LastEditors: Yao guan shou
- * @LastEditTime: 2022-07-04 10:04:31
- * @FilePath: /webpack-cli/src/utils/throttlingStabilization.js
+ * @LastEditTime: 2022-08-11 15:54:43
+ * @FilePath: /react-loading-ssr/src/utils/throttlingStabilization.js
  * @Description:
  */
-import lodash from 'lodash';
+import lodash from "lodash";
+
 // 节流函数
 export const throttle = (() => {
   let startTime = null;
   return (time, callback) =>
-    new Promise((resolve, reject) => {
-      let nowTime = new Date().getTime();
+    new Promise((resolve) => {
+      const nowTime = new Date().getTime();
       if (!startTime || nowTime - startTime > time) {
         startTime = nowTime;
         if (callback && callback instanceof Function) {
@@ -28,9 +29,11 @@ export const throttle = (() => {
 // 防抖函数
 export const stabilization = (() => {
   let timer = null;
-  return (time, callback) => {
-    return new Promise((resolve, reject) => {
-      window.clearTimeout(timer);
+  return (time, callback) =>
+    new Promise((resolve) => {
+      if (timer) {
+        clearTimeout(timer);
+      }
       timer = setTimeout(() => {
         if (callback && callback instanceof Function) {
           callback();
@@ -39,22 +42,23 @@ export const stabilization = (() => {
         resolve();
       }, time);
     });
-  };
-})();
+})
+
+// ();
 
 // 因为状态拦截需要传递的是地址，所以只能传对象参数
 export const statusThrottle = (() => {
-  let objParameter = {
-    status: true,
+  const objParameter = {
+    status: true
   };
-  return (callback) => {
-    return new Promise((resolve, reject) => {
+  return (callback) =>
+    new Promise((resolve, reject) => {
       if (!lodash.isObject(objParameter)) {
-        console.error('objParameter参数必须是一个对象');
+        console.error("objParameter参数必须是一个对象");
         reject();
         return;
       }
-      // console.log('objParameter=',objParameter)
+
       if (objParameter.status === false) {
         reject();
         return;
@@ -66,6 +70,5 @@ export const statusThrottle = (() => {
 
       resolve(objParameter);
     });
-    // callback && callback(objParameter)
-  };
+  // callback && callback(objParameter)
 })();

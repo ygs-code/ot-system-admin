@@ -22,7 +22,7 @@ function withConverterToPX(length) {
 
 let config = {
   // content: ["./client/**/*.{js,jsx}", "./client/public/index.html"],
-  purge: ["./client/**/*.{js,jsx}", "./client/public/index.html"],
+  purge: ["./src/**/*.{js,jsx}", "./src/public/index.html"],
   theme: {
     extend: {
       /* rounded-{n} */

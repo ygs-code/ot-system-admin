@@ -17,6 +17,8 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const WebpackBuildDllPlugin = require('webpack-build-dll-plugin');
 const DllReferencePlugin = require('webpack/lib/DllReferencePlugin');
+const HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
+
 const { resolve } = path;
 const happyThreadPool = HappyPack.ThreadPool({ size: os.cpus().length - 1 });
 const WEB_ENV = getArgv('WEB_ENV'); // 环境参数
@@ -89,7 +91,7 @@ module.exports = {
         strictModuleExceptionHandling: true,
     },
 
-   // 是否监听文件 这个参数已经被废弃掉，设置他会有警告
+    // 是否监听文件
     // watch: false,
 
     resolve: {
@@ -379,7 +381,7 @@ module.exports = {
             },
             {
                 include: path.join(process.cwd(), '/app'),
-                sideEffects:  false,
+                sideEffects: true,
             },
             {
                 test: /\.node$/,

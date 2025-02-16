@@ -1,12 +1,4 @@
-/*
- * @Date: 2022-04-24 12:01:52
- * @Author: Yao guan shou
- * @LastEditors: Yao guan shou
- * @LastEditTime: 2022-07-04 10:04:12
- * @FilePath: /webpack-cli/src/utils/SubscribePublished.js
- * @Description:
- */
-import {CheckDataType} from './CheckDataType';
+import { CheckDataType } from "./CheckDataType";
 //按方式 kye 导出
 
 const SubscribePublished = function (type = null, options = {}) {
@@ -19,11 +11,11 @@ const SubscribePublished = function (type = null, options = {}) {
 SubscribePublished.prototype = {
   init(type = null, options = {}) {
     const defaultOptions = {
-      queueMaxLength: 1000, //防止内存溢出限制数组长度
+      queueMaxLength: 1000 //防止内存溢出限制数组长度
     };
     this.options = {
       ...defaultOptions,
-      ...options,
+      ...options
     };
     this.type = type;
     this.queue = {}; // 记录回调函数队列
@@ -43,14 +35,14 @@ SubscribePublished.prototype = {
     if (this.getData(type) === null || this.getData(type) !== data) {
       this.queue[type] = {
         ...(this.queue[type] || {}),
-        data,
+        data
       };
     }
   },
   on(
     type, //类型
     callback, //回调函数
-    isSuperposition = true, //队列中函数是否叠加
+    isSuperposition = true //队列中函数是否叠加
   ) {
     if (
       (CheckDataType.isFunction(type) && CheckDataType.isBoolean(callback)) ||
@@ -68,15 +60,13 @@ SubscribePublished.prototype = {
       isSuperposition
     ) {
       // 如果大于设置长度我们将踢掉一些旧的数据
-      if (this.queue[type].fn.length >= this.options.queueMaxLength) {
+      this.queue[type].fn.length >= this.options.queueMaxLength &&
         this.queue[type].fn.shift();
-      }
-
       this.queue[type].fn.push(callback);
     } else {
       this.queue[type] = {
         ...(this.queue[type] || {}),
-        fn: [callback],
+        fn: [callback]
       };
     }
     return this;
@@ -102,7 +92,7 @@ SubscribePublished.prototype = {
     }
     this.setData(type, args);
     return this;
-  },
+  }
 };
 
-export {SubscribePublished};
+export { SubscribePublished };

@@ -18,7 +18,7 @@ let routesComponentConfig=[
                       ),
                     //  syncComponent:Documentdetails,
                      level:2,
-                     routesConfigPath:"J:/ot-system/ot-system-admin/client/pages/Index/pages/office/router/routesConfig.js",
+                     routesConfigPath:"K:/ot-system/ot-system-admin/client/pages/Index/pages/office/router/routesConfig.js",
                    },
                     {  
                      path: "/office/document",
@@ -30,7 +30,7 @@ let routesComponentConfig=[
                       ),
                     //  syncComponent:Document,
                      level:2,
-                     routesConfigPath:"J:/ot-system/ot-system-admin/client/pages/Index/pages/office/router/routesConfig.js",
+                     routesConfigPath:"K:/ot-system/ot-system-admin/client/pages/Index/pages/office/router/routesConfig.js",
                    },
                     {  
                      path: "/office",
@@ -42,7 +42,7 @@ let routesComponentConfig=[
                       ),
                     //  syncComponent:Office,
                      level:2,
-                     routesConfigPath:"J:/ot-system/ot-system-admin/client/pages/Index/pages/office/router/routesConfig.js",
+                     routesConfigPath:"K:/ot-system/ot-system-admin/client/pages/Index/pages/office/router/routesConfig.js",
                    },
                     {  
                      path: "/system/user-management/details/:action/:id?",
@@ -54,7 +54,7 @@ let routesComponentConfig=[
                       ),
                     //  syncComponent:Usermanagementdetails,
                      level:2,
-                     routesConfigPath:"J:/ot-system/ot-system-admin/client/pages/Index/pages/system/router/routesConfig.js",
+                     routesConfigPath:"K:/ot-system/ot-system-admin/client/pages/Index/pages/system/router/routesConfig.js",
                    },
                     {  
                      path: "/system/user-management",
@@ -66,7 +66,7 @@ let routesComponentConfig=[
                       ),
                     //  syncComponent:Usermanagement,
                      level:2,
-                     routesConfigPath:"J:/ot-system/ot-system-admin/client/pages/Index/pages/system/router/routesConfig.js",
+                     routesConfigPath:"K:/ot-system/ot-system-admin/client/pages/Index/pages/system/router/routesConfig.js",
                    },
                     {  
                      path: "/system/role-management/details/:action/:id?",
@@ -78,7 +78,7 @@ let routesComponentConfig=[
                       ),
                     //  syncComponent:Rolemanagementdetails,
                      level:2,
-                     routesConfigPath:"J:/ot-system/ot-system-admin/client/pages/Index/pages/system/router/routesConfig.js",
+                     routesConfigPath:"K:/ot-system/ot-system-admin/client/pages/Index/pages/system/router/routesConfig.js",
                    },
                     {  
                      path: "/system/role-management",
@@ -90,7 +90,7 @@ let routesComponentConfig=[
                       ),
                     //  syncComponent:Rolemanagement,
                      level:2,
-                     routesConfigPath:"J:/ot-system/ot-system-admin/client/pages/Index/pages/system/router/routesConfig.js",
+                     routesConfigPath:"K:/ot-system/ot-system-admin/client/pages/Index/pages/system/router/routesConfig.js",
                    },
                     {  
                      path: "/system/permission-management/details/:action/:id?",
@@ -102,7 +102,7 @@ let routesComponentConfig=[
                       ),
                     //  syncComponent:Permissionmanagementdetails,
                      level:2,
-                     routesConfigPath:"J:/ot-system/ot-system-admin/client/pages/Index/pages/system/router/routesConfig.js",
+                     routesConfigPath:"K:/ot-system/ot-system-admin/client/pages/Index/pages/system/router/routesConfig.js",
                    },
                     {  
                      path: "/system/permission-management",
@@ -114,7 +114,7 @@ let routesComponentConfig=[
                       ),
                     //  syncComponent:Permissionmanagement,
                      level:2,
-                     routesConfigPath:"J:/ot-system/ot-system-admin/client/pages/Index/pages/system/router/routesConfig.js",
+                     routesConfigPath:"K:/ot-system/ot-system-admin/client/pages/Index/pages/system/router/routesConfig.js",
                    },
                     {  
                      path: "/system/user-role/details/:action/:id?",
@@ -126,7 +126,7 @@ let routesComponentConfig=[
                       ),
                     //  syncComponent:Userroledetails,
                      level:2,
-                     routesConfigPath:"J:/ot-system/ot-system-admin/client/pages/Index/pages/system/router/routesConfig.js",
+                     routesConfigPath:"K:/ot-system/ot-system-admin/client/pages/Index/pages/system/router/routesConfig.js",
                    },
                     {  
                      path: "/system/user-role",
@@ -138,7 +138,7 @@ let routesComponentConfig=[
                       ),
                     //  syncComponent:Userrole,
                      level:2,
-                     routesConfigPath:"J:/ot-system/ot-system-admin/client/pages/Index/pages/system/router/routesConfig.js",
+                     routesConfigPath:"K:/ot-system/ot-system-admin/client/pages/Index/pages/system/router/routesConfig.js",
                    },
                     {  
                      path: "/system/role-permission/details/:action/:id?",
@@ -150,7 +150,7 @@ let routesComponentConfig=[
                       ),
                     //  syncComponent:Rolepermissiondetails,
                      level:2,
-                     routesConfigPath:"J:/ot-system/ot-system-admin/client/pages/Index/pages/system/router/routesConfig.js",
+                     routesConfigPath:"K:/ot-system/ot-system-admin/client/pages/Index/pages/system/router/routesConfig.js",
                    },
                     {  
                      path: "/system/role-permission",
@@ -162,7 +162,7 @@ let routesComponentConfig=[
                       ),
                     //  syncComponent:Rolepermission,
                      level:2,
-                     routesConfigPath:"J:/ot-system/ot-system-admin/client/pages/Index/pages/system/router/routesConfig.js",
+                     routesConfigPath:"K:/ot-system/ot-system-admin/client/pages/Index/pages/system/router/routesConfig.js",
                    },
                     {  
                      path: "/system",
@@ -174,7 +174,7 @@ let routesComponentConfig=[
                       ),
                     //  syncComponent:System,
                      level:2,
-                     routesConfigPath:"J:/ot-system/ot-system-admin/client/pages/Index/pages/system/router/routesConfig.js",
+                     routesConfigPath:"K:/ot-system/ot-system-admin/client/pages/Index/pages/system/router/routesConfig.js",
                    },
                     {  
                      path: "/",
@@ -186,7 +186,7 @@ let routesComponentConfig=[
                       ),
                     //  syncComponent:~index,
                      level:2,
-                     routesConfigPath:"J:/ot-system/ot-system-admin/client/pages/Index/router/routesConfig.js",
+                     routesConfigPath:"K:/ot-system/ot-system-admin/client/pages/Index/router/routesConfig.js",
                    },
                     {  
                      path: "/home",
@@ -198,7 +198,7 @@ let routesComponentConfig=[
                       ),
                     //  syncComponent:Home,
                      level:2,
-                     routesConfigPath:"J:/ot-system/ot-system-admin/client/pages/Index/router/routesConfig.js",
+                     routesConfigPath:"K:/ot-system/ot-system-admin/client/pages/Index/router/routesConfig.js",
                    },
                     {  
                      path: "/",
@@ -210,7 +210,7 @@ let routesComponentConfig=[
                       ),
                     //  syncComponent:Index,
                      level:1,
-                     routesConfigPath:"J:/ot-system/ot-system-admin/client/pages/router/routesConfig.js",
+                     routesConfigPath:"K:/ot-system/ot-system-admin/client/pages/router/routesConfig.js",
                    },
                     {  
                      path: "/log-in",
@@ -222,7 +222,7 @@ let routesComponentConfig=[
                       ),
                     //  syncComponent:Login,
                      level:1,
-                     routesConfigPath:"J:/ot-system/ot-system-admin/client/pages/router/routesConfig.js",
+                     routesConfigPath:"K:/ot-system/ot-system-admin/client/pages/router/routesConfig.js",
                    },
                     {  
                      path: "/register",
@@ -234,7 +234,7 @@ let routesComponentConfig=[
                       ),
                     //  syncComponent:Register,
                      level:1,
-                     routesConfigPath:"J:/ot-system/ot-system-admin/client/pages/router/routesConfig.js",
+                     routesConfigPath:"K:/ot-system/ot-system-admin/client/pages/router/routesConfig.js",
                    },
     ]
 

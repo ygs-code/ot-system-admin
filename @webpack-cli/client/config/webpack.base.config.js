@@ -37,10 +37,10 @@ const isEnvDevelopment = NODE_ENV === 'development'
 const cacheLoader = (happypackId) => {
   return isEnvDevelopment
     ? [
-        `happypack/loader?id=${happypackId}&cacheDirectory=true`,
-        'thread-loader',
-        'cache-loader',
-      ]
+      `happypack/loader?id=${happypackId}&cacheDirectory=true`,
+      'thread-loader',
+      'cache-loader',
+    ]
     : ['thread-loader', `happypack/loader?id=${happypackId}`]
 }
 
@@ -56,9 +56,9 @@ module.exports = {
   // 入口
   entry: {
     // myVue: [path.join(process.cwd(), "/src/myVue.js")], // 公共包抽取
-    vendor: ['react'],
-    index: [
-      '@babel/polyfill',
+    vendor: ['react', "react-dom"],
+    app: [
+      // '@babel/polyfill',
       //添加编译缓存
       // "webpack/hot/poll?1000",
       //  path.join(process.cwd(), "/src/index.js")
@@ -135,6 +135,11 @@ module.exports = {
     ],
     // 可以省略引用后缀
     extensions: ['.tsx', '.ts', '.js', '.graphql', '.json', '.node', '.sql'],
+    extensionAlias: {
+      ".js": [".js", ".ts"],
+      ".cjs": [".cjs", ".cts"],
+      ".mjs": [".mjs", ".mts"]
+    },
     // 1.不需要node polyfilss webpack 去掉了node polyfilss 需要自己手动添加
     //dllPlugin 插件需要的包
     alias: {
@@ -423,22 +428,22 @@ module.exports = {
       //   },
       // },
 
-      // ts
-      {
-        test: /\.ts?$/,
-        enforce: 'pre',
-        // 排除文件,因为这些包已经编译过，无需再次编译
-        exclude: /(node_modules|bower_components)/,
-        use: cacheLoader('ts'),
-      },
+      // // ts
+      // {
+      //   test: /\.ts?$/,
+      //   enforce: 'pre',
+      //   // 排除文件,因为这些包已经编译过，无需再次编译
+      //   exclude: /(node_modules|bower_components)/,
+      //   use: cacheLoader('ts'),
+      // },
 
-      //tsx
+      //ts tsx
       {
-        test: /(\.tsx?$)/,
-        enforce: 'pre',
+        test: /\.([cm]?ts|tsx)$/,
+        // enforce: 'pre',
         // 排除文件,因为这些包已经编译过，无需再次编译
         exclude: /(node_modules|bower_components)/,
-        use: cacheLoader('tsx'),
+        use: 'ts-loader'   //cacheLoader('tsx'),
       },
 
       {
@@ -539,8 +544,9 @@ module.exports = {
       // 每个html引用的js模块，也可以在这里加上vendor等公用模块
       chunks: [
         'vendor',
-        'manifest',
-        'index',
+        // 'manifest',
+        // 这里需要修改
+        'app',
         // "static/vendor.dll",
         // "static/vendor.manifest",
       ],
@@ -615,40 +621,40 @@ module.exports = {
       threadPool: happyThreadPool,
     }),
     // ts
-    new HappyPack({
-      id: 'ts',
-      //添加loader
-      use: [
-        {
-          loader: 'ts-loader',
-          options: {
-            // cacheDirectory: true,
-          },
-        },
-      ],
-      // 输出执行日志
-      // verbose: true,
-      // 使用共享线程池
-      threadPool: happyThreadPool,
-    }),
+    // new HappyPack({
+    //   id: 'ts',
+    //   //添加loader
+    //   use: [
+    //     {
+    //       loader: 'ts-loader',
+    //       options: {
+    //         // cacheDirectory: true,
+    //       },
+    //     },
+    //   ],
+    //   // 输出执行日志
+    //   // verbose: true,
+    //   // 使用共享线程池
+    //   threadPool: happyThreadPool,
+    // }),
 
     // tsx
-    new HappyPack({
-      id: 'tsx',
-      //添加loader
-      use: [
-        {
-          loader: 'awesome-typescript-loader',
-          options: {
-            // cacheDirectory: true,
-          },
-        },
-      ],
-      // 输出执行日志
-      // verbose: true,
-      // 使用共享线程池
-      threadPool: happyThreadPool,
-    }),
+    // new HappyPack({
+    //   id: 'tsx',
+    //   //添加loader
+    //   use: [
+    //     {
+    //       loader: 'ts-loader',
+    //       options: {
+    //         // cacheDirectory: true,
+    //       },
+    //     },
+    //   ],
+    //   // 输出执行日志
+    //   // verbose: true,
+    //   // 使用共享线程池
+    //   threadPool: happyThreadPool,
+    // }),
 
     new HappyPack({
       id: 'rawLoader',

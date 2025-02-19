@@ -17,5 +17,6 @@ export default {
   index:"/",
   logIn:"/log-in",
   register:"/register",
- }
+  demo:"/demo",
+ };
     

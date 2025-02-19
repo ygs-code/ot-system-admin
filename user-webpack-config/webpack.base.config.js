@@ -6,6 +6,7 @@ const ESLintPlugin = require('eslint-webpack-plugin');
 const ExtendedDefinePlugin = require('extended-define-webpack-plugin');
 const HtmllinterWebpackPlugin = require('htmllinter-webpack-plugin');
 const MyExampleWebpackPlugin = require('./definePlugin/MyExampleWebpackPlugin');
+const WebpackPluginRouter = require("./definePlugin/webpack-plugin-router");
 const os = require('os');
 const HappyPack = require('happypack');
 const happyThreadPool = HappyPack.ThreadPool({ size: os.cpus().length - 1 });
@@ -27,7 +28,7 @@ const { resolve } = path;
 //     htmlWebpackPluginOptions = '',
 // } = process.env; // 环境参数
 
-
+const publicPath = '/';
 
 
 let {
@@ -43,9 +44,9 @@ let {
 
 
 
-  console.log('DOMAIN_NAME=',DOMAIN_NAME)
-  console.log('DOMAIN_MIDDLE=',DOMAIN_MIDDLE)
-  console.log('process.env=',process.env)
+//   console.log('DOMAIN_NAME=',DOMAIN_NAME)
+//   console.log('DOMAIN_MIDDLE=',DOMAIN_MIDDLE)
+//   console.log('process.env=',process.env)
 
 
 
@@ -92,23 +93,37 @@ module.exports = {
             //         quiet: false, //如果设置为true，将只处理和报告错误，而忽略警告。
             //     },
             // },
-            {
-                test: /\.js?$/,
-                enforce: 'pre',
-                // 排除文件,因为这些包已经编译过，无需再次编译
-                exclude: /(node_modules|bower_components)/,
-                use: {
-                    loader: path.join(
-                        __dirname,
-                        './defineLoader/MyExampleWebpackLoader.js'
-                    ),
-                    options: {},
-                },
-            },
+            // {
+            //     test: /\.js?$/,
+            //     enforce: 'pre',
+            //     // 排除文件,因为这些包已经编译过，无需再次编译
+            //     exclude: /(node_modules|bower_components)/,
+            //     use: {
+            //         loader: path.join(
+            //             __dirname,
+            //             './defineLoader/MyExampleWebpackLoader.js'
+            //         ),
+            //         options: {},
+            //     },
+            // },
         ],
     },
 
     plugins: [
+
+
+        new WebpackPluginRouter({
+            publicPath,
+            entry: path.join(process.cwd(), "/src"),
+            //延迟监听时间
+            aggregateTimeout: 30,
+            watch: ["routesConfig.js"],
+            output: {
+              routesComponent: "/src/router/routesComponent.js",
+              routePaths: "/src/router/routePaths.js"
+            }
+          }),
+
         // // he
         new HtmllinterWebpackPlugin({
             config: htmllinterConfig,
@@ -143,14 +158,14 @@ module.exports = {
             // fix: true, //自动修复
         }),
         // eslint 插件
-        // new ESLintPlugin({
-        //     emitError: true, //发现的错误将始终被触发，将禁用设置为false。
-        //     emitWarning: true, //如果将disable设置为false，则发现的警告将始终被发出。
-        //     failOnError: true, //如果有任何错误，将导致模块构建失败，禁用设置为false。
-        //     failOnWarning: false, //如果有任何警告，如果设置为true，将导致模块构建失败。
-        //     quiet: false, //如果设置为true，将只处理和报告错误，而忽略警告。
-        //     fix: true, //自动修复
-        // }),
+        new ESLintPlugin({
+            emitError: true, //发现的错误将始终被触发，将禁用设置为false。
+            emitWarning: true, //如果将disable设置为false，则发现的警告将始终被发出。
+            failOnError: true, //如果有任何错误，将导致模块构建失败，禁用设置为false。
+            failOnWarning: false, //如果有任何警告，如果设置为true，将导致模块构建失败。
+            quiet: false, //如果设置为true，将只处理和报告错误，而忽略警告。
+            fix: true, //自动修复
+        }),
 
         // new HappyPack({
         //   id: "MyExampleWebpackLoader",

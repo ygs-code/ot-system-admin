@@ -27,5 +27,11 @@ export default [
     name: "register",
     entry: "/pages/Register/index.js",
     level: 1
+  },
+  {
+    path: "/demo",
+    name: "demo",
+    entry: "/pages/Demo/index.tsx",
+    level: 1
   }
 ];

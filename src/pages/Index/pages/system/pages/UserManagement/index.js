@@ -6,15 +6,15 @@ import {tablePage} from "src/components/TablePage";
 import {addRouterApi} from "src/router";
 import React, {Component} from "react";
 // 权限控制
-@setBreadcrumbAndTitle({
+@setBreadcrumbAndTitle((props) => ({
   //设置面包屑和标题
   breadcrumb: [
     {
-      label: "用户管理"
-    }
+      label: "用户管理",
+    },
   ],
-  title: "用户管理"
-})
+  title: "用户管理",
+}))
 @addRouterApi
 @tablePage
 class Index extends Component {
@@ -37,12 +37,12 @@ class Index extends Component {
         label: "用户名称",
         name: "name",
         type: "input",
-        span: 1
+        span: 1,
       },
       {
         label: "用户ID",
         name: "id",
-        type: "input"
+        type: "input",
       },
       {
         label: "用户Email",
@@ -51,7 +51,7 @@ class Index extends Component {
 
         render: (props) => {
           return <Input {...props}></Input>;
-        }
+        },
       },
       {
         label: "用户手机",
@@ -59,7 +59,7 @@ class Index extends Component {
         type: "input",
         render: (props) => {
           return <Input {...props}></Input>;
-        }
+        },
       },
       {
         label: "用户类型",
@@ -69,21 +69,21 @@ class Index extends Component {
           options: [
             {
               label: "全部类型",
-              value: ""
+              value: "",
             },
             {
               label: "管理员",
-              value: "1"
+              value: "1",
             },
             {
               label: "会员",
-              value: "2"
-            }
-          ]
+              value: "2",
+            },
+          ],
         },
         itemProps: {},
-        options: {}
-      }
+        options: {},
+      },
     ];
   };
 
@@ -96,28 +96,28 @@ class Index extends Component {
   getColumns = () => {
     const {
       pushRoute,
-      routePaths: {userManagementDetails, userRoleDetails} = {}
+      routePaths: {userManagementDetails, userRoleDetails} = {},
     } = this.props;
     return [
       {
         title: "用户ID",
         dataIndex: "id",
-        key: "id"
+        key: "id",
       },
       {
         title: "用户名称",
         dataIndex: "name",
-        key: "name"
+        key: "name",
       },
       {
         title: "Email",
         dataIndex: "email",
-        key: "email"
+        key: "email",
       },
       {
         title: "手机",
         dataIndex: "phone",
-        key: "phone"
+        key: "phone",
       },
       {
         title: "用户类型",
@@ -128,28 +128,28 @@ class Index extends Component {
             [
               {
                 label: "管理员",
-                value: 1
+                value: 1,
               },
               {
                 label: "会员",
-                value: 2
-              }
+                value: 2,
+              },
             ].find((item) => {
               return item.value === text;
             }) || {}
           ).label;
-        }
+        },
       },
 
       {
         title: "创建时间",
         dataIndex: "createTime",
-        key: "createTime"
+        key: "createTime",
       },
       {
         title: "更新时间",
         dataIndex: "updateTime",
-        key: "updateTime"
+        key: "updateTime",
       },
       {
         title: "操作",
@@ -171,11 +171,11 @@ class Index extends Component {
                         path: userManagementDetails,
                         params: {
                           action: "edit",
-                          id
-                        } // 地址传参
+                          id,
+                        }, // 地址传参
                       });
-                    }
-                  }
+                    },
+                  },
                 },
                 {
                   label: "查看", // 按钮文字
@@ -186,11 +186,11 @@ class Index extends Component {
                         path: userManagementDetails,
                         params: {
                           action: "view",
-                          id
-                        } // 地址传参
+                          id,
+                        }, // 地址传参
                       });
-                    }
-                  }
+                    },
+                  },
                 },
                 {
                   showPopconfirm: true, // 是否需要弹窗提示
@@ -202,8 +202,8 @@ class Index extends Component {
                       const {message: mgs} = await removeUser(id);
                       message.success(mgs);
                       this.loadTableData();
-                    }
-                  }
+                    },
+                  },
                 },
                 {
                   label: "查看拥有角色权限", // 按钮文字
@@ -215,17 +215,17 @@ class Index extends Component {
 
                         params: {
                           action: "view",
-                          id
-                        } // 地址传参
+                          id,
+                        }, // 地址传参
                       });
-                    }
-                  }
-                }
+                    },
+                  },
+                },
               ]}
             />
           );
-        }
-      }
+        },
+      },
     ];
   };
 
@@ -248,11 +248,11 @@ class Index extends Component {
         {this.renderSearch({
           shrinkLength: 5,
           initialValues: {
-            type: ""
-          }
+            type: "",
+          },
         })}
         {this.renderTable({
-          rowKey: "id"
+          rowKey: "id",
         })}
       </div>
     );

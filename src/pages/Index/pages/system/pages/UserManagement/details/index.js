@@ -12,7 +12,7 @@ class Index extends FormPage {
   constructor(props) {
     super(props);
     this.state = {
-      ...this.state
+      ...this.state,
     };
   }
   /**
@@ -26,12 +26,12 @@ class Index extends FormPage {
   getInitialValues = async () => {
     const {
       match: {
-        params: {id}
-      }
+        params: {id},
+      },
     } = this.props;
 
     const {data: {user = {}} = {}} = await getUserInfo({
-      id
+      id,
     });
 
     return await this.mapInitData(user);
@@ -46,7 +46,7 @@ class Index extends FormPage {
   // 提交请求到接口
   onSubmitForm = async (formData) => {
     const {
-      history: {back}
+      history: {back},
     } = this.props;
     const values = await this.mapSubmitData(formData);
     const {message: mgs} = await editUser({...values});
@@ -58,8 +58,8 @@ class Index extends FormPage {
   getFields = () => {
     const {
       match: {
-        params: {action}
-      }
+        params: {action},
+      },
     } = this.props;
 
     const readOnly = action === "view";
@@ -78,7 +78,7 @@ class Index extends FormPage {
 
               return <div>{value}</div>;
             },
-            rules: []
+            rules: [],
           },
           {
             label: "用户名称",
@@ -87,15 +87,15 @@ class Index extends FormPage {
             props: {
               showCount: true,
               maxLength: 20,
-              readOnly
+              readOnly,
             },
 
             rules: [
               {
                 required: true,
-                message: "请输入用户名称"
-              }
-            ]
+                message: "请输入用户名称",
+              },
+            ],
           },
           {
             label: "邮箱地址",
@@ -104,15 +104,15 @@ class Index extends FormPage {
             props: {
               showCount: true,
               maxLength: 100,
-              readOnly
+              readOnly,
             },
 
             rules: [
               {
                 required: true,
-                message: "请输入邮箱地址"
-              }
-            ]
+                message: "请输入邮箱地址",
+              },
+            ],
           },
           {
             label: "手机号码",
@@ -121,15 +121,15 @@ class Index extends FormPage {
             props: {
               showCount: true,
               maxLength: 11,
-              readOnly
+              readOnly,
             },
 
             rules: [
               {
                 required: true,
-                message: "请输入手机号码"
-              }
-            ]
+                message: "请输入手机号码",
+              },
+            ],
           },
           {
             label: "用户类型",
@@ -140,25 +140,25 @@ class Index extends FormPage {
               options: [
                 {
                   label: "管理员",
-                  value: 1
+                  value: 1,
                 },
                 {
                   label: "会员",
-                  value: 2
-                }
-              ]
+                  value: 2,
+                },
+              ],
             },
             itemProps: {},
 
             rules: [
               {
                 required: true,
-                message: "请选择用户类型"
-              }
-            ]
-          }
-        ]
-      }
+                message: "请选择用户类型",
+              },
+            ],
+          },
+        ],
+      },
     ];
   };
 
@@ -174,17 +174,20 @@ class Index extends FormPage {
 
 export default mapRedux()(
   // 权限控制
-  setBreadcrumbAndTitle({
-    //设置面包屑和标题
-    breadcrumb: [
-      {
-        label: "用户管理",
-        path: routePaths.userManagement
-      },
-      {
-        label: "详情"
-      }
-    ],
-    title: "用户管理/详情"
+  setBreadcrumbAndTitle((props) => {
+    console.log("props===", props);
+    return {
+      //设置面包屑和标题
+      breadcrumb: [
+        {
+          label: "用户管理",
+          path: routePaths.userManagement,
+        },
+        {
+          label: "详情",
+        },
+      ],
+      title: "用户管理/详情",
+    };
   })(addRouterApi(Index))
 );

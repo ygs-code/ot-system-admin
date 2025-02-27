@@ -12,14 +12,13 @@ import "./index.less";
 import "src/assets/css/base.less";
 // import "src/assets/css/tailwind.css";
 
-
 // import {ConfigProvider} from "antd";
 // 由于 antd 组件的默认文案是英文，所以需要修改为中文
 import zhCN from "antd/es/locale/zh_CN";
 import Routers from "src/router";
-import React, { Component } from "react";
-import { Provider } from "react-redux";
-
+import React, {Component} from "react";
+import {Provider} from "react-redux";
+import routesComponent from "src/router/routesComponent";
 
 import Demo from "./demo";
 
@@ -29,13 +28,11 @@ import Demo from "./demo";
 //   htmlWebpackPluginOptions = ""
 // } = process.env; // 环境参数
 
-
-console.log('demo')
-
+console.log("demo");
 
 class Index extends Component {
   render() {
-    const { history, store, routesComponent } = this.props;
+    const {history, store} = this.props;
 
     /*
   Warning: Detected multiple renderers concurrently rendering the same context provider. This is currently unsupported.

@@ -1,4 +1,4 @@
-import {Button, message} from "antd";
+import {Button, message, Tabs} from "antd";
 import {getRoleList, removeRole} from "src/assets/js/request";
 import setBreadcrumbAndTitle from "src/components/setBreadcrumbAndTitle";
 import TableButton from "src/components/TableButton";
@@ -10,17 +10,19 @@ import React, {Component} from "react";
   //设置面包屑和标题
   breadcrumb: [
     {
-      label: "角色管理"
-    }
+      label: "角色管理",
+    },
   ],
-  title: "角色管理"
+  title: "角色管理",
 })
 @addRouterApi
 @tablePage
 class Index extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      tabsValue: "1",
+    };
   }
 
   // // 获取默认搜索参数
@@ -37,13 +39,13 @@ class Index extends Component {
         label: "角色名称",
         name: "name",
         type: "input",
-        span: 1
+        span: 1,
       },
       {
         label: "角色ID",
         name: "id",
-        type: "input"
-      }
+        type: "input",
+      },
     ];
   }
 
@@ -60,28 +62,28 @@ class Index extends Component {
       {
         title: "角色ID",
         dataIndex: "id",
-        key: "id"
+        key: "id",
       },
       {
         title: "角色名称",
         dataIndex: "name",
-        key: "name"
+        key: "name",
       },
       {
         title: "描述",
         dataIndex: "description",
-        key: "description"
+        key: "description",
       },
 
       {
         title: "创建时间",
         dataIndex: "createTime",
-        key: "createTime"
+        key: "createTime",
       },
       {
         title: "更新时间",
         dataIndex: "updateTime",
-        key: "updateTime"
+        key: "updateTime",
       },
       {
         title: "操作",
@@ -97,6 +99,40 @@ class Index extends Component {
                 {
                   // showPopconfirm: true, // 是否需要弹窗提示
                   // confirmInfo: "你确定要发布该标签吗？", //弹窗信息
+                  label: "提交审核", // 按钮文字
+                  status: true, //权限控制
+                  props: {
+                    onClick: () => {
+                      // pushRoute({
+                      //   path: roleManagementDetails,
+                      //   params: {
+                      //     action: "review",
+                      //     id
+                      //   } // 地址传参
+                      // });
+                    },
+                  },
+                },
+                {
+                  // showPopconfirm: true, // 是否需要弹窗提示
+                  // confirmInfo: "你确定要发布该标签吗？", //弹窗信息
+                  label: "审核", // 按钮文字
+                  status: true, //权限控制
+                  props: {
+                    onClick: () => {
+                      pushRoute({
+                        path: roleManagementDetails,
+                        params: {
+                          action: "review",
+                          id,
+                        }, // 地址传参
+                      });
+                    },
+                  },
+                },
+                {
+                  // showPopconfirm: true, // 是否需要弹窗提示
+                  // confirmInfo: "你确定要发布该标签吗？", //弹窗信息
                   label: "编辑", // 按钮文字
                   status: true, //权限控制
                   props: {
@@ -105,11 +141,11 @@ class Index extends Component {
                         path: roleManagementDetails,
                         params: {
                           action: "edit",
-                          id
-                        } // 地址传参
+                          id,
+                        }, // 地址传参
                       });
-                    }
-                  }
+                    },
+                  },
                 },
                 {
                   // showPopconfirm: true, // 是否需要弹窗提示
@@ -122,11 +158,11 @@ class Index extends Component {
                         path: roleManagementDetails,
                         params: {
                           action: "view",
-                          id
-                        } // 地址传参
+                          id,
+                        }, // 地址传参
                       });
-                    }
-                  }
+                    },
+                  },
                 },
                 {
                   showPopconfirm: true, // 是否需要弹窗提示
@@ -138,14 +174,14 @@ class Index extends Component {
                       const {message: mgs} = await removeRole(id);
                       message.success(mgs);
                       this.loadTableData();
-                    }
-                  }
-                }
+                    },
+                  },
+                },
               ]}
             />
           );
-        }
-      }
+        },
+      },
     ];
   };
 
@@ -165,33 +201,59 @@ class Index extends Component {
   render() {
     const {pushRoute, routePaths: {roleManagementDetails} = {}} =
       this.props;
+    const {tabsValue} = this.state;
     return (
       <div className="table-page">
         <div
           style={{
-            marginBottom: "20px"
-          }}>
+            marginBottom: "20px",
+          }}
+        >
           <Button
             type="primary"
             onClick={() => {
               pushRoute({
                 path: roleManagementDetails,
                 params: {
-                  action: "create"
-                } // 地址传参
+                  action: "create",
+                }, // 地址传参
               });
-            }}>
+            }}
+          >
             新建角色
           </Button>
         </div>
+
         {this.renderSearch({
           shrinkLength: 5,
           initialValues: {
-            type: ""
-          }
+            type: "",
+          },
         })}
+
+        <Tabs
+          value={tabsValue}
+          items={[
+            {
+              key: "1",
+              label: "全部",
+            },
+            {
+              key: "2",
+              label: "未审核",
+            },
+            {
+              key: "3",
+              label: "已审核",
+            },
+          ]}
+          onChange={(v) => {
+            console.log("onChange", v);
+          }}
+        />
+
         {this.renderTable({
-          rowKey: "id"
+          rowKey: "id",
         })}
       </div>
     );

@@ -1,6 +1,6 @@
 import "./index.less";
 
-import {message} from "antd";
+import {message, Button} from "antd";
 import {createRole, editRole, getRoleInfo} from "src/assets/js/request";
 import FormPage from "src/components/FormPage";
 import setBreadcrumbAndTitle from "src/components/setBreadcrumbAndTitle";
@@ -13,7 +13,7 @@ class Index extends FormPage {
     super(props);
     this.state = {
       ...this.state,
-      data: {}
+      data: {},
     };
   }
   /**
@@ -27,18 +27,18 @@ class Index extends FormPage {
   getInitialValues = async () => {
     const {
       match: {
-        params: {id}
-      }
+        params: {id},
+      },
     } = this.props;
 
     const {data: {description, name} = {}} = await getRoleInfo({
-      id
+      id,
     });
 
     return await this.mapInitData({
       description,
       id,
-      name
+      name,
     });
   };
 
@@ -51,12 +51,12 @@ class Index extends FormPage {
   // 提交请求到接口
   onSubmitForm = async (formData) => {
     const {
-      history: {back}
+      history: {back},
     } = this.props;
     const {
       match: {
-        params: {id}
-      }
+        params: {id},
+      },
     } = this.props;
 
     const values = await this.mapSubmitData(formData);
@@ -77,8 +77,8 @@ class Index extends FormPage {
   getFields = () => {
     const {
       match: {
-        params: {action}
-      }
+        params: {action},
+      },
     } = this.props;
 
     const readOnly = action === "view";
@@ -97,7 +97,7 @@ class Index extends FormPage {
 
               return <div>{value}</div>;
             },
-            rules: []
+            rules: [],
           },
           {
             label: "角色名称",
@@ -106,15 +106,15 @@ class Index extends FormPage {
             props: {
               readOnly,
               showCount: true,
-              maxLength: 20
+              maxLength: 20,
             },
 
             rules: [
               {
                 required: true,
-                message: "请输入角色名称"
-              }
-            ]
+                message: "请输入角色名称",
+              },
+            ],
           },
 
           {
@@ -124,19 +124,68 @@ class Index extends FormPage {
             props: {
               readOnly,
               showCount: true,
-              maxLength: 200
+              maxLength: 200,
             },
 
             rules: [
               {
                 required: true,
-                message: "请输入描述"
-              }
-            ]
-          }
-        ]
-      }
+                message: "请输入描述",
+              },
+            ],
+          },
+        ],
+      },
     ];
+  };
+
+  // 底部按钮
+  getFooter = () => {
+    const {
+      match: {
+        params: {action},
+      },
+      history = {},
+    } = this.props;
+    const {loading} = this.state;
+    const buttons = {
+      view: null,
+      review: (
+        <>
+          <Button type="primary" loading={loading} onClick={this.onValidaForm}>
+            审核通过
+          </Button>
+          <Button type="primary" loading={loading} onClick={this.onValidaForm}>
+            驳回
+          </Button>
+        </>
+      ),
+      edit: (
+        <Button type="primary" loading={loading} onClick={this.onValidaForm}>
+          确认
+        </Button>
+      ),
+      create: (
+        <Button type="primary" loading={loading} onClick={this.onValidaForm}>
+          确认
+        </Button>
+      ),
+    };
+
+    return (
+      <div className="button-box">
+        {buttons[action] || null}
+
+        <Button
+          loading={loading}
+          onClick={() => {
+            history.back();
+          }}
+        >
+          返回
+        </Button>
+      </div>
+    );
   };
 
   componentDidMount() {}
@@ -151,17 +200,28 @@ class Index extends FormPage {
 
 export default mapRedux()(
   // 权限控制
-  setBreadcrumbAndTitle({
-    //设置面包屑和标题
-    breadcrumb: [
-      {
-        label: "角色管理",
-        path: routePaths.roleManagement
-      },
-      {
-        label: "详情"
-      }
-    ],
-    title: "角色管理/详情"
+  setBreadcrumbAndTitle((props) => {
+    const {match: {params: {action}} = {}} = props;
+
+    const map = {
+      create: "新建",
+      edit: "编辑",
+      view: "查看",
+      review: "审核",
+    };
+
+    return {
+      //设置面包屑和标题
+      breadcrumb: [
+        {
+          label: "角色管理",
+          path: routePaths.roleManagement,
+        },
+        {
+          label: map[action],
+        },
+      ],
+      title: `角色管理/${map[action]}`,
+    };
   })(addRouterApi(Index))
 );

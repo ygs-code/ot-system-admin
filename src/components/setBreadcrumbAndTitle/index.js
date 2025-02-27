@@ -8,22 +8,30 @@
  */
 import {mapRedux} from "src/redux";
 import React, {memo, useEffect} from "react";
+import {CheckDataType} from "src/utils";
 
 const Index = (options) => {
-  const {title, breadcrumb} = options;
   return (C) => {
     return mapRedux()(
       memo((props) => {
-        const {dispatch: {breadcrumb: {setBreadcrumb} = {}} = {}} = props;
+        const {
+          dispatch: {breadcrumb: {setBreadcrumb} = {}} = {},
+          match: {params: {action} = {}} = {},
+        } = props;
 
         useEffect(() => {
+          let $options = options;
+          if (CheckDataType.isFunction($options)) {
+            $options = options(props);
+          }
+          const {title, breadcrumb} = $options;
           if (title) {
             document.title = title;
           }
-          // if (breadcrumb) {
-          //   setBreadcrumb(breadcrumb);
-          // }
-        }, []);
+          if (breadcrumb) {
+            setBreadcrumb(breadcrumb);
+          }
+        }, [action]);
 
         return <C {...props} />;
       })

@@ -14,7 +14,7 @@ class Index extends FormPage {
     super(props);
     this.state = {
       ...this.state,
-      data: {}
+      data: {},
     };
   }
   /**
@@ -28,18 +28,18 @@ class Index extends FormPage {
   getInitialValues = async () => {
     const {
       match: {
-        params: {id}
-      }
+        params: {id},
+      },
     } = this.props;
 
     const {data: {description, name} = {}} = await getRoleInfo({
-      id
+      id,
     });
 
     return await this.mapInitData({
       description,
       id,
-      name
+      name,
     });
   };
 
@@ -52,17 +52,17 @@ class Index extends FormPage {
   // 提交请求到接口
   onSubmitForm = async (formData) => {
     const {
-      history: {back}
+      history: {back},
     } = this.props;
 
     const {
       id: roleId,
-      permissionIds: {checkedKeys: permissionIds = []} = {}
+      permissionIds: {checkedKeys: permissionIds = []} = {},
     } = await this.mapSubmitData(formData);
 
     const {message: mgs} = await editRolePermission({
       roleId,
-      permissionIds
+      permissionIds,
     });
 
     message.success(mgs);
@@ -74,8 +74,8 @@ class Index extends FormPage {
   getFields = () => {
     const {
       match: {
-        params: {action, id}
-      }
+        params: {action, id},
+      },
     } = this.props;
 
     const readOnly = action === "view";
@@ -95,7 +95,7 @@ class Index extends FormPage {
 
               return <div>{value}</div>;
             },
-            rules: []
+            rules: [],
           },
           {
             label: "角色名称",
@@ -104,15 +104,15 @@ class Index extends FormPage {
             props: {
               showCount: true,
               maxLength: 20,
-              readOnly: true
+              readOnly: true,
             },
 
             rules: [
               {
                 required: true,
-                message: "请输入角色名称"
-              }
-            ]
+                message: "请输入角色名称",
+              },
+            ],
           },
 
           {
@@ -122,15 +122,15 @@ class Index extends FormPage {
             props: {
               showCount: true,
               maxLength: 200,
-              readOnly: true
+              readOnly: true,
             },
 
             rules: [
               {
                 required: true,
-                message: "请输入描述"
-              }
-            ]
+                message: "请输入描述",
+              },
+            ],
           },
 
           {
@@ -147,19 +147,20 @@ class Index extends FormPage {
                   roleId={id}
                   onChange={onChange}
                   modalProps={{
-                    title: "编辑权限"
-                  }}></PermissionPicker>
+                    title: "编辑权限",
+                  }}
+                ></PermissionPicker>
               );
             },
             rules: [
               {
                 required: true,
-                message: "请输入描述"
-              }
-            ]
-          }
-        ]
-      }
+                message: "请输入描述",
+              },
+            ],
+          },
+        ],
+      },
     ];
   };
 
@@ -175,17 +176,21 @@ class Index extends FormPage {
 
 export default mapRedux()(
   // 权限控制
-  setBreadcrumbAndTitle({
-    //设置面包屑和标题
-    breadcrumb: [
-      {
-        label: "角色管理",
-        path: routePaths.roleManagement
-      },
-      {
-        label: "详情"
-      }
-    ],
-    title: "角色管理/详情"
+  setBreadcrumbAndTitle((props) => {
+    console.log("props==", props);
+
+    return {
+      //设置面包屑和标题
+      breadcrumb: [
+        {
+          label: "角色管理",
+          path: routePaths.roleManagement,
+        },
+        {
+          label: "详情",
+        },
+      ],
+      title: "角色管理/详情",
+    };
   })(addRouterApi(Index))
 );
